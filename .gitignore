@@ -1,0 +1,40 @@
+# Environment
+.env
+.npmrc
+
+# Build
+dist/
+
+packages/*/package-lock.json
+sample/**/package-lock.json
+
+# dependencies
+node_modules/
+
+# IDE
+/.idea
+
+# bundle
+packages/**/*.d.ts
+packages/**/*.js
+
+# misc
+.DS_Store
+lerna-debug.log
+npm-debug.log
+yarn-error.log
+/**/npm-debug.log
+/packages/**/.npmignore
+/packages/**/LICENSE
+*.tsbuildinfo
+
+# tests
+/test
+/benchmarks/memory
+/coverage
+/.nyc_output
+/packages/graphql
+build/config\.gypi
+
+pnpm-lock.yaml
+/.history
