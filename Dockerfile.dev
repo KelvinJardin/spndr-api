@@ -1,0 +1,13 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install development dependencies
+COPY package.json yarn.lock* ./
+RUN yarn install
+
+# Copy the rest of the application
+COPY . .
+
+# Start the application in development mode
+CMD ["yarn", "run", "start:dev"]
