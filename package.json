@@ -20,7 +20,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "bruno:new": "./build_scripts/generate_bruno.sh -n",
     "bruno:overwrite": "./build_scripts/generate_bruno.sh",
-    "bruno:prune": "./build_scripts/generate_bruno.sh -p"
+    "bruno:prune": "./build_scripts/generate_bruno.sh -p",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
