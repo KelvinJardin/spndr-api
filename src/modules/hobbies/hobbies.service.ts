@@ -14,7 +14,7 @@ export class HobbiesService {
 
   async findOne(userId: string, id: string): Promise<HobbyResponse | null> {
     return this.prisma.hobby.findFirst({
-      where: { 
+      where: {
         id,
         userId,
       },

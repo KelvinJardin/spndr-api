@@ -25,10 +25,12 @@ describe('UsersController', () => {
       providers: [
         {
           provide: UsersService,
-          useValue: { 
+          useValue: {
             findAll: () => Promise.resolve([mockUser]),
             findOne: (id: string) =>
-              id === mockUser.id ? Promise.resolve(mockUser) : Promise.resolve(null),
+              id === mockUser.id
+                ? Promise.resolve(mockUser)
+                : Promise.resolve(null),
           },
         },
       ],

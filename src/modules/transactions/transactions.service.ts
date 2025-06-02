@@ -6,18 +6,24 @@ import { TransactionResponse } from '../../types/transaction.type';
 export class TransactionsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(userId: string, hobbyId?: string): Promise<TransactionResponse[]> {
+  async findAll(
+    userId: string,
+    hobbyId?: string,
+  ): Promise<TransactionResponse[]> {
     return this.prisma.transaction.findMany({
-      where: { 
+      where: {
         userId,
         ...(hobbyId && { hobbyId }),
       },
     });
   }
 
-  async findOne(userId: string, id: string): Promise<TransactionResponse | null> {
+  async findOne(
+    userId: string,
+    id: string,
+  ): Promise<TransactionResponse | null> {
     return this.prisma.transaction.findFirst({
-      where: { 
+      where: {
         id,
         userId,
       },

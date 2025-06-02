@@ -24,7 +24,7 @@ describe('HobbiesController', () => {
       providers: [
         {
           provide: HobbiesService,
-          useValue: { 
+          useValue: {
             findAll: () => Promise.resolve([mockHobby]),
             findOne: (userId: string, id: string) =>
               id === mockHobby.id && userId === mockHobby.userId
@@ -55,13 +55,16 @@ describe('HobbiesController', () => {
     it('should return a hobby when it exists', async () => {
       const result = await controller.findOne(mockHobby.userId, mockHobby.id);
       expect(result).toEqual(mockHobby);
-      expect(service.findOne).toHaveBeenCalledWith(mockHobby.userId, mockHobby.id);
+      expect(service.findOne).toHaveBeenCalledWith(
+        mockHobby.userId,
+        mockHobby.id,
+      );
     });
 
     it('should throw NotFoundException when hobby does not exist', async () => {
-      await expect(controller.findOne(mockHobby.userId, 'non-existent')).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        controller.findOne(mockHobby.userId, 'non-existent'),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });
