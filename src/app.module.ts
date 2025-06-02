@@ -8,3 +8,6 @@ import { UsersModule } from './users/users.module';
   imports: [PrismaModule, UsersModule],
   controllers: [AppController],
   providers: [AppService],
+
+}
+)
