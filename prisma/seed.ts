@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { seedTaxYears } from './seeds/taxYears';
 import { seedTransactionCategories } from './seeds/transactionCategories';
 import { seedDeveloper } from './seeds/users/developer';
 import { seedPhotographer } from './seeds/users/photographer';
@@ -8,18 +9,45 @@ import { seedWriter } from './seeds/users/writer';
 
 const prisma = new PrismaClient();
 
+const seeds: ((prisma: PrismaClient) => Promise<void>)[] = [
+  seedTaxYears,
+  seedTransactionCategories,
+  seedDeveloper,
+  seedPhotographer,
+  seedConsultant,
+  seedArtist,
+  seedWriter,
+];
+
+const tables: string[] = [
+  'transaction',
+  'hobby',
+  'authenticator',
+  'session',
+  'verificationToken',
+  'user',
+  'transactionCategory',
+  'taxYear',
+]
+
+async function deleteAllData() {
+  console.log('🧹 Cleaning up existing data...');
+
+  for (const table of tables) {
+    await prisma[table].deleteMany();
+  }
+
+  console.log('🧹 All existing data deleted!');
+}
+
 async function main() {
   console.log('🌱 Starting database seed...');
 
-  // Seed transaction categories first as they're referenced by other seeds
-  await seedTransactionCategories(prisma);
+  await deleteAllData();
 
-  // Seed user scenarios
-  await seedDeveloper(prisma);
-  await seedPhotographer(prisma);
-  await seedConsultant(prisma);
-  await seedArtist(prisma);
-  await seedWriter(prisma);
+  for (const seed of seeds) {
+    await seed(prisma);
+  }
 
   console.log('🌱 Database seeding completed!');
 }

@@ -1,5 +1,4 @@
 import { PrismaClient, TransactionType } from '@prisma/client';
-import { seedTaxYears } from '../taxYears';
 
 export async function seedConsultant(prisma: PrismaClient) {
   console.log('🌱 Seeding consultant scenario...');
@@ -18,9 +17,6 @@ export async function seedConsultant(prisma: PrismaClient) {
       providerAccountId: 'consultant@example.com',
     },
   });
-
-  // Create tax years
-  await seedTaxYears(prisma, user.id);
 
   // Create hobbies
   const hobbies = [
@@ -62,7 +58,7 @@ export async function seedConsultant(prisma: PrismaClient) {
 
   // Get current tax year
   const currentTaxYear = await prisma.taxYear.findFirstOrThrow({
-    where: { userId: user.id, isCurrent: true },
+    where: { isCurrent: true },
   });
 
   // Create transactions
