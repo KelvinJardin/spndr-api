@@ -1,7 +1,7 @@
 {
   "name": "spndr-api",
   "version": "0.0.1",
-  "description": "API for FundFlow, a platform for managing and tracking financial flows of multiple income streams.",
+  "description": "API for Spndr, a platform for managing and tracking financial flows of multiple income streams.",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

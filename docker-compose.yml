@@ -15,7 +15,7 @@ services:
       - postgres
       - redis
     networks:
-      - fundflow-network
+      - spndr-network
     # Add healthcheck to verify service is running
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
@@ -34,15 +34,15 @@ services:
     image: postgres:15
     restart: always
     environment:
-      POSTGRES_DB: fundflow_db
-      POSTGRES_USER: fundflow_user
+      POSTGRES_DB: spndr_db
+      POSTGRES_USER: spndr_user
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
-      - fundflow-network
+      - spndr-network
 
   redis:
     image: redis:alpine
@@ -50,11 +50,11 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - fundflow-network
+      - spndr-network
 
 volumes:
   postgres-data:
 
 networks:
-  fundflow-network:
+  spndr-network:
     driver: bridge

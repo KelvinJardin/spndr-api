@@ -17,8 +17,8 @@ services:
     image: postgres:15
     restart: always
     environment:
-      POSTGRES_DB: fundflow_db
-      POSTGRES_USER: fundflow_user
+      POSTGRES_DB: spndr_db
+      POSTGRES_USER: spndr_user
       POSTGRES_PASSWORD: password
     volumes:
       - postgres-data:/var/lib/postgresql/data
