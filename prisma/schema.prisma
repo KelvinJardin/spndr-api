@@ -26,8 +26,10 @@ model User {
   session_state     String?
 
   sessions      Session[]
-  // Optional for WebAuthn support
   Authenticator Authenticator[]
+  hobbies      Hobby[]
+  transactions Transaction[]
+  taxYears     TaxYear[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -54,7 +56,6 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// Optional for WebAuthn support
 model Authenticator {
   credentialID         String  @unique
   userId               String
@@ -68,4 +69,88 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  type        TransactionType
+  amount      Decimal         @db.Decimal(10, 2)
+  date        DateTime
+  description String
+  reference   String?
+  notes       String?
+
+  userId     String
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hobbyId    String?
+  hobby      Hobby?             @relation(fields: [hobbyId], references: [id])
+  categoryId String
+  category   TransactionCategory @relation(fields: [categoryId], references: [id])
+  taxYearId  String
+  taxYear    TaxYear            @relation(fields: [taxYearId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([hobbyId])
+  @@index([categoryId])
+  @@index([taxYearId])
+}
+
+model TransactionCategory {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  type        TransactionType
+  transactions Transaction[]
+
+  // UK specific tax category information
+  allowable Boolean @default(false) // Whether expenses in this category are tax-deductible
+  hmrcCategory String? // Corresponding HMRC category for tax returns
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, type])
+}
+
+model TaxYear {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startDate  DateTime
+  endDate    DateTime
+  isCurrent  Boolean  @default(false)
+
+  transactions Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, startDate, endDate])
+  @@index([userId])
+}
+
+model Hobby {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  transactions Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId])
 }
