@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsEnum, IsNumber, IsDate, IsOptional } from 'class-validator';
+import { Decimal } from '@prisma/client/runtime/library';
 import { TransactionResponse, TransactionType } from '../types/transaction.type';
 
 export class TransactionDto implements TransactionResponse {
@@ -10,9 +11,9 @@ export class TransactionDto implements TransactionResponse {
   @IsEnum(TransactionType)
   type: TransactionType;
 
-  @ApiProperty({ example: 199.99 })
+  @ApiProperty({ example: '199.99', type: String })
   @IsNumber()
-  amount: number;
+  amount: Decimal;
 
   @ApiProperty()
   @IsDate()

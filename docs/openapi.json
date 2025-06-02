@@ -23,6 +23,309 @@
           "App"
         ]
       }
+    },
+    "/users": {
+      "get": {
+        "operationId": "UsersController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all users",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "operationId": "UsersController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "summary": "Get user by ID",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{userId}/hobbies": {
+      "get": {
+        "operationId": "HobbiesController_findAll",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/HobbyDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all hobbies for a user",
+        "tags": [
+          "Hobbies"
+        ]
+      }
+    },
+    "/users/{userId}/hobbies/{id}": {
+      "get": {
+        "operationId": "HobbiesController_findOne",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HobbyDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Hobby not found"
+          }
+        },
+        "summary": "Get hobby by ID",
+        "tags": [
+          "Hobbies"
+        ]
+      }
+    },
+    "/users/{userId}/transactions": {
+      "get": {
+        "operationId": "TransactionsController_findAll",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "hobbyId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransactionDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all transactions for a user",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/users/{userId}/transactions/{id}": {
+      "get": {
+        "operationId": "TransactionsController_findOne",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          }
+        },
+        "summary": "Get transaction by ID",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/tax-years": {
+      "get": {
+        "operationId": "TaxYearsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaxYearDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all tax years",
+        "tags": [
+          "Tax Years"
+        ]
+      }
+    },
+    "/tax-years/current": {
+      "get": {
+        "operationId": "TaxYearsController_findCurrent",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxYearDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Current tax year not found"
+          }
+        },
+        "summary": "Get current tax year",
+        "tags": [
+          "Tax Years"
+        ]
+      }
+    },
+    "/tax-years/{id}": {
+      "get": {
+        "operationId": "TaxYearsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxYearDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tax year not found"
+          }
+        },
+        "summary": "Get tax year by ID",
+        "tags": [
+          "Tax Years"
+        ]
+      }
     }
   },
   "info": {
@@ -52,6 +355,213 @@
         "required": [
           "status",
           "version"
+        ]
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "example": "john@example.com"
+          },
+          "type": {
+            "type": "string",
+            "example": "user"
+          },
+          "provider": {
+            "type": "string",
+            "example": "email"
+          },
+          "providerAccountId": {
+            "type": "string",
+            "example": "john@example.com"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+          "type",
+          "provider",
+          "providerAccountId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "HobbyDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "name": {
+            "type": "string",
+            "example": "Photography"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "example": "Wedding and event photography"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "userId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "isActive",
+          "userId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "TransactionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "INCOME",
+              "EXPENSE"
+            ]
+          },
+          "amount": {
+            "type": "string",
+            "example": "199.99"
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "example": "Website Development"
+          },
+          "reference": {
+            "type": "string",
+            "nullable": true,
+            "example": "INV-2024-001"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "hobbyId": {
+            "type": "string",
+            "nullable": true,
+            "example": "cln1234567890"
+          },
+          "categoryId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "taxYearId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "amount",
+          "date",
+          "description",
+          "userId",
+          "categoryId",
+          "taxYearId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "TaxYearDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "startYear": {
+            "type": "number",
+            "example": 2024
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "isCurrent": {
+            "type": "boolean",
+            "example": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "startYear",
+          "startDate",
+          "endDate",
+          "isCurrent",
+          "createdAt",
+          "updatedAt"
         ]
       }
     }
