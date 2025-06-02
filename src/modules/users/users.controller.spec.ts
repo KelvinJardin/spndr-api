@@ -25,11 +25,10 @@ describe('UsersController', () => {
       providers: [
         {
           provide: UsersService,
-          useValue: {
-            findAll: jest.fn().mockResolvedValue([mockUser]),
-            findOne: jest.fn().mockImplementation((id: string) =>
+          useValue: { 
+            findAll: () => Promise.resolve([mockUser]),
+            findOne: (id: string) =>
               id === mockUser.id ? Promise.resolve(mockUser) : Promise.resolve(null),
-            ),
           },
         },
       ],

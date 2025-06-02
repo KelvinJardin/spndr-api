@@ -24,13 +24,12 @@ describe('HobbiesController', () => {
       providers: [
         {
           provide: HobbiesService,
-          useValue: {
-            findAll: jest.fn().mockResolvedValue([mockHobby]),
-            findOne: jest.fn().mockImplementation((userId: string, id: string) =>
+          useValue: { 
+            findAll: () => Promise.resolve([mockHobby]),
+            findOne: (userId: string, id: string) =>
               id === mockHobby.id && userId === mockHobby.userId
                 ? Promise.resolve(mockHobby)
                 : Promise.resolve(null),
-            ),
           },
         },
       ],
