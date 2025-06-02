@@ -1,0 +1,33 @@
+import { Controller, Get, Param, Query, NotFoundException } from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
+import { TransactionsService } from './transactions.service';
+import { TransactionDto } from '../../dtos/transaction.dto';
+
+@ApiTags('Transactions')
+@Controller('users/:userId/transactions')
+export class TransactionsController {
+  constructor(private readonly transactionsService: TransactionsService) {}
+
+  @Get()
+  @ApiOperation({ summary: 'Get all transactions for a user' })
+  @ApiResponse({ status: 200, type: [TransactionDto] })
+  @ApiQuery({ name: 'hobbyId', required: false })
+  async findAll(
+    @Param('userId') userId: string,
+    @Query('hobbyId') hobbyId?: string,
+  ) {
+    return this.transactionsService.findAll(userId, hobbyId);
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get transaction by ID' })
+  @ApiResponse({ status: 200, type: TransactionDto })
+  @ApiResponse({ status: 404, description: 'Transaction not found' })
+  async findOne(@Param('userId') userId: string, @Param('id') id: string) {
+    const transaction = await this.transactionsService.findOne(userId, id);
+    if (!transaction) {
+      throw new NotFoundException(`Transaction with ID ${id} not found`);
+    }
+    return transaction;
+  }
+}

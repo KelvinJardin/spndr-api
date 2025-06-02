@@ -4,11 +4,18 @@ import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './modules/users/users.module';
 import { HobbiesModule } from './modules/hobbies/hobbies.module';
+import { TransactionsModule } from './modules/transactions/transactions.module';
+import { TaxYearsModule } from './modules/tax-years/tax-years.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, HobbiesModule],
+  imports: [
+    PrismaModule,
+    UsersModule,
+    HobbiesModule,
+    TransactionsModule,
+    TaxYearsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-  
 export class AppModule {}
