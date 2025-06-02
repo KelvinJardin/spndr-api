@@ -29,7 +29,6 @@ yarn-error.log
 *.tsbuildinfo
 
 # tests
-/test
 /benchmarks/memory
 /coverage
 /.nyc_output

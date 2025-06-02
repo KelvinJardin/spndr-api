@@ -1,0 +1,59 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/app/health": {
+      "get": {
+        "description": "Get the app status",
+        "operationId": "AppController_health",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Health",
+        "tags": [
+          "App"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "fundflow-api",
+    "description": "API for FundFlow, a platform for managing and tracking financial flows of multiple income streams.",
+    "version": "0.0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "HealthResponseDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Current health status of the application",
+            "example": "healthy"
+          },
+          "version": {
+            "type": "string",
+            "description": "Application version",
+            "example": "1.0.0"
+          }
+        },
+        "required": [
+          "status",
+          "version"
+        ]
+      }
+    }
+  }
+}

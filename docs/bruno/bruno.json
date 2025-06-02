@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "fundflow-api",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

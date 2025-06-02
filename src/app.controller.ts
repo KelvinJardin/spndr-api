@@ -1,22 +1,23 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { ApiResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
+import type { HealthResponse } from './types/healthResponse.type';
+import { HealthResponseDto } from './dtos/healthResponse.dto';
 
-@Controller()
+@Controller('app')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get(':id')
-  hello(@Param('id') id: string): string {
-    return this.appService.getHello();
-  }
-
-  @Get()
-  helloAll(): string {
-    return this.appService.getHello();
-  }
-
-  @Post()
-  createHello(): string {
-    return this.appService.getHello();
+  /**
+   * Health
+   *
+   * @remarks Get the app status
+   *
+   * @returns The app status
+   */
+  @Get('health')
+  @ApiResponse({ status: 200, type: HealthResponseDto })
+  health(): HealthResponse {
+    return this.appService.getHealth();
   }
 }
