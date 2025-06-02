@@ -26,8 +26,8 @@
     }
   },
   "info": {
-    "title": "fundflow-api",
-    "description": "",
+    "title": "spndr-api",
+    "description": "API for FundFlow, a platform for managing and tracking financial flows of multiple income streams.",
     "version": "0.0.1",
     "contact": {}
   },

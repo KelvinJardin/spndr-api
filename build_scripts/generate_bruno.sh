@@ -57,7 +57,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Set paths
-PROJECT_NAME="fundflow-api"
+PROJECT_NAME="spndr-api"
 TEMP_DIR="docs/bruno-temp"
 BRUNO_DIR="docs/bruno"
 OPENAPI_SOURCE="docs/openapi.json"
