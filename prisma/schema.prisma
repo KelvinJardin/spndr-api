@@ -26,8 +26,8 @@ model User {
 
   sessions      Session[]
   Authenticator Authenticator[]
-  hobbies       Hobby[]
-  transactions  Transaction[]
+  hobbies      Hobby[]
+  transactions Transaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -90,7 +90,7 @@ model Transaction {
   categoryId String
   category   TransactionCategory @relation(fields: [categoryId], references: [id])
   taxYearId  String
-  taxYear    TaxYear             @relation(fields: [taxYearId], references: [id])
+  taxYear    TaxYear            @relation(fields: [taxYearId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -102,10 +102,10 @@ model Transaction {
 }
 
 model TransactionCategory {
-  id           String          @id @default(cuid())
-  name         String
-  description  String?
-  type         TransactionType
+  id          String          @id @default(cuid())
+  name        String
+  description String?
+  type        TransactionType
   transactions Transaction[]
 
   // UK specific tax category information
@@ -120,7 +120,7 @@ model TransactionCategory {
 
 model TaxYear {
   id        String   @id @default(cuid())
-  startYear Int
+  startYear Int      // e.g., 2023 for 2023/24 tax year
   startDate DateTime
   endDate   DateTime
   isCurrent Boolean  @default(false)
@@ -134,10 +134,10 @@ model TaxYear {
 }
 
 model Hobby {
-  id          String  @id @default(cuid())
+  id          String   @id @default(cuid())
   name        String
   description String?
-  isActive    Boolean @default(true)
+  isActive    Boolean  @default(true)
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
