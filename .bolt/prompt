@@ -1,1 +1,1 @@
-`npm prisma generate && npm run start` to refresh
+`npx prisma generate && npm run start` to refresh
