@@ -1,0 +1,15 @@
+meta {
+  name: Get tax year by ID
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/tax-years/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  id: 
+}

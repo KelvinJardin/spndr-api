@@ -1,0 +1,11 @@
+meta {
+  name: Get current tax year
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/tax-years/current
+  body: none
+  auth: none
+}

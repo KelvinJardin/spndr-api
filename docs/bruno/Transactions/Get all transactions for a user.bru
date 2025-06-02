@@ -1,0 +1,19 @@
+meta {
+  name: Get all transactions for a user
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/users/:userId/transactions
+  body: none
+  auth: none
+}
+
+params:query {
+  ~hobbyId: 
+}
+
+params:path {
+  userId: 
+}

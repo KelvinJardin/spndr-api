@@ -1,0 +1,16 @@
+meta {
+  name: Get hobby by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/users/:userId/hobbies/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  userId: 
+  id: 
+}

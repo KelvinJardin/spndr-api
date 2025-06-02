@@ -1,0 +1,16 @@
+meta {
+  name: Get transaction by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/users/:userId/transactions/:id
+  body: none
+  auth: none
+}
+
+params:path {
+  userId: 
+  id: 
+}
