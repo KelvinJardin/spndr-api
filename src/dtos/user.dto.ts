@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { UserResponse } from '../types/user.type';
 
-export class UserDto implements UserResponse {
+export class UserDto {
   @ApiProperty({ example: 'cln1234567890' })
   id: string;
 
