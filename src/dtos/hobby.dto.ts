@@ -31,5 +31,3 @@ export class HobbyDto {
     count: number;
   };
 }
-
-export class PaginatedHobbyResponseDto extends PaginatedResponseDto<HobbyDto> {}

@@ -1,7 +1,7 @@
 import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TaxYearsService } from './tax-years.service';
-import { PaginatedTaxYearResponseDto, PaginationQueryDto, TaxYearDto } from '../../dtos';
+import { PaginatedResponseDto, PaginationQueryDto, TaxYearDto } from '../../dtos';
 
 @ApiTags('Tax Years')
 @Controller('tax-years')
@@ -11,7 +11,7 @@ export class TaxYearsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all tax years' })
-  @ApiResponse({ status: 200, type: PaginatedTaxYearResponseDto })
+  @ApiResponse({ status: 200, type: PaginatedResponseDto<TaxYearDto> })
   async findAll(@Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto) {
     return this.taxYearsService.findAll(query);
   }

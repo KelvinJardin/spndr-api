@@ -23,5 +23,3 @@ export class TaxYearDto {
   @ApiProperty()
   updatedAt: Date;
 }
-
-export class PaginatedTaxYearResponseDto extends PaginatedResponseDto<TaxYearDto> {}

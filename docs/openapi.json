@@ -56,7 +56,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedUserResponseDto"
+                  "$ref": "#/components/schemas/PaginatedResponseDto"
                 }
               }
             }
@@ -208,7 +208,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedHobbyResponseDto"
+                  "$ref": "#/components/schemas/PaginatedResponseDto"
                 }
               }
             }
@@ -384,7 +384,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedTransactionResponseDto"
+                  "$ref": "#/components/schemas/PaginatedResponseDto"
                 }
               }
             }
@@ -470,7 +470,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedTaxYearResponseDto"
+                  "$ref": "#/components/schemas/PaginatedResponseDto"
                 }
               }
             }
@@ -571,7 +571,7 @@
           "version"
         ]
       },
-      "PaginatedUserResponseDto": {
+      "PaginatedResponseDto": {
         "type": "object",
         "properties": {
           "data": {
@@ -753,36 +753,6 @@
           }
         }
       },
-      "PaginatedHobbyResponseDto": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "meta": {
-            "type": "object",
-            "properties": {
-              "total": {
-                "type": "number"
-              },
-              "offset": {
-                "type": "number"
-              }
-            },
-            "required": [
-              "total",
-              "offset"
-            ]
-          }
-        },
-        "required": [
-          "data",
-          "meta"
-        ]
-      },
       "HobbyDto": {
         "type": "object",
         "properties": {
@@ -853,36 +823,6 @@
             "$ref": "#/components/schemas/PeaksDto"
           }
         }
-      },
-      "PaginatedTransactionResponseDto": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "meta": {
-            "type": "object",
-            "properties": {
-              "total": {
-                "type": "number"
-              },
-              "offset": {
-                "type": "number"
-              }
-            },
-            "required": [
-              "total",
-              "offset"
-            ]
-          }
-        },
-        "required": [
-          "data",
-          "meta"
-        ]
       },
       "TransactionDto": {
         "type": "object",
@@ -956,36 +896,6 @@
           "taxYearId",
           "createdAt",
           "updatedAt"
-        ]
-      },
-      "PaginatedTaxYearResponseDto": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "meta": {
-            "type": "object",
-            "properties": {
-              "total": {
-                "type": "number"
-              },
-              "offset": {
-                "type": "number"
-              }
-            },
-            "required": [
-              "total",
-              "offset"
-            ]
-          }
-        },
-        "required": [
-          "data",
-          "meta"
         ]
       },
       "TaxYearDto": {

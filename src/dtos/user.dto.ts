@@ -26,5 +26,3 @@ export class UserDto {
   @ApiProperty()
   updatedAt: Date;
 }
-
-export class PaginatedUserResponseDto extends PaginatedResponseDto<UserDto> {}

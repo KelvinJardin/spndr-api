@@ -43,5 +43,3 @@ export class TransactionDto {
   @ApiProperty()
   updatedAt: Date;
 }
-
-export class PaginatedTransactionResponseDto extends PaginatedResponseDto<TransactionDto> {}
