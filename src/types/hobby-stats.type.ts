@@ -9,17 +9,17 @@ export type HobbyStatsOptions = {
 
 export type MonthlyStats = {
   month: Date;
-  income: Decimal | number;
-  expenses: Decimal | number;
-  net: Decimal | number;
+  income: number | Decimal;
+  expenses: number | Decimal;
+  net: Decimal;
 };
 
 export type HobbyStatsResponse = {
   monthlyStats?: MonthlyStats[];
   averages?: {
-    monthlyIncome: Decimal | number;
-    monthlyExpenses: Decimal | number;
-    monthlyNet: Decimal | number;
+    monthlyIncome: number | Decimal;
+    monthlyExpenses: number | Decimal;
+    monthlyNet: Decimal;
   };
   peaks?: {
     highestIncome?: {

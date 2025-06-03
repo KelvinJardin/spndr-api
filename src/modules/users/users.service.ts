@@ -103,12 +103,13 @@ export class UsersService {
           (t) => t.type === TransactionType.EXPENSE,
         )?._sum.amount ?? 0;
 
-        monthlyStats.push({
+        const stats: MonthlyStats = {
           month: monthStart,
           income,
           expenses,
           net: new Decimal(income).minus(new Decimal(expenses)),
-        });
+        };
+        monthlyStats.push(stats);
       }
 
       response.monthlyStats = monthlyStats;
