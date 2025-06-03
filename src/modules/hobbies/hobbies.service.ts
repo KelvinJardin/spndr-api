@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { StatsService } from '../../services/stats.service';
-import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos/pagination.dto';
-import type { HobbyResponse } from '../../types/hobby.type';
-import type { HobbyStatsOptions, HobbyStatsResponse } from '../../types/hobby-stats.type';
+import { StatsService } from '../../services';
+import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos';
+import type { HobbyResponse, HobbyStatsOptions, HobbyStatsResponse } from '../../types';
 
 @Injectable()
 export class HobbiesService {

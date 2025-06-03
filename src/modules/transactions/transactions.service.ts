@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { PaginationQueryDto } from '../../dtos/pagination.dto';
-import { TransactionResponse } from '../../types/transaction.type';
+import { PaginationQueryDto } from '../../dtos';
+import { TransactionResponse } from '../../types';
 
 @Injectable()
 export class TransactionsService {

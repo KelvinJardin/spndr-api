@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import {PaginatedResponseDto} from "./pagination.dto";
 
 export class HobbyDto {
   @ApiProperty({ example: 'cln1234567890' })
@@ -30,3 +31,5 @@ export class HobbyDto {
     count: number;
   };
 }
+
+export class PaginatedHobbyResponseDto extends PaginatedResponseDto<HobbyDto> {}

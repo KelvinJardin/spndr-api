@@ -1,4 +1,5 @@
 import { Decimal } from '@prisma/client/runtime/library';
+import { MonthlyStats } from './monthly-stats.type';
 
 export type UserStatsOptions = {
   includeMonthlyStats?: boolean;
@@ -7,18 +8,11 @@ export type UserStatsOptions = {
   months?: number;
 };
 
-export type MonthlyStats = {
-  month: Date;
-  income: number | Decimal;
-  expenses: number | Decimal;
-  net: Decimal;
-};
-
 export type UserStatsResponse = {
   monthlyStats?: MonthlyStats[];
   averages?: {
-    monthlyIncome: number | Decimal;
-    monthlyExpenses: number | Decimal;
+    monthlyIncome: Decimal;
+    monthlyExpenses: Decimal;
     monthlyNet: Decimal;
   };
   peaks?: {

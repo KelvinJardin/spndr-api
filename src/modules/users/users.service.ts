@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { StatsService } from '../../services/stats.service';
-import { PaginationQueryDto } from '../../dtos/pagination.dto';
-import type { UserResponse } from '../../types/user.type';
-import type { UserStatsOptions, UserStatsResponse } from '../../types/user-stats.type';
+import { StatsService } from '../../services';
+import { PaginationQueryDto } from '../../dtos';
+import type { UserResponse, UserStatsOptions, UserStatsResponse } from '../../types';
 
 @Injectable()
 export class UsersService {

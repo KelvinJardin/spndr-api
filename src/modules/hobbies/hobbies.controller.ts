@@ -1,9 +1,7 @@
 import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HobbiesService } from './hobbies.service';
-import { HobbyDto } from '../../dtos/hobby.dto';
-import { HobbyStatsDto } from '../../dtos/hobby-stats.dto';
-import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos/pagination.dto';
+import { HobbyDto, HobbyStatsDto, PaginatedHobbyResponseDto, PaginationQueryDto } from '../../dtos';
 
 @ApiTags('Hobbies')
 @Controller('users/:userId/hobbies')
@@ -13,7 +11,7 @@ export class HobbiesController {
 
   @Get()
   @ApiOperation({ summary: 'Get all hobbies for a user' })
-  @ApiResponse({ status: 200, type: () => new PaginatedResponseDto<HobbyDto>() })
+  @ApiResponse({ status: 200, type: PaginatedHobbyResponseDto })
   async findAll(
     @Param('userId') userId: string,
     @Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto,

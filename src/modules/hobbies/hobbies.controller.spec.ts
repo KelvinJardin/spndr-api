@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HobbiesController } from './hobbies.controller';
 import { HobbiesService } from './hobbies.service';
 import { NotFoundException } from '@nestjs/common';
-import type { HobbyResponse } from '../../types/hobby.type';
-import type { HobbyStatsResponse } from '../../types/hobby-stats.type';
+import type { HobbyResponse, HobbyStatsResponse } from '../../types';
+import { Prisma } from '@prisma/client';
 
 describe('HobbiesController', () => {
   let controller: HobbiesController;
@@ -17,23 +17,26 @@ describe('HobbiesController', () => {
     userId: 'user-id',
     createdAt: new Date(),
     updatedAt: new Date(),
+    transactions: {
+      count: 5,
+    },
   };
 
   const mockStats: HobbyStatsResponse = {
     monthlyStats: [],
     averages: {
-      monthlyIncome: 1500,
-      monthlyExpenses: 500,
-      monthlyNet: 1000,
+      monthlyIncome: new Prisma.Decimal(1500),
+      monthlyExpenses: new Prisma.Decimal(500),
+      monthlyNet: new Prisma.Decimal(1000),
     },
     peaks: {
       highestIncome: {
-        amount: 2500,
+        amount: new Prisma.Decimal(2500),
         date: new Date(),
         description: 'Test Income',
       },
       highestExpense: {
-        amount: 1000,
+        amount: new Prisma.Decimal(1000),
         date: new Date(),
         description: 'Test Expense',
       },
@@ -68,7 +71,13 @@ describe('HobbiesController', () => {
 
   describe('findAll', () => {
     it('should return an array of hobbies', async () => {
-      const result = await controller.findAll(mockHobby.userId);
+      const result = await controller.findAll(
+        mockHobby.userId,
+        {
+          limit: 10,
+          offset: 0,
+        }
+      );
       expect(result).toEqual([mockHobby]);
       expect(service.findAll).toHaveBeenCalledWith(mockHobby.userId);
     });

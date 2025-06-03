@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
-import type { UserResponse } from '../../types/user.type';
-import type { UserStatsResponse } from '../../types/user-stats.type';
+import type { UserResponse, UserStatsResponse } from '../../types';
+import { Prisma } from '@prisma/client';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -23,18 +23,18 @@ describe('UsersController', () => {
   const mockStats: UserStatsResponse = {
     monthlyStats: [],
     averages: {
-      monthlyIncome: 1500,
-      monthlyExpenses: 500,
-      monthlyNet: 1000,
+      monthlyIncome: new Prisma.Decimal(1500),
+      monthlyExpenses: new Prisma.Decimal(500),
+      monthlyNet: new Prisma.Decimal(1000),
     },
     peaks: {
       highestIncome: {
-        amount: 2500,
+        amount: new Prisma.Decimal(2500),
         date: new Date(),
         description: 'Test Income',
       },
       highestExpense: {
-        amount: 1000,
+        amount: new Prisma.Decimal(1000),
         date: new Date(),
         description: 'Test Expense',
       },
@@ -69,7 +69,10 @@ describe('UsersController', () => {
 
   describe('findAll', () => {
     it('should return an array of users', async () => {
-      const result = await controller.findAll();
+      const result = await controller.findAll({
+        limit: 10,
+        offset: 0,
+      });
       expect(result).toEqual([mockUser]);
       expect(service.findAll).toHaveBeenCalled();
     });
@@ -82,7 +85,7 @@ describe('UsersController', () => {
       expect(service.findOne).toHaveBeenCalledWith(mockUser.id);
     });
 
-    it('should throw NotFoundException when user does not exist', async () => {
+    it('should throw NotFoundException when the user does not exist', async () => {
       await expect(controller.findOne('non-existent')).rejects.toThrow(
         NotFoundException,
       );

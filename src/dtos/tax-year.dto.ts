@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { PaginatedResponseDto } from "./pagination.dto";
 
 export class TaxYearDto {
   @ApiProperty({ example: 'cln1234567890' })
@@ -22,3 +23,5 @@ export class TaxYearDto {
   @ApiProperty()
   updatedAt: Date;
 }
+
+export class PaginatedTaxYearResponseDto extends PaginatedResponseDto<TaxYearDto> {}

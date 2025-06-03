@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Decimal } from '@prisma/client/runtime/library';
 import { TransactionType } from '@prisma/client';
-import { MonthlyStats } from '../types/user-stats.type';
+import { MonthlyStats } from '../types';
 
 export interface StatsOptions {
   includeMonthlyStats?: boolean;

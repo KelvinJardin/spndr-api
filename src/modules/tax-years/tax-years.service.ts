@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { PaginationQueryDto } from '../../dtos/pagination.dto';
-import { TaxYearResponse } from '../../types/tax-year.type';
+import { PaginationQueryDto } from '../../dtos';
+import { TaxYearResponse } from '../../types';
 
 @Injectable()
 export class TaxYearsService {
