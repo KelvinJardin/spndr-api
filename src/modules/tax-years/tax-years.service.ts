@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationQueryDto } from '../../dtos';
-import { TaxYearResponse } from '../../types';
+import { TaxYearResponse, TaxYearStatsResponse } from '../../types';
+import { TransactionType } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class TaxYearsService {
@@ -39,5 +41,57 @@ export class TaxYearsService {
     return this.prisma.taxYear.findFirst({
       where: { isCurrent: true },
     });
+  }
+
+  async getTaxYearStats(
+    taxYearId: string,
+    userId: string,
+  ): Promise<TaxYearStatsResponse> {
+    const transactions = await this.prisma.transaction.groupBy({
+      by: ['categoryId', 'type'],
+      where: {
+        taxYearId,
+        userId,
+      },
+      _sum: {
+        amount: true,
+      },
+      _count: true,
+    });
+
+    const categories = await this.prisma.transactionCategory.findMany();
+
+    const incomeByCategory = [];
+    const expensesByCategory = [];
+    let totalIncome = new Decimal(0);
+    let totalExpenses = new Decimal(0);
+
+    for (const transaction of transactions) {
+      const category = categories.find(c => c.id === transaction.categoryId);
+      if (!category) continue;
+
+      const stats = {
+        categoryId: category.id,
+        categoryName: category.name,
+        total: transaction._sum.amount ?? new Decimal(0),
+        count: transaction._count,
+      };
+
+      if (transaction.type === TransactionType.INCOME) {
+        incomeByCategory.push(stats);
+        totalIncome = totalIncome.plus(stats.total);
+      } else {
+        expensesByCategory.push(stats);
+        totalExpenses = totalExpenses.plus(stats.total);
+      }
+    }
+
+    return {
+      incomeByCategory,
+      expensesByCategory,
+      totalIncome,
+      totalExpenses,
+      netIncome: totalIncome.minus(totalExpenses),
+    };
   }
 }
