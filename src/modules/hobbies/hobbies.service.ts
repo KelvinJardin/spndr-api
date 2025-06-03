@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Decimal } from '@prisma/client/runtime/library';
 import { HobbyResponse } from '../../types/hobby.type';
-import { HobbyStatsOptions, HobbyStatsResponse } from '../../types/hobby-stats.type';
+import {
+  HobbyStatsOptions,
+  HobbyStatsResponse,
+} from '../../types/hobby-stats.type';
 import { TransactionType } from '@prisma/client';
 
 @Injectable()
@@ -95,12 +98,12 @@ export class HobbiesService {
           },
         });
 
-        const income = monthTransactions.find(
-          (t) => t.type === TransactionType.INCOME,
-        )?._sum.amount ?? 0;
-        const expenses = monthTransactions.find(
-          (t) => t.type === TransactionType.EXPENSE,
-        )?._sum.amount ?? 0;
+        const income =
+          monthTransactions.find((t) => t.type === TransactionType.INCOME)?._sum
+            .amount ?? 0;
+        const expenses =
+          monthTransactions.find((t) => t.type === TransactionType.EXPENSE)
+            ?._sum.amount ?? 0;
 
         const stats: MonthlyStats = {
           month: monthStart,
@@ -124,14 +127,18 @@ export class HobbiesService {
       });
 
       const monthlyIncome =
-        averages.find((a) => a.type === TransactionType.INCOME)?._avg.amount ?? 0;
+        averages.find((a) => a.type === TransactionType.INCOME)?._avg.amount ??
+        0;
       const monthlyExpenses =
-        averages.find((a) => a.type === TransactionType.EXPENSE)?._avg.amount ?? 0;
+        averages.find((a) => a.type === TransactionType.EXPENSE)?._avg.amount ??
+        0;
 
       response.averages = {
         monthlyIncome,
         monthlyExpenses,
-        monthlyNet: new Decimal(monthlyIncome).minus(new Decimal(monthlyExpenses)),
+        monthlyNet: new Decimal(monthlyIncome).minus(
+          new Decimal(monthlyExpenses),
+        ),
       };
     }
 
