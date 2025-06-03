@@ -1,9 +1,3 @@
-import {
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Query,
 import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TransactionsService } from './transactions.service';
@@ -17,7 +11,7 @@ export class TransactionsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all transactions for a user' })
-  @ApiResponse({ status: 200, type: new PaginatedResponseDto<TransactionDto>() })
+  @ApiResponse({ status: 200, type: PaginatedResponseDto })
   @ApiQuery({ name: 'hobbyId', required: false })
   async findAll(
     @Param('userId') userId: string,

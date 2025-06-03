@@ -1,9 +1,3 @@
-import {
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Query,
 import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -18,7 +12,7 @@ export class UsersController {
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
-  @ApiResponse({ status: 200, type: new PaginatedResponseDto<UserDto>() })
+  @ApiResponse({ status: 200, type: PaginatedResponseDto })
   async findAll(@Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto) {
     return this.usersService.findAll(query);
   }

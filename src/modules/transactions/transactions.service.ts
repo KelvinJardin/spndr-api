@@ -14,7 +14,7 @@ export class TransactionsService {
   ) {
     const where = {
       userId,
-      ...(hobbyId && { hobbyId }),
+      ...(hobbyId ? { hobbyId } : {}),
     };
 
     const [total, transactions] = await Promise.all([
@@ -35,12 +35,6 @@ export class TransactionsService {
         lastPage: Math.ceil(total / query.limit),
       },
     };
-  }
-      where: {
-        userId,
-        ...(hobbyId && { hobbyId }),
-      },
-    });
   }
 
   async findOne(

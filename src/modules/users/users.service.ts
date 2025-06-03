@@ -44,18 +44,6 @@ export class UsersService {
       },
     };
   }
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        type: true,
-        provider: true,
-        providerAccountId: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-  }
 
   async findOne(id: string): Promise<UserResponse | null> {
     return this.prisma.user.findUnique({
