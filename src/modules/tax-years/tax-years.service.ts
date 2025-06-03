@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationQueryDto } from '../../dtos';
-import { TaxYearResponse, TaxYearStatsResponse } from '../../types';
+import { TaxYearResponse } from '../../types';
+import type { TaxYearStatsResponse } from '../../types/tax-year-stats.type';
 import { TransactionType } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 
@@ -61,8 +62,8 @@ export class TaxYearsService {
 
     const categories = await this.prisma.transactionCategory.findMany();
 
-    const incomeByCategory = [];
-    const expensesByCategory = [];
+    const incomeByCategory: TaxYearStatsResponse['incomeByCategory'] = [];
+    const expensesByCategory: TaxYearStatsResponse['expensesByCategory'] = [];
     let totalIncome = new Decimal(0);
     let totalExpenses = new Decimal(0);
 

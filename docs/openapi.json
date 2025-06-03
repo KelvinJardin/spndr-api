@@ -540,6 +540,48 @@
           "Tax Years"
         ]
       }
+    },
+    "/tax-years/{id}/stats/{userId}": {
+      "get": {
+        "operationId": "TaxYearsController_getStats",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxYearStatsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tax year not found"
+          }
+        },
+        "summary": "Get tax year statistics for a user",
+        "tags": [
+          "Tax Years"
+        ]
+      }
     }
   },
   "info": {
@@ -938,6 +980,89 @@
           "isCurrent",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "i": {
+        "type": "object",
+        "properties": {}
+      },
+      "CategoryStatsDto": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "categoryName": {
+            "type": "string",
+            "example": "Freelance Work"
+          },
+          "total": {
+            "example": "1500.00",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          },
+          "count": {
+            "type": "number",
+            "example": 10
+          }
+        },
+        "required": [
+          "categoryId",
+          "categoryName",
+          "total",
+          "count"
+        ]
+      },
+      "TaxYearStatsDto": {
+        "type": "object",
+        "properties": {
+          "incomeByCategory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryStatsDto"
+            }
+          },
+          "expensesByCategory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryStatsDto"
+            }
+          },
+          "totalIncome": {
+            "example": "5000.00",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          },
+          "totalExpenses": {
+            "example": "1500.00",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          },
+          "netIncome": {
+            "example": "3500.00",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          }
+        },
+        "required": [
+          "incomeByCategory",
+          "expensesByCategory",
+          "totalIncome",
+          "totalExpenses",
+          "netIncome"
         ]
       }
     }
