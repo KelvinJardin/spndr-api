@@ -1,22 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, Max, Min } from 'class-validator';
+import { IsInt, Max, Min } from 'class-validator';
 
 export class PaginationQueryDto {
-  @ApiProperty({ required: false, minimum: 1, default: 1 })
+  @ApiProperty({ required: false, default: 0, minimum: 0 })
   @Type(() => Number)
   @IsInt()
-  @Min(1)
-  @IsOptional()
-  page?: number = 1;
+  @Min(0)
+  offset: number = 0;
 
-  @ApiProperty({ required: false, minimum: 1, maximum: 100, default: 20 })
+  @ApiProperty({ required: false, minimum: 1, maximum: 100, default: 50 })
   @Type(() => Number)
   @IsInt()
   @Min(1)
   @Max(100)
-  @IsOptional()
-  limit?: number = 20;
+  limit: number = 50;
 }
 
 export class PaginatedResponseDto<T> {
@@ -24,9 +22,8 @@ export class PaginatedResponseDto<T> {
   data: T[];
 
   @ApiProperty()
-  meta: {
+  readonly meta: {
     total: number;
-    page: number;
-    lastPage: number;
+    offset: number;
   };
 }

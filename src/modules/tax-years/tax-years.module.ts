@@ -7,4 +7,5 @@ import { TaxYearsService } from './tax-years.service';
   providers: [TaxYearsService],
   exports: [TaxYearsService],
 })
-export class TaxYearsModule {}
+export class TaxYearsModule {
+}

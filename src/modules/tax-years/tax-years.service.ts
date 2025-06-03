@@ -5,14 +5,17 @@ import { TaxYearResponse } from '../../types/tax-year.type';
 
 @Injectable()
 export class TaxYearsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {
+  }
 
   async findAll(query: PaginationQueryDto) {
+    const { limit, offset } = query;
+
     const [total, taxYears] = await Promise.all([
       this.prisma.taxYear.count(),
       this.prisma.taxYear.findMany({
-        take: query.limit,
-        skip: (query.page - 1) * query.limit,
+        take: limit,
+        skip: offset,
         orderBy: { startDate: 'desc' },
       }),
     ]);
@@ -21,8 +24,7 @@ export class TaxYearsService {
       data: taxYears,
       meta: {
         total,
-        page: query.page,
-        lastPage: Math.ceil(total / query.limit),
+        offset,
       },
     };
   }

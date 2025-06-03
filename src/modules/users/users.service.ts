@@ -3,32 +3,30 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { StatsService } from '../../services/stats.service';
 import { PaginationQueryDto } from '../../dtos/pagination.dto';
 import type { UserResponse } from '../../types/user.type';
-import type {
-  UserStatsOptions,
-  UserStatsResponse,
-} from '../../types/user-stats.type';
+import type { UserStatsOptions, UserStatsResponse } from '../../types/user-stats.type';
 
 @Injectable()
 export class UsersService {
   constructor(
-    private prisma: PrismaService,
-    private statsService: StatsService,
-  ) {}
+    private readonly prisma: PrismaService,
+    private readonly statsService: StatsService,
+  ) {
+  }
 
   async findAll(query: PaginationQueryDto) {
+    const { limit, offset } = query;
+
     const [total, users] = await Promise.all([
       this.prisma.user.count(),
       this.prisma.user.findMany({
-        take: query.limit,
-        skip: (query.page - 1) * query.limit,
+        take: limit,
+        skip: offset,
         orderBy: { createdAt: 'desc' },
         select: {
           id: true,
           name: true,
           email: true,
           type: true,
-          provider: true,
-          providerAccountId: true,
           createdAt: true,
           updatedAt: true,
         },
@@ -39,8 +37,7 @@ export class UsersService {
       data: users,
       meta: {
         total,
-        page: query.page,
-        lastPage: Math.ceil(total / query.limit),
+        offset,
       },
     };
   }

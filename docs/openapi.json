@@ -29,12 +29,12 @@
         "operationId": "UsersController_findAll",
         "parameters": [
           {
-            "name": "page",
+            "name": "offset",
             "required": false,
             "in": "query",
             "schema": {
-              "minimum": 1,
-              "default": 1,
+              "minimum": 0,
+              "default": 0,
               "type": "number"
             }
           },
@@ -45,7 +45,7 @@
             "schema": {
               "minimum": 1,
               "maximum": 100,
-              "default": 20,
+              "default": 50,
               "type": "number"
             }
           }
@@ -181,12 +181,12 @@
             }
           },
           {
-            "name": "page",
+            "name": "offset",
             "required": false,
             "in": "query",
             "schema": {
-              "minimum": 1,
-              "default": 1,
+              "minimum": 0,
+              "default": 0,
               "type": "number"
             }
           },
@@ -197,7 +197,7 @@
             "schema": {
               "minimum": 1,
               "maximum": 100,
-              "default": 20,
+              "default": 50,
               "type": "number"
             }
           }
@@ -349,12 +349,12 @@
             }
           },
           {
-            "name": "page",
+            "name": "offset",
             "required": false,
             "in": "query",
             "schema": {
-              "minimum": 1,
-              "default": 1,
+              "minimum": 0,
+              "default": 0,
               "type": "number"
             }
           },
@@ -365,7 +365,7 @@
             "schema": {
               "minimum": 1,
               "maximum": 100,
-              "default": 20,
+              "default": 50,
               "type": "number"
             }
           },
@@ -443,12 +443,12 @@
         "operationId": "TaxYearsController_findAll",
         "parameters": [
           {
-            "name": "page",
+            "name": "offset",
             "required": false,
             "in": "query",
             "schema": {
-              "minimum": 1,
-              "default": 1,
+              "minimum": 0,
+              "default": 0,
               "type": "number"
             }
           },
@@ -459,7 +459,7 @@
             "schema": {
               "minimum": 1,
               "maximum": 100,
-              "default": 20,
+              "default": 50,
               "type": "number"
             }
           }
@@ -586,17 +586,13 @@
               "total": {
                 "type": "number"
               },
-              "page": {
-                "type": "number"
-              },
-              "lastPage": {
+              "offset": {
                 "type": "number"
               }
             },
             "required": [
               "total",
-              "page",
-              "lastPage"
+              "offset"
             ]
           }
         },

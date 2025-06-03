@@ -8,7 +8,8 @@ import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos/pagination.
 @ApiTags('Hobbies')
 @Controller('users/:userId/hobbies')
 export class HobbiesController {
-  constructor(private readonly hobbiesService: HobbiesService) {}
+  constructor(private readonly hobbiesService: HobbiesService) {
+  }
 
   @Get()
   @ApiOperation({ summary: 'Get all hobbies for a user' })

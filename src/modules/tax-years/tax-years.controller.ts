@@ -7,11 +7,12 @@ import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos/pagination.
 @ApiTags('Tax Years')
 @Controller('tax-years')
 export class TaxYearsController {
-  constructor(private readonly taxYearsService: TaxYearsService) {}
+  constructor(private readonly taxYearsService: TaxYearsService) {
+  }
 
   @Get()
   @ApiOperation({ summary: 'Get all tax years' })
-  @ApiResponse({ status: 200, type: new PaginatedResponseDto<TaxYearDto>() })
+  @ApiResponse({ status: 200, type: () => new PaginatedResponseDto<TaxYearDto>() })
   async findAll(@Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto) {
     return this.taxYearsService.findAll(query);
   }

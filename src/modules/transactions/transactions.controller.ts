@@ -7,11 +7,12 @@ import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos/pagination.
 @ApiTags('Transactions')
 @Controller('users/:userId/transactions')
 export class TransactionsController {
-  constructor(private readonly transactionsService: TransactionsService) {}
+  constructor(private readonly transactionsService: TransactionsService) {
+  }
 
   @Get()
   @ApiOperation({ summary: 'Get all transactions for a user' })
-  @ApiResponse({ status: 200, type: new PaginatedResponseDto<TransactionDto>() })
+  @ApiResponse({ status: 200, type: () => new PaginatedResponseDto<TransactionDto>() })
   @ApiQuery({ name: 'hobbyId', required: false })
   async findAll(
     @Param('userId') userId: string,

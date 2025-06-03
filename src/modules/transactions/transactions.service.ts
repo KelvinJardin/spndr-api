@@ -5,13 +5,16 @@ import { TransactionResponse } from '../../types/transaction.type';
 
 @Injectable()
 export class TransactionsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) {
+  }
 
   async findAll(
     userId: string,
     query: PaginationQueryDto,
     hobbyId?: string,
   ) {
+    const { limit, offset } = query;
+
     const where = {
       userId,
       ...(hobbyId ? { hobbyId } : {}),
@@ -21,8 +24,8 @@ export class TransactionsService {
       this.prisma.transaction.count({ where }),
       this.prisma.transaction.findMany({
         where,
-        take: query.limit,
-        skip: (query.page - 1) * query.limit,
+        take: limit,
+        skip: offset,
         orderBy: { date: 'desc' },
       }),
     ]);
@@ -31,8 +34,7 @@ export class TransactionsService {
       data: transactions,
       meta: {
         total,
-        page: query.page,
-        lastPage: Math.ceil(total / query.limit),
+        offset: query.offset,
       },
     };
   }

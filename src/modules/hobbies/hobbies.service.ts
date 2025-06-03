@@ -1,29 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StatsService } from '../../services/stats.service';
-import { PaginationQueryDto } from '../../dtos/pagination.dto';
+import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos/pagination.dto';
 import type { HobbyResponse } from '../../types/hobby.type';
-import type {
-  HobbyStatsOptions,
-  HobbyStatsResponse,
-} from '../../types/hobby-stats.type';
+import type { HobbyStatsOptions, HobbyStatsResponse } from '../../types/hobby-stats.type';
 
 @Injectable()
 export class HobbiesService {
   constructor(
-    private prisma: PrismaService,
-    private statsService: StatsService,
-  ) {}
+    private readonly prisma: PrismaService,
+    private readonly statsService: StatsService,
+  ) {
+  }
 
-  async findAll(userId: string, query: PaginationQueryDto) {
+  async findAll(userId: string, query: PaginationQueryDto): Promise<PaginatedResponseDto<HobbyResponse>> {
+    const { limit, offset } = query;
+
     const [total, hobbies] = await Promise.all([
       this.prisma.hobby.count({
         where: { userId },
       }),
       this.prisma.hobby.findMany({
         where: { userId },
-        take: query.limit,
-        skip: (query.page - 1) * query.limit,
+        take: limit,
+        skip: offset,
         orderBy: { createdAt: 'desc' },
         include: {
           _count: {
@@ -42,8 +42,7 @@ export class HobbiesService {
       })),
       meta: {
         total,
-        page: query.page,
-        lastPage: Math.ceil(total / query.limit),
+        offset,
       },
     };
   }
