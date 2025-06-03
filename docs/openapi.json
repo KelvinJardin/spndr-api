@@ -586,7 +586,7 @@
   },
   "info": {
     "title": "spndr-api",
-    "description": "API for Spndr, a platform for managing and tracking financial flows of multiple income streams.",
+    "description": "",
     "version": "0.0.1",
     "contact": {}
   },
