@@ -18,7 +18,9 @@ export class HobbiesService {
 
     return hobbies.map(hobby => ({
       ...hobby,
-      transactionCount: hobby._count.transactions
+      transactions: {
+        count: hobby._count.transactions
+      }
     }));
   }
 
@@ -39,7 +41,9 @@ export class HobbiesService {
 
     return {
       ...hobby,
-      transactionCount: hobby._count.transactions
+      transactions: {
+        count: hobby._count.transactions
+      }
     };
   }
 }
