@@ -1,15 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { PaginationQueryDto } from '../../dtos/pagination.dto';
 import { TaxYearResponse } from '../../types/tax-year.type';
 
 @Injectable()
 export class TaxYearsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(): Promise<TaxYearResponse[]> {
-    return this.prisma.taxYear.findMany({
-      orderBy: { startDate: 'desc' },
-    });
+  async findAll(query: PaginationQueryDto) {
+    const [total, taxYears] = await Promise.all([
+      this.prisma.taxYear.count(),
+      this.prisma.taxYear.findMany({
+        take: query.limit,
+        skip: (query.page - 1) * query.limit,
+        orderBy: { startDate: 'desc' },
+      }),
+    ]);
+
+    return {
+      data: taxYears,
+      meta: {
+        total,
+        page: query.page,
+        lastPage: Math.ceil(total / query.limit),
+      },
+    };
   }
 
   async findOne(id: string): Promise<TaxYearResponse | null> {

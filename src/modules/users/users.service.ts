@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StatsService } from '../../services/stats.service';
+import { PaginationQueryDto } from '../../dtos/pagination.dto';
 import type { UserResponse } from '../../types/user.type';
 import type {
   UserStatsOptions,
@@ -14,8 +15,35 @@ export class UsersService {
     private statsService: StatsService,
   ) {}
 
-  async findAll(): Promise<UserResponse[]> {
-    return this.prisma.user.findMany({
+  async findAll(query: PaginationQueryDto) {
+    const [total, users] = await Promise.all([
+      this.prisma.user.count(),
+      this.prisma.user.findMany({
+        take: query.limit,
+        skip: (query.page - 1) * query.limit,
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          type: true,
+          provider: true,
+          providerAccountId: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      }),
+    ]);
+
+    return {
+      data: users,
+      meta: {
+        total,
+        page: query.page,
+        lastPage: Math.ceil(total / query.limit),
+      },
+    };
+  }
       select: {
         id: true,
         name: true,

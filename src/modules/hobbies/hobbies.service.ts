@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StatsService } from '../../services/stats.service';
+import { PaginationQueryDto } from '../../dtos/pagination.dto';
 import type { HobbyResponse } from '../../types/hobby.type';
 import type {
   HobbyStatsOptions,
@@ -14,22 +15,37 @@ export class HobbiesService {
     private statsService: StatsService,
   ) {}
 
-  async findAll(userId: string): Promise<HobbyResponse[]> {
-    const hobbies = await this.prisma.hobby.findMany({
-      where: { userId },
-      include: {
-        _count: {
-          select: { transactions: true },
+  async findAll(userId: string, query: PaginationQueryDto) {
+    const [total, hobbies] = await Promise.all([
+      this.prisma.hobby.count({
+        where: { userId },
+      }),
+      this.prisma.hobby.findMany({
+        where: { userId },
+        take: query.limit,
+        skip: (query.page - 1) * query.limit,
+        orderBy: { createdAt: 'desc' },
+        include: {
+          _count: {
+            select: { transactions: true },
+          },
         },
-      },
-    });
+      }),
+    ]);
 
-    return hobbies.map((hobby) => ({
-      ...hobby,
-      transactions: {
-        count: hobby._count.transactions,
+    return {
+      data: hobbies.map(hobby => ({
+        ...hobby,
+        transactions: {
+          count: hobby._count.transactions,
+        },
+      })),
+      meta: {
+        total,
+        page: query.page,
+        lastPage: Math.ceil(total / query.limit),
       },
-    }));
+    };
   }
 
   async findOne(userId: string, id: string): Promise<HobbyResponse | null> {

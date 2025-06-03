@@ -4,11 +4,12 @@ import {
   NotFoundException,
   Param,
   Query,
-} from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HobbiesService } from './hobbies.service';
 import { HobbyDto } from '../../dtos/hobby.dto';
 import { HobbyStatsDto } from '../../dtos/hobby-stats.dto';
+import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos/pagination.dto';
 
 @ApiTags('Hobbies')
 @Controller('users/:userId/hobbies')
@@ -17,9 +18,12 @@ export class HobbiesController {
 
   @Get()
   @ApiOperation({ summary: 'Get all hobbies for a user' })
-  @ApiResponse({ status: 200, type: [HobbyDto] })
-  async findAll(@Param('userId') userId: string) {
-    return this.hobbiesService.findAll(userId);
+  @ApiResponse({ status: 200, type: new PaginatedResponseDto<HobbyDto>() })
+  async findAll(
+    @Param('userId') userId: string,
+    @Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto,
+  ) {
+    return this.hobbiesService.findAll(userId, query);
   }
 
   @Get(':id')

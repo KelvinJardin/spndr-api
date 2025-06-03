@@ -4,11 +4,12 @@ import {
   NotFoundException,
   Param,
   Query,
-} from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UserDto } from '../../dtos/user.dto';
 import { UserStatsDto } from '../../dtos/user-stats.dto';
+import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos/pagination.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -17,9 +18,9 @@ export class UsersController {
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
-  @ApiResponse({ status: 200, type: [UserDto] })
-  async findAll() {
-    return this.usersService.findAll();
+  @ApiResponse({ status: 200, type: new PaginatedResponseDto<UserDto>() })
+  async findAll(@Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto) {
+    return this.usersService.findAll(query);
   }
 
   @Get(':id')
