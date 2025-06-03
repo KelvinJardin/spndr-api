@@ -1,0 +1,16 @@
+meta {
+  name: Get tax year report for a user
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/tax-years/:year/tax_report/:userId
+  body: none
+  auth: none
+}
+
+params:path {
+  year: 
+  userId: 
+}
