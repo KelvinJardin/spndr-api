@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { Decimal } from '@prisma/client/runtime/library';
 import { HobbyResponse } from '../../types/hobby.type';
 import { HobbyStatsOptions, HobbyStatsResponse } from '../../types/hobby-stats.type';
 import { TransactionType } from '@prisma/client';
@@ -105,7 +106,7 @@ export class HobbiesService {
           month: monthStart,
           income,
           expenses,
-          net: income.minus(expenses),
+          net: new Decimal(income).minus(new Decimal(expenses)),
         });
       }
 
@@ -129,7 +130,7 @@ export class HobbiesService {
       response.averages = {
         monthlyIncome,
         monthlyExpenses,
-        monthlyNet: monthlyIncome.minus(monthlyExpenses),
+        monthlyNet: new Decimal(monthlyIncome).minus(new Decimal(monthlyExpenses)),
       };
     }
 

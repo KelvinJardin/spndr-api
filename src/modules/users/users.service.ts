@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service'; 
+import { Decimal } from '@prisma/client/runtime/library';
 import { UserResponse } from '../../types/user.type';
 import { UserStatsOptions, UserStatsResponse } from '../../types/user-stats.type';
 import { TransactionType } from '@prisma/client';
@@ -106,7 +107,7 @@ export class UsersService {
           month: monthStart,
           income,
           expenses,
-          net: income.minus(expenses),
+          net: new Decimal(income).minus(new Decimal(expenses)),
         });
       }
 
@@ -131,7 +132,7 @@ export class UsersService {
       response.averages = {
         monthlyIncome,
         monthlyExpenses,
-        monthlyNet: monthlyIncome.minus(monthlyExpenses),
+        monthlyNet: new Decimal(monthlyIncome).minus(new Decimal(monthlyExpenses)),
       };
     }
 

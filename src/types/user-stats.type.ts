@@ -9,25 +9,25 @@ export type UserStatsOptions = {
 
 export type MonthlyStats = {
   month: Date;
-  income: Decimal;
-  expenses: Decimal;
-  net: Decimal;
+  income: Decimal | number;
+  expenses: Decimal | number;
+  net: Decimal | number;
 };
 
 export type UserStatsResponse = {
   monthlyStats?: MonthlyStats[];
   averages?: {
-    monthlyIncome: Decimal;
-    monthlyExpenses: Decimal;
-    monthlyNet: Decimal;
+    monthlyIncome: Decimal | number;
+    monthlyExpenses: Decimal | number;
+    monthlyNet: Decimal | number;
   };
   peaks?: {
-    highestIncome: {
+    highestIncome?: {
       amount: Decimal;
       date: Date;
       description: string;
     };
-    highestExpense: {
+    highestExpense?: {
       amount: Decimal;
       date: Date;
       description: string;
