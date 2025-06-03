@@ -76,7 +76,7 @@ export class UsersService {
         },
       });
 
-      const monthlyStats = [];
+      const monthlyStats: MonthlyStats[] = [];
       for (let i = 0; i < months; i++) {
         const monthStart = new Date();
         monthStart.setMonth(monthStart.getMonth() - i);

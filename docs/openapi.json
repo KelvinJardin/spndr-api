@@ -83,6 +83,72 @@
         ]
       }
     },
+    "/users/{id}/stats": {
+      "get": {
+        "operationId": "UsersController_getStats",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "months",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "includeMonthlyStats",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeAverages",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includePeaks",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserStatsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "summary": "Get user transaction statistics",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
     "/users/{userId}/hobbies": {
       "get": {
         "operationId": "HobbiesController_findAll",
@@ -154,6 +220,80 @@
           }
         },
         "summary": "Get hobby by ID",
+        "tags": [
+          "Hobbies"
+        ]
+      }
+    },
+    "/users/{userId}/hobbies/{id}/stats": {
+      "get": {
+        "operationId": "HobbiesController_getStats",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "months",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "includeMonthlyStats",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeAverages",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includePeaks",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HobbyStatsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Hobby not found"
+          }
+        },
+        "summary": "Get hobby transaction statistics",
         "tags": [
           "Hobbies"
         ]
@@ -406,6 +546,109 @@
           "updatedAt"
         ]
       },
+      "MonthlyStatsDto": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "income": {
+            "type": "string",
+            "example": "1250.00"
+          },
+          "expenses": {
+            "type": "string",
+            "example": "450.00"
+          },
+          "net": {
+            "type": "string",
+            "example": "800.00"
+          }
+        },
+        "required": [
+          "month",
+          "income",
+          "expenses",
+          "net"
+        ]
+      },
+      "AveragesDto": {
+        "type": "object",
+        "properties": {
+          "monthlyIncome": {
+            "type": "string",
+            "example": "1500.00"
+          },
+          "monthlyExpenses": {
+            "type": "string",
+            "example": "500.00"
+          },
+          "monthlyNet": {
+            "type": "string",
+            "example": "1000.00"
+          }
+        },
+        "required": [
+          "monthlyIncome",
+          "monthlyExpenses",
+          "monthlyNet"
+        ]
+      },
+      "PeakTransactionDto": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string",
+            "example": "2500.00"
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "example": "Website Development Project"
+          }
+        },
+        "required": [
+          "amount",
+          "date",
+          "description"
+        ]
+      },
+      "PeaksDto": {
+        "type": "object",
+        "properties": {
+          "highestIncome": {
+            "$ref": "#/components/schemas/PeakTransactionDto"
+          },
+          "highestExpense": {
+            "$ref": "#/components/schemas/PeakTransactionDto"
+          }
+        },
+        "required": [
+          "highestIncome",
+          "highestExpense"
+        ]
+      },
+      "UserStatsDto": {
+        "type": "object",
+        "properties": {
+          "monthlyStats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthlyStatsDto"
+            }
+          },
+          "averages": {
+            "$ref": "#/components/schemas/AveragesDto"
+          },
+          "peaks": {
+            "$ref": "#/components/schemas/PeaksDto"
+          }
+        }
+      },
       "HobbyDto": {
         "type": "object",
         "properties": {
@@ -459,6 +702,23 @@
           "updatedAt",
           "transactions"
         ]
+      },
+      "HobbyStatsDto": {
+        "type": "object",
+        "properties": {
+          "monthlyStats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthlyStatsDto"
+            }
+          },
+          "averages": {
+            "$ref": "#/components/schemas/AveragesDto"
+          },
+          "peaks": {
+            "$ref": "#/components/schemas/PeaksDto"
+          }
+        }
       },
       "TransactionDto": {
         "type": "object",
