@@ -1,7 +1,8 @@
 import { Controller, Get, Param, NotFoundException } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
 import { HobbiesService } from './hobbies.service';
 import { HobbyDto } from '../../dtos/hobby.dto';
+import { HobbyStatsDto } from '../../dtos/hobby-stats.dto';
 
 @ApiTags('Hobbies')
 @Controller('users/:userId/hobbies')
@@ -25,5 +26,34 @@ export class HobbiesController {
       throw new NotFoundException(`Hobby with ID ${id} not found`);
     }
     return hobby;
+  }
+
+  @Get(':id/stats')
+  @ApiOperation({ summary: 'Get hobby transaction statistics' })
+  @ApiResponse({ status: 200, type: HobbyStatsDto })
+  @ApiResponse({ status: 404, description: 'Hobby not found' })
+  @ApiQuery({ name: 'months', required: false, type: Number })
+  @ApiQuery({ name: 'includeMonthlyStats', required: false, type: Boolean })
+  @ApiQuery({ name: 'includeAverages', required: false, type: Boolean })
+  @ApiQuery({ name: 'includePeaks', required: false, type: Boolean })
+  async getStats(
+    @Param('userId') userId: string,
+    @Param('id') id: string,
+    @Query('months') months?: number,
+    @Query('includeMonthlyStats') includeMonthlyStats?: boolean,
+    @Query('includeAverages') includeAverages?: boolean,
+    @Query('includePeaks') includePeaks?: boolean,
+  ) {
+    const hobby = await this.hobbiesService.findOne(userId, id);
+    if (!hobby) {
+      throw new NotFoundException(`Hobby with ID ${id} not found`);
+    }
+
+    return this.hobbiesService.getHobbyStats(userId, id, {
+      months: months ? Number(months) : undefined,
+      includeMonthlyStats,
+      includeAverages,
+      includePeaks,
+    });
   }
 }
