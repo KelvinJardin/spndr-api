@@ -6,3 +6,4 @@ export * from './tax-year.dto';
 export * from './transaction.dto';
 export * from './user.dto';
 export * from './user-stats.dto';
+export * from './tax-year-stats.dto';
