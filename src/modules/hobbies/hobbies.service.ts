@@ -7,17 +7,39 @@ export class HobbiesService {
   constructor(private prisma: PrismaService) {}
 
   async findAll(userId: string): Promise<HobbyResponse[]> {
-    return this.prisma.hobby.findMany({
+    const hobbies = await this.prisma.hobby.findMany({
       where: { userId },
+      include: {
+        _count: {
+          select: { transactions: true }
+        }
+      }
     });
+
+    return hobbies.map(hobby => ({
+      ...hobby,
+      transactionCount: hobby._count.transactions
+    }));
   }
 
   async findOne(userId: string, id: string): Promise<HobbyResponse | null> {
-    return this.prisma.hobby.findFirst({
+    const hobby = await this.prisma.hobby.findFirst({
       where: {
         id,
         userId,
       },
+      include: {
+        _count: {
+          select: { transactions: true }
+        }
+      }
     });
+
+    if (!hobby) return null;
+
+    return {
+      ...hobby,
+      transactionCount: hobby._count.transactions
+    };
   }
 }
