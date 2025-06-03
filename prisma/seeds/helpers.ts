@@ -1,5 +1,5 @@
 import { Prisma, TransactionType } from '@prisma/client';
-import { addMonths, eachMonthOfInterval } from 'date-fns';
+import { eachMonthOfInterval } from 'date-fns';
 
 export function generateRandomAmount(min: number, max: number): number {
   return Number((Math.random() * (max - min) + min).toFixed(2));

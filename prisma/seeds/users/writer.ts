@@ -1,4 +1,4 @@
-import { PrismaClient, TransactionType } from '@prisma/client';
+import { Prisma, PrismaClient, TransactionType } from '@prisma/client';
 import { subYears } from 'date-fns';
 import { generateTransactionsForDateRange } from '../helpers';
 
