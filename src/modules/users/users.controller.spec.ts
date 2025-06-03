@@ -2,7 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
-import { UserResponse } from '../../types/user.type';
+import type { UserResponse } from '../../types/user.type';
+import type { UserStatsResponse } from '../../types/user-stats.type';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -19,6 +20,27 @@ describe('UsersController', () => {
     updatedAt: new Date(),
   };
 
+  const mockStats: UserStatsResponse = {
+    monthlyStats: [],
+    averages: {
+      monthlyIncome: 1500,
+      monthlyExpenses: 500,
+      monthlyNet: 1000,
+    },
+    peaks: {
+      highestIncome: {
+        amount: 2500,
+        date: new Date(),
+        description: 'Test Income',
+      },
+      highestExpense: {
+        amount: 1000,
+        date: new Date(),
+        description: 'Test Expense',
+      },
+    },
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
@@ -31,6 +53,7 @@ describe('UsersController', () => {
               id === mockUser.id
                 ? Promise.resolve(mockUser)
                 : Promise.resolve(null),
+            getUserStats: () => Promise.resolve(mockStats),
           },
         },
       ],
@@ -63,6 +86,19 @@ describe('UsersController', () => {
       await expect(controller.findOne('non-existent')).rejects.toThrow(
         NotFoundException,
       );
+    });
+  });
+
+  describe('getStats', () => {
+    it('should return user stats', async () => {
+      const result = await controller.getStats(mockUser.id, 12, true, true, true);
+      expect(result).toEqual(mockStats);
+    });
+
+    it('should throw NotFoundException for non-existent user', async () => {
+      await expect(
+        controller.getStats('non-existent', 12, true, true, true),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });
