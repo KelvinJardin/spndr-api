@@ -79,7 +79,7 @@ export async function seedWriter(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 149.99,
+      amount: -149.99,
       date: new Date('2024-05-05'),
       description: 'Writing Software Subscription',
       categoryId: expenseCategories.find(c => c.name === 'Software Subscriptions')!.id,
@@ -126,7 +126,7 @@ export async function seedWriter(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 399.99,
+      amount: -399.99,
       date: new Date('2022-05-20'),
       description: 'Writing Course',
       categoryId: expenseCategories.find(c => c.name === 'Professional Development')!.id,

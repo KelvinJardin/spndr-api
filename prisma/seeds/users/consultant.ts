@@ -79,7 +79,7 @@ export async function seedConsultant(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 299.99,
+      amount: -299.99,
       date: new Date('2024-05-15'),
       description: 'Professional Association Membership',
       categoryId: expenseCategories.find(c => c.name === 'Professional Development')!.id,
@@ -126,7 +126,7 @@ export async function seedConsultant(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 1500.00,
+      amount: -1500.00,
       date: new Date('2022-05-20'),
       description: 'Industry Conference Registration',
       categoryId: expenseCategories.find(c => c.name === 'Professional Development')!.id,

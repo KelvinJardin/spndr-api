@@ -79,7 +79,7 @@ export async function seedDeveloper(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 49.99,
+      amount: -49.99,
       date: new Date('2024-05-20'),
       description: 'IDE Subscription',
       categoryId: expenseCategories.find((c) => c.name === 'Software Subscriptions')!
@@ -103,7 +103,7 @@ export async function seedDeveloper(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 1200.0,
+      amount: -1200.0,
       date: new Date('2023-07-01'),
       description: 'New Development Laptop',
       categoryId: expenseCategories.find((c) => c.name === 'Equipment')!.id,
@@ -137,7 +137,7 @@ export async function seedDeveloper(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 299.99,
+      amount: -299.99,
       date: new Date('2022-06-15'),
       description: 'Development courses subscription',
       categoryId: expenseCategories.find(

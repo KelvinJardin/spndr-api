@@ -79,7 +79,7 @@ export async function seedArtist(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 249.99,
+      amount: -249.99,
       date: new Date('2024-05-10'),
       description: 'Digital Art Software Subscription',
       categoryId: expenseCategories.find(c => c.name === 'Software Subscriptions')!.id,
@@ -126,7 +126,7 @@ export async function seedArtist(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 899.99,
+      amount: -899.99,
       date: new Date('2022-05-15'),
       description: 'Drawing Tablet',
       categoryId: expenseCategories.find(c => c.name === 'Equipment')!.id,

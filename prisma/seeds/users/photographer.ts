@@ -79,7 +79,7 @@ export async function seedPhotographer(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 799.99,
+      amount: -799.99,
       date: new Date('2024-05-05'),
       description: 'New Camera Lens',
       categoryId: expenseCategories.find(c => c.name === 'Equipment')!.id,
@@ -126,7 +126,7 @@ export async function seedPhotographer(prisma: PrismaClient) {
     },
     {
       type: TransactionType.EXPENSE,
-      amount: 1200.00,
+      amount: -1200.00,
       date: new Date('2022-05-15'),
       description: 'Photography Workshop Registration',
       categoryId: expenseCategories.find(c => c.name === 'Professional Development')!.id,
