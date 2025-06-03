@@ -437,6 +437,17 @@
           "updatedAt": {
             "format": "date-time",
             "type": "string"
+          },
+          "transactions": {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "count"
+            ]
           }
         },
         "required": [
@@ -445,7 +456,8 @@
           "isActive",
           "userId",
           "createdAt",
-          "updatedAt"
+          "updatedAt",
+          "transactions"
         ]
       },
       "TransactionDto": {

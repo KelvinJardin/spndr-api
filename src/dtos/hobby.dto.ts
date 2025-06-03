@@ -24,7 +24,7 @@ export class HobbyDto {
 
   @ApiProperty({
     example: { count: 5 },
-    description: 'Transaction information for this hobby'
+    description: 'Transaction information for this hobby',
   })
   transactions: {
     count: number;

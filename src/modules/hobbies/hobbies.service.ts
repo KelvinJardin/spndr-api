@@ -11,16 +11,16 @@ export class HobbiesService {
       where: { userId },
       include: {
         _count: {
-          select: { transactions: true }
-        }
-      }
+          select: { transactions: true },
+        },
+      },
     });
 
-    return hobbies.map(hobby => ({
+    return hobbies.map((hobby) => ({
       ...hobby,
       transactions: {
-        count: hobby._count.transactions
-      }
+        count: hobby._count.transactions,
+      },
     }));
   }
 
@@ -32,9 +32,9 @@ export class HobbiesService {
       },
       include: {
         _count: {
-          select: { transactions: true }
-        }
-      }
+          select: { transactions: true },
+        },
+      },
     });
 
     if (!hobby) return null;
@@ -42,8 +42,8 @@ export class HobbiesService {
     return {
       ...hobby,
       transactions: {
-        count: hobby._count.transactions
-      }
+        count: hobby._count.transactions,
+      },
     };
   }
 }
