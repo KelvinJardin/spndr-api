@@ -1,5 +1,5 @@
-import { Transaction, TransactionType } from '@prisma/client';
+import { Transaction, TransactionType, Sa103fBox } from '@prisma/client';
 
 export type TransactionResponse = Transaction;
 
-export { TransactionType };
+export { TransactionType, Sa103fBox };

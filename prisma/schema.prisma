@@ -74,6 +74,24 @@ enum TransactionType {
   EXPENSE
 }
 
+enum Sa103fBox {
+  BOX_8    // Turnover
+  BOX_9    // Other business income
+  BOX_17   // Costs of goods bought for resale/goods used
+  BOX_18   // Construction industry subcontractor costs
+  BOX_19   // Other direct costs
+  BOX_20   // Car, van and travel expenses
+  BOX_21   // Rent, rates, power and insurance costs
+  BOX_22   // Repairs and maintenance of property and equipment
+  BOX_23   // Accountancy, legal and other professional fees
+  BOX_24   // Interest and bank charges
+  BOX_25   // Phone, fax, stationery and other office costs
+  BOX_26   // Other business expenses
+  BOX_27   // Total expenses
+  BOX_30   // Annual investment allowance
+  BOX_31   // Capital allowances
+}
+
 model Transaction {
   id          String          @id @default(cuid())
   type        TransactionType
@@ -108,9 +126,10 @@ model TransactionCategory {
   type        TransactionType
   transactions Transaction[]
 
-  // UK specific tax category information
-  allowable    Boolean @default(false) // Whether expenses in this category are tax-deductible
-  hmrcCategory String? // Corresponding HMRC category for tax returns
+  // SA103F specific fields
+  sa103fBox   Sa103fBox // Corresponding box on the SA103F form
+  allowable   Boolean @default(true) // Whether expenses in this category are tax-deductible
+  notes       String? // Additional notes about tax treatment
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
