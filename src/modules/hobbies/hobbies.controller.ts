@@ -12,7 +12,7 @@ export class HobbiesController {
 
   @Get()
   @ApiOperation({ summary: 'Get all hobbies for a user' })
-  @ApiResponse({ status: 200, type: new PaginatedResponseDto<HobbyDto>() })
+  @ApiResponse({ status: 200, type: () => new PaginatedResponseDto<HobbyDto>() })
   async findAll(
     @Param('userId') userId: string,
     @Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto,
