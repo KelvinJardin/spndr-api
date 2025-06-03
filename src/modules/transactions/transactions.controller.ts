@@ -11,7 +11,7 @@ export class TransactionsController {
 
   @Get()
   @ApiOperation({ summary: 'Get all transactions for a user' })
-  @ApiResponse({ status: 200, type: PaginatedResponseDto })
+  @ApiResponse({ status: 200, type: new PaginatedResponseDto<TransactionDto>() })
   @ApiQuery({ name: 'hobbyId', required: false })
   async findAll(
     @Param('userId') userId: string,
