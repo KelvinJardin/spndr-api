@@ -2,7 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HobbiesController } from './hobbies.controller';
 import { HobbiesService } from './hobbies.service';
 import { NotFoundException } from '@nestjs/common';
-import { HobbyResponse } from '../../types/hobby.type';
+import type { HobbyResponse } from '../../types/hobby.type';
+import type { HobbyStatsResponse } from '../../types/hobby-stats.type';
 
 describe('HobbiesController', () => {
   let controller: HobbiesController;
@@ -18,6 +19,27 @@ describe('HobbiesController', () => {
     updatedAt: new Date(),
   };
 
+  const mockStats: HobbyStatsResponse = {
+    monthlyStats: [],
+    averages: {
+      monthlyIncome: 1500,
+      monthlyExpenses: 500,
+      monthlyNet: 1000,
+    },
+    peaks: {
+      highestIncome: {
+        amount: 2500,
+        date: new Date(),
+        description: 'Test Income',
+      },
+      highestExpense: {
+        amount: 1000,
+        date: new Date(),
+        description: 'Test Expense',
+      },
+    },
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [HobbiesController],
@@ -30,6 +52,7 @@ describe('HobbiesController', () => {
               id === mockHobby.id && userId === mockHobby.userId
                 ? Promise.resolve(mockHobby)
                 : Promise.resolve(null),
+            getHobbyStats: () => Promise.resolve(mockStats),
           },
         },
       ],
@@ -64,6 +87,26 @@ describe('HobbiesController', () => {
     it('should throw NotFoundException when hobby does not exist', async () => {
       await expect(
         controller.findOne(mockHobby.userId, 'non-existent'),
+      ).rejects.toThrow(NotFoundException);
+    });
+  });
+
+  describe('getStats', () => {
+    it('should return hobby stats', async () => {
+      const result = await controller.getStats(
+        mockHobby.userId,
+        mockHobby.id,
+        12,
+        true,
+        true,
+        true,
+      );
+      expect(result).toEqual(mockStats);
+    });
+
+    it('should throw NotFoundException for non-existent hobby', async () => {
+      await expect(
+        controller.getStats('user-id', 'non-existent', 12, true, true, true),
       ).rejects.toThrow(NotFoundException);
     });
   });
