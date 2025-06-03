@@ -1,5 +1,11 @@
-import { Controller, Get, Param, Query, NotFoundException } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Query,
+} from '@nestjs/common';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HobbiesService } from './hobbies.service';
 import { HobbyDto } from '../../dtos/hobby.dto';
 import { HobbyStatsDto } from '../../dtos/hobby-stats.dto';

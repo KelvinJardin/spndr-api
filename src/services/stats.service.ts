@@ -76,8 +76,8 @@ export class StatsService {
           monthTransactions.find((t) => t.type === TransactionType.INCOME)?._sum
             .amount ?? new Decimal(0);
         const expenses =
-          monthTransactions.find((t) => t.type === TransactionType.EXPENSE)?._sum
-            .amount ?? new Decimal(0);
+          monthTransactions.find((t) => t.type === TransactionType.EXPENSE)
+            ?._sum.amount ?? new Decimal(0);
 
         monthlyStats.push({
           month: monthStart,
@@ -100,10 +100,12 @@ export class StatsService {
       });
 
       const monthlyIncome = new Decimal(
-        averages.find((a) => a.type === TransactionType.INCOME)?._avg.amount ?? 0,
+        averages.find((a) => a.type === TransactionType.INCOME)?._avg.amount ??
+          0,
       );
       const monthlyExpenses = new Decimal(
-        averages.find((a) => a.type === TransactionType.EXPENSE)?._avg.amount ?? 0,
+        averages.find((a) => a.type === TransactionType.EXPENSE)?._avg.amount ??
+          0,
       );
 
       response.averages = {

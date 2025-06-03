@@ -91,7 +91,13 @@ describe('UsersController', () => {
 
   describe('getStats', () => {
     it('should return user stats', async () => {
-      const result = await controller.getStats(mockUser.id, 12, true, true, true);
+      const result = await controller.getStats(
+        mockUser.id,
+        12,
+        true,
+        true,
+        true,
+      );
       expect(result).toEqual(mockStats);
     });
 
