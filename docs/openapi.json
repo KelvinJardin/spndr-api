@@ -997,6 +997,26 @@
             "type": "string",
             "example": "Freelance Work"
           },
+          "sa103fBox": {
+            "type": "string",
+            "enum": [
+              "BOX_8",
+              "BOX_9",
+              "BOX_17",
+              "BOX_18",
+              "BOX_19",
+              "BOX_20",
+              "BOX_21",
+              "BOX_22",
+              "BOX_23",
+              "BOX_24",
+              "BOX_25",
+              "BOX_26",
+              "BOX_27",
+              "BOX_30",
+              "BOX_31"
+            ]
+          },
           "total": {
             "example": "1500.00",
             "allOf": [
@@ -1008,13 +1028,25 @@
           "count": {
             "type": "number",
             "example": 10
+          },
+          "allowable": {
+            "type": "boolean",
+            "example": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true,
+            "example": "Additional notes about tax treatment"
           }
         },
         "required": [
           "categoryId",
           "categoryName",
+          "sa103fBox",
           "total",
-          "count"
+          "count",
+          "allowable",
+          "notes"
         ]
       },
       "TaxYearStatsDto": {
