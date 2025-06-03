@@ -1,5 +1,5 @@
 import { Prisma, TransactionType } from '@prisma/client';
-import { addMonths } from 'date-fns';
+import { addMonths, eachMonthOfInterval } from 'date-fns';
 
 export function generateRandomAmount(min: number, max: number): number {
   return Number((Math.random() * (max - min) + min).toFixed(2));
@@ -19,11 +19,11 @@ export function generateMonthlyTransactions(
   count: number = 20,
   minAmount: number = 10,
   maxAmount: number = type === TransactionType.INCOME ? 2000 : 500,
-): Prisma.TransactionCreateInput[] {
+): Prisma.TransactionCreateManyInput[] {
   const startOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
   const endOfMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0);
 
-  return Array.from({ length: count }, (): Prisma.TransactionCreateInput => ({
+  return Array.from({ length: count }, (): Prisma.TransactionCreateManyInput => ({
     type,
     amount: new Prisma.Decimal(
       type === TransactionType.EXPENSE
@@ -35,18 +35,10 @@ export function generateMonthlyTransactions(
       ? 'Project Payment'
       : 'Equipment Purchase',
     reference: `${type}-${month.getFullYear()}${(month.getMonth() + 1).toString().padStart(2, '0')}-${Math.floor(Math.random() * 1000)}`,
-    user: {
-      connect: { id: userId },
-    },
-    hobby: hobbyId ? {
-      connect: { id: hobbyId },
-    } : undefined,
-    category: {
-      connect: { id: categoryId },
-    },
-    taxYear: {
-      connect: { id: taxYearId },
-    },
+    userId,
+    hobbyId,
+    categoryId,
+    taxYearId,
   }));
 }
 
@@ -58,11 +50,11 @@ export async function generateTransactionsForDateRange(
   taxYears: { id: string; startDate: Date; endDate: Date }[],
   startDate: Date,
   endDate: Date,
-): Promise<Prisma.TransactionCreateInput[]> {
-  const transactions: Prisma.TransactionCreateInput[] = [];
-  let currentDate = startDate;
+): Promise<Prisma.TransactionCreateManyInput[]> {
+  const transactions: Prisma.TransactionCreateManyInput[] = [];
+  const months = eachMonthOfInterval({ start: startDate, end: endDate });
 
-  while (currentDate <= endDate) {
+  for (const currentDate of months) {
     const taxYear = taxYears.find(
       ty => currentDate >= ty.startDate && currentDate <= ty.endDate
     );
@@ -94,8 +86,6 @@ export async function generateTransactionsForDateRange(
         )
       );
     }
-
-    currentDate = addMonths(currentDate, 1);
   }
 
   return transactions;

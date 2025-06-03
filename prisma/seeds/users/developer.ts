@@ -68,6 +68,8 @@ export async function seedDeveloper(prisma: PrismaClient) {
   const endDate = new Date();
   const startDate = subYears(endDate, 3);
 
+  const allTransactions: Prisma.TransactionCreateManyInput[] = [];
+
   for (const hobby of createdHobbies) {
     const transactions = await generateTransactionsForDateRange(
       user.id,
@@ -78,9 +80,11 @@ export async function seedDeveloper(prisma: PrismaClient) {
       startDate,
       endDate
     );
-    
-    for (const transaction of transactions) {
-      await prisma.transaction.create({ data: transaction });
-    }
+    allTransactions.push(...transactions);
   }
+
+  // Batch create all transactions
+  await prisma.transaction.createMany({
+    data: allTransactions,
+  });
 }
