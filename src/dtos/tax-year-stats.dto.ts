@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Decimal } from '@prisma/client/runtime/library';
+import { Sa103fBox } from '@prisma/client';
 
 class CategoryStatsDto {
   @ApiProperty({ example: 'cln1234567890' })
@@ -8,11 +9,20 @@ class CategoryStatsDto {
   @ApiProperty({ example: 'Freelance Work' })
   categoryName: string;
 
+  @ApiProperty({ enum: Sa103fBox })
+  sa103fBox: Sa103fBox;
+
   @ApiProperty({ example: '1500.00' })
   total: Decimal;
 
   @ApiProperty({ example: 10 })
   count: number;
+
+  @ApiProperty({ example: true })
+  allowable: boolean;
+
+  @ApiProperty({ example: 'Additional notes about tax treatment', required: false })
+  notes?: string;
 }
 
 export class TaxYearStatsDto {

@@ -60,7 +60,16 @@ export class TaxYearsService {
       _count: true,
     });
 
-    const categories = await this.prisma.transactionCategory.findMany();
+    const categories = await this.prisma.transactionCategory.findMany({
+      select: {
+        id: true,
+        name: true,
+        type: true,
+        sa103fBox: true,
+        allowable: true,
+        notes: true,
+      }
+    });
 
     const incomeByCategory: TaxYearStatsResponse['incomeByCategory'] = [];
     const expensesByCategory: TaxYearStatsResponse['expensesByCategory'] = [];
@@ -74,6 +83,9 @@ export class TaxYearsService {
       const stats = {
         categoryId: category.id,
         categoryName: category.name,
+        sa103fBox: category.sa103fBox,
+        allowable: category.allowable,
+        notes: category.notes,
         total: transaction._sum.amount ?? new Decimal(0),
         count: transaction._count,
       };
