@@ -24,21 +24,31 @@ export function generateMonthlyTransactions(
   const endOfMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0);
   
   return Array.from({ length: count }, () => ({
-    type,
-    amount: new Prisma.Decimal(
-      type === TransactionType.EXPENSE 
-        ? -generateRandomAmount(minAmount, maxAmount)
-        : generateRandomAmount(minAmount, maxAmount)
-    ),
-    date: generateRandomDate(startOfMonth, endOfMonth),
-    description: type === TransactionType.INCOME 
-      ? 'Project Payment'
-      : 'Equipment Purchase',
-    reference: `${type}-${month.getFullYear()}${(month.getMonth() + 1).toString().padStart(2, '0')}-${Math.floor(Math.random() * 1000)}`,
-    userId,
-    hobbyId,
-    categoryId,
-    taxYearId,
+    data: {
+      type,
+      amount: new Prisma.Decimal(
+        type === TransactionType.EXPENSE 
+          ? -generateRandomAmount(minAmount, maxAmount)
+          : generateRandomAmount(minAmount, maxAmount)
+      ),
+      date: generateRandomDate(startOfMonth, endOfMonth),
+      description: type === TransactionType.INCOME 
+        ? 'Project Payment'
+        : 'Equipment Purchase',
+      reference: `${type}-${month.getFullYear()}${(month.getMonth() + 1).toString().padStart(2, '0')}-${Math.floor(Math.random() * 1000)}`,
+      user: {
+        connect: { id: userId }
+      },
+      hobby: hobbyId ? {
+        connect: { id: hobbyId }
+      } : undefined,
+      category: {
+        connect: { id: categoryId }
+      },
+      taxYear: {
+        connect: { id: taxYearId }
+      }
+    }
   }));
 }
 

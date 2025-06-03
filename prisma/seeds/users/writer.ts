@@ -69,4 +69,19 @@ export async function seedWriter(prisma: PrismaClient) {
   const endDate = new Date();
   const startDate = subYears(endDate, 3);
 
+  for (const hobby of createdHobbies) {
+    const transactions = await generateTransactionsForDateRange(
+      user.id,
+      hobby.id,
+      incomeCategory,
+      expenseCategories,
+      taxYears,
+      startDate,
+      endDate
+    );
+    
+    for (const transaction of transactions) {
+      await prisma.transaction.create(transaction);
+    }
+  }
 }

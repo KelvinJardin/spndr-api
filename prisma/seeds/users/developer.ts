@@ -80,7 +80,7 @@ export async function seedDeveloper(prisma: PrismaClient) {
     );
     
     for (const transaction of transactions) {
-      await prisma.transaction.create({ data: transaction });
+      await prisma.transaction.create(transaction);
     }
   }
 }
