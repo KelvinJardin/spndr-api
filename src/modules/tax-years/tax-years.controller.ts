@@ -46,9 +46,14 @@ export class TaxYearsController {
   @ApiResponse({ status: 404, description: 'Tax year not found' })
   async getTaxReport(
     @Param('year') year: string,
-    @Param('userId') userId: string,
+    @Param('userId') userId: string, 
   ) {
-    const taxYear = await this.taxYearsService.findByYear(parseInt(year, 10));
+    const parsedYear = parseInt(year, 10);
+    if (isNaN(parsedYear)) {
+      throw new NotFoundException('Invalid tax year format');
+    }
+    
+    const taxYear = await this.taxYearsService.findByYear(parsedYear);
     if (!taxYear) {
       throw new NotFoundException(`Tax year ${year} not found`);
     }
