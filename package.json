@@ -23,7 +23,8 @@
     "bruno:prune": "./build_scripts/generate_bruno.sh -p",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "prisma:wipe": "ts-node prisma/wipe.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

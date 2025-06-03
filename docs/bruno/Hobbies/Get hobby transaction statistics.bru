@@ -1,0 +1,23 @@
+meta {
+  name: Get hobby transaction statistics
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/users/:userId/hobbies/:id/stats
+  body: none
+  auth: none
+}
+
+params:query {
+  ~months: 
+  ~includeMonthlyStats: 
+  ~includeAverages: 
+  ~includePeaks: 
+}
+
+params:path {
+  userId: 
+  id: 
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Get user transaction statistics
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/users/:id/stats
+  body: none
+  auth: none
+}
+
+params:query {
+  ~months: 
+  ~includeMonthlyStats: 
+  ~includeAverages: 
+  ~includePeaks: 
+}
+
+params:path {
+  id: 
+}
