@@ -1,8 +1,7 @@
 import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TaxYearsService } from './tax-years.service';
-import { PaginatedResponseDto, PaginationQueryDto, TaxYearDto } from '../../dtos';
-import { TaxYearStatsDto } from '../../dtos/tax-year-stats.dto';
+import { PaginatedResponseDto, PaginationQueryDto, TaxYearDto, TaxYearStatsDto } from '../../dtos';
 
 @ApiTags('Tax Years')
 @Controller('tax-years')
@@ -41,18 +40,18 @@ export class TaxYearsController {
     return taxYear;
   }
 
-  @Get(':id/stats/:userId')
-  @ApiOperation({ summary: 'Get tax year statistics for a user' })
+  @Get(':year/tax_report/:userId')
+  @ApiOperation({ summary: 'Get tax year report for a user' })
   @ApiResponse({ status: 200, type: TaxYearStatsDto })
   @ApiResponse({ status: 404, description: 'Tax year not found' })
-  async getStats(
-    @Param('id') id: string,
+  async getTaxReport(
+    @Param('year') year: string,
     @Param('userId') userId: string,
   ) {
-    const taxYear = await this.taxYearsService.findOne(id);
+    const taxYear = await this.taxYearsService.findByYear(parseInt(year, 10));
     if (!taxYear) {
-      throw new NotFoundException(`Tax year with ID ${id} not found`);
+      throw new NotFoundException(`Tax year ${year} not found`);
     }
-    return this.taxYearsService.getTaxYearStats(id, userId);
+    return this.taxYearsService.getTaxYearStats(taxYear.id, userId);
   }
 }
