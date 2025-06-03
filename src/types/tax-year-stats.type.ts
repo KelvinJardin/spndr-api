@@ -8,7 +8,7 @@ type CategoryStats = {
   total: Decimal;
   count: number;
   allowable: boolean;
-  notes?: string;
+  notes: string | null;
 };
 
 export type TaxYearStatsResponse = {

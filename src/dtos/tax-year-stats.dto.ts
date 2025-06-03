@@ -21,8 +21,8 @@ class CategoryStatsDto {
   @ApiProperty({ example: true })
   allowable: boolean;
 
-  @ApiProperty({ example: 'Additional notes about tax treatment', required: false })
-  notes?: string;
+  @ApiProperty({ example: 'Additional notes about tax treatment', nullable: true })
+  notes: string | null;
 }
 
 export class TaxYearStatsDto {
