@@ -32,6 +32,12 @@ export class TaxYearsService {
     };
   }
 
+  async findByYear(year: number): Promise<TaxYearResponse | null> {
+    return this.prisma.taxYear.findFirst({
+      where: { startYear: year },
+    });
+  }
+
   async findOne(id: string): Promise<TaxYearResponse | null> {
     return this.prisma.taxYear.findUnique({
       where: { id },
