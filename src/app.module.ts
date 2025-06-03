@@ -6,6 +6,7 @@ import { UsersModule } from './modules/users/users.module';
 import { HobbiesModule } from './modules/hobbies/hobbies.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { TaxYearsModule } from './modules/tax-years/tax-years.module';
+import { StatsService } from './services/stats.service';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { TaxYearsModule } from './modules/tax-years/tax-years.module';
     TaxYearsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, StatsService],
 })
 export class AppModule {}

@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Decimal } from '@prisma/client/runtime/library';
-import { HobbyResponse } from '../../types/hobby.type';
-import {
-  HobbyStatsOptions,
-  HobbyStatsResponse,
-  MonthlyStats,
-} from '../../types/hobby-stats.type';
-import { TransactionType } from '@prisma/client';
+import { StatsService } from '../../services/stats.service';
+import type { HobbyResponse } from '../../types/hobby.type';
+import type { HobbyStatsOptions, HobbyStatsResponse } from '../../types/hobby-stats.type';
 
 @Injectable()
 export class HobbiesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private statsService: StatsService,
+  ) {}
 
   async findAll(userId: string): Promise<HobbyResponse[]> {
     const hobbies = await this.prisma.hobby.findMany({
@@ -59,11 +57,8 @@ export class HobbiesService {
     hobbyId: string,
     options: HobbyStatsOptions,
   ): Promise<HobbyStatsResponse> {
-    const { months = 12 } = options;
     const startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - months);
-
-    const response: HobbyStatsResponse = {};
+    startDate.setMonth(startDate.getMonth() - (options.months ?? 12));
 
     // Base query for transactions within the time period
     const baseWhere = {
@@ -74,128 +69,6 @@ export class HobbiesService {
       },
     };
 
-    if (options.includeMonthlyStats) {
-      const monthlyStats: MonthlyStats[] = [];
-
-      for (let i = 0; i < months; i++) {
-        const monthStart = new Date();
-        monthStart.setMonth(monthStart.getMonth() - i);
-        monthStart.setDate(1);
-        monthStart.setHours(0, 0, 0, 0);
-
-        const monthEnd = new Date(monthStart);
-        monthEnd.setMonth(monthEnd.getMonth() + 1);
-
-        const monthTransactions = await this.prisma.transaction.groupBy({
-          by: ['type'],
-          where: {
-            ...baseWhere,
-            date: {
-              gte: monthStart,
-              lt: monthEnd,
-            },
-          },
-          _sum: {
-            amount: true,
-          },
-        });
-
-        const income =
-          monthTransactions.find((t) => t.type === TransactionType.INCOME)?._sum
-            .amount ?? 0;
-        const expenses =
-          monthTransactions.find((t) => t.type === TransactionType.EXPENSE)
-            ?._sum.amount ?? 0;
-
-        const stats: MonthlyStats = {
-          month: monthStart,
-          income,
-          expenses,
-          net: new Decimal(income).minus(new Decimal(expenses)),
-        };
-        monthlyStats.push(stats);
-      }
-
-      response.monthlyStats = monthlyStats;
-    }
-
-    if (options.includeAverages) {
-      const averages = await this.prisma.transaction.groupBy({
-        by: ['type'],
-        where: baseWhere,
-        _avg: {
-          amount: true,
-        },
-      });
-
-      const monthlyIncome =
-        averages.find((a) => a.type === TransactionType.INCOME)?._avg.amount ??
-        0;
-      const monthlyExpenses =
-        averages.find((a) => a.type === TransactionType.EXPENSE)?._avg.amount ??
-        0;
-
-      response.averages = {
-        monthlyIncome,
-        monthlyExpenses,
-        monthlyNet: new Decimal(monthlyIncome).minus(
-          new Decimal(monthlyExpenses),
-        ),
-      };
-    }
-
-    if (options.includePeaks) {
-      const [highestIncome, highestExpense] = await Promise.all([
-        this.prisma.transaction.findFirst({
-          where: {
-            ...baseWhere,
-            type: TransactionType.INCOME,
-          },
-          orderBy: {
-            amount: 'desc',
-          },
-          select: {
-            amount: true,
-            date: true,
-            description: true,
-          },
-        }),
-        this.prisma.transaction.findFirst({
-          where: {
-            ...baseWhere,
-            type: TransactionType.EXPENSE,
-          },
-          orderBy: {
-            amount: 'desc',
-          },
-          select: {
-            amount: true,
-            date: true,
-            description: true,
-          },
-        }),
-      ]);
-
-      if (highestIncome || highestExpense) {
-        response.peaks = {
-          ...(highestIncome && {
-            highestIncome: {
-              amount: highestIncome.amount,
-              date: highestIncome.date,
-              description: highestIncome.description,
-            },
-          }),
-          ...(highestExpense && {
-            highestExpense: {
-              amount: highestExpense.amount,
-              date: highestExpense.date,
-              description: highestExpense.description,
-            },
-          }),
-        };
-      }
-    }
-
-    return response;
+    return this.statsService.getStats(baseWhere, options);
   }
 }
