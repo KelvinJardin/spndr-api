@@ -53,7 +53,7 @@ export async function seedArtist(prisma: PrismaClient) {
 
   // Get categories
   const incomeCategory = await prisma.transactionCategory.findFirstOrThrow({
-    where: { name: 'Self Employment' },
+    where: { name: 'Turnover' },
   });
   
   const expenseCategories = await prisma.transactionCategory.findMany({
