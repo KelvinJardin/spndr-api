@@ -79,9 +79,9 @@ export async function seedWriter(prisma: PrismaClient) {
       startDate,
       endDate
     );
-    
+
     for (const transaction of transactions) {
-      await prisma.transaction.create(transaction);
+      await prisma.transaction.create({ data: transaction });
     }
   }
 }

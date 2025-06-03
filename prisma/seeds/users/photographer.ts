@@ -81,7 +81,7 @@ export async function seedPhotographer(prisma: PrismaClient) {
     );
     
     for (const transaction of transactions) {
-      await prisma.transaction.create(transaction);
+      await prisma.transaction.create({ data: transaction });
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Prisma, TransactionType } from '@prisma/client';
-import { addMonths, subMonths } from 'date-fns';
+import { addMonths } from 'date-fns';
 
 export function generateRandomAmount(min: number, max: number): number {
   return Number((Math.random() * (max - min) + min).toFixed(2));
@@ -22,33 +22,31 @@ export function generateMonthlyTransactions(
 ): Prisma.TransactionCreateInput[] {
   const startOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
   const endOfMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0);
-  
-  return Array.from({ length: count }, () => ({
-    data: {
-      type,
-      amount: new Prisma.Decimal(
-        type === TransactionType.EXPENSE 
-          ? -generateRandomAmount(minAmount, maxAmount)
-          : generateRandomAmount(minAmount, maxAmount)
-      ),
-      date: generateRandomDate(startOfMonth, endOfMonth),
-      description: type === TransactionType.INCOME 
-        ? 'Project Payment'
-        : 'Equipment Purchase',
-      reference: `${type}-${month.getFullYear()}${(month.getMonth() + 1).toString().padStart(2, '0')}-${Math.floor(Math.random() * 1000)}`,
-      user: {
-        connect: { id: userId }
-      },
-      hobby: hobbyId ? {
-        connect: { id: hobbyId }
-      } : undefined,
-      category: {
-        connect: { id: categoryId }
-      },
-      taxYear: {
-        connect: { id: taxYearId }
-      }
-    }
+
+  return Array.from({ length: count }, (): Prisma.TransactionCreateInput => ({
+    type,
+    amount: new Prisma.Decimal(
+      type === TransactionType.EXPENSE
+        ? -generateRandomAmount(minAmount, maxAmount)
+        : generateRandomAmount(minAmount, maxAmount),
+    ),
+    date: generateRandomDate(startOfMonth, endOfMonth),
+    description: type === TransactionType.INCOME
+      ? 'Project Payment'
+      : 'Equipment Purchase',
+    reference: `${type}-${month.getFullYear()}${(month.getMonth() + 1).toString().padStart(2, '0')}-${Math.floor(Math.random() * 1000)}`,
+    user: {
+      connect: { id: userId },
+    },
+    hobby: hobbyId ? {
+      connect: { id: hobbyId },
+    } : undefined,
+    category: {
+      connect: { id: categoryId },
+    },
+    taxYear: {
+      connect: { id: taxYearId },
+    },
   }));
 }
 
