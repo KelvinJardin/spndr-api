@@ -541,12 +541,12 @@
         ]
       }
     },
-    "/tax-years/{id}/stats/{userId}": {
+    "/tax-years/{year}/tax_report/{userId}": {
       "get": {
-        "operationId": "TaxYearsController_getStats",
+        "operationId": "TaxYearsController_getTaxReport",
         "parameters": [
           {
-            "name": "id",
+            "name": "year",
             "required": true,
             "in": "path",
             "schema": {
@@ -577,7 +577,7 @@
             "description": "Tax year not found"
           }
         },
-        "summary": "Get tax year statistics for a user",
+        "summary": "Get tax year report for a user",
         "tags": [
           "Tax Years"
         ]
