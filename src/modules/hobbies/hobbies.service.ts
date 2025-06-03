@@ -5,6 +5,7 @@ import { HobbyResponse } from '../../types/hobby.type';
 import {
   HobbyStatsOptions,
   HobbyStatsResponse,
+  MonthlyStats,
 } from '../../types/hobby-stats.type';
 import { TransactionType } from '@prisma/client';
 

@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service'; 
+import { PrismaService } from '../../prisma/prisma.service';
 import { Decimal } from '@prisma/client/runtime/library';
 import { UserResponse } from '../../types/user.type';
-import { UserStatsOptions, UserStatsResponse } from '../../types/user-stats.type';
+import {
+  MonthlyStats,
+  UserStatsOptions,
+  UserStatsResponse,
+} from '../../types/user-stats.type';
 import { TransactionType } from '@prisma/client';
 
 @Injectable()
@@ -96,12 +100,12 @@ export class UsersService {
           },
         });
 
-        const income = monthTransactions.find(
-          (t) => t.type === TransactionType.INCOME,
-        )?._sum.amount ?? 0;
-        const expenses = monthTransactions.find(
-          (t) => t.type === TransactionType.EXPENSE,
-        )?._sum.amount ?? 0;
+        const income =
+          monthTransactions.find((t) => t.type === TransactionType.INCOME)?._sum
+            .amount ?? 0;
+        const expenses =
+          monthTransactions.find((t) => t.type === TransactionType.EXPENSE)
+            ?._sum.amount ?? 0;
 
         const stats: MonthlyStats = {
           month: monthStart,
@@ -109,6 +113,7 @@ export class UsersService {
           expenses,
           net: new Decimal(income).minus(new Decimal(expenses)),
         };
+
         monthlyStats.push(stats);
       }
 
@@ -125,7 +130,8 @@ export class UsersService {
       });
 
       const monthlyIncome =
-        averages.find((a) => a.type === TransactionType.INCOME)?._avg.amount ?? 0;
+        averages.find((a) => a.type === TransactionType.INCOME)?._avg.amount ??
+        0;
       const monthlyExpenses =
         averages.find((a) => a.type === TransactionType.EXPENSE)?._avg.amount ??
         0;
@@ -133,7 +139,9 @@ export class UsersService {
       response.averages = {
         monthlyIncome,
         monthlyExpenses,
-        monthlyNet: new Decimal(monthlyIncome).minus(new Decimal(monthlyExpenses)),
+        monthlyNet: new Decimal(monthlyIncome).minus(
+          new Decimal(monthlyExpenses),
+        ),
       };
     }
 
