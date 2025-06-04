@@ -65,18 +65,10 @@ export class TransactionsService {
     const { type, hobbyId, data } = importDto;
     const parsedTransactions = [];
 
-    // Get current tax year
-    const currentTaxYear = await this.prisma.taxYear.findFirst({
-      where: { isCurrent: true },
+    // Get all tax years
+    const taxYears = await this.prisma.taxYear.findMany({
+      orderBy: { startDate: 'desc' },
     });
-
-    if (!currentTaxYear) {
-      return {
-        imported: 0,
-        skipped: data.length,
-        errors: ['No current tax year found - cannot import transactions'],
-      };
-    }
 
     // Get all categories for mapping
     const categories = await this.prisma.transactionCategory.findMany();
@@ -92,6 +84,15 @@ export class TransactionsService {
         
         if (!date || !amount || !description) {
           throw new Error('Missing required fields');
+        }
+
+        // Find matching tax year for the transaction date
+        const taxYear = taxYears.find(
+          ty => date >= ty.startDate && date <= ty.endDate
+        );
+
+        if (!taxYear) {
+          throw new Error(`No tax year found for date ${record.Date}`);
         }
 
         // Map Intuit category to our category
@@ -110,7 +111,7 @@ export class TransactionsService {
           userId,
           hobbyId,
           categoryId: category.id,
-          taxYearId: currentTaxYear.id,
+          taxYearId: taxYear.id,
           reference: record.Receipt || undefined,
         });
       } catch (error) {
