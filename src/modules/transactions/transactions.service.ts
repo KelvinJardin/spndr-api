@@ -63,6 +63,7 @@ export class TransactionsService {
     };
 
     const { type, hobbyId, data } = importDto;
+    const parsedTransactions = [];
 
     // Get current tax year
     const currentTaxYear = await this.prisma.taxYear.findFirst({
@@ -70,12 +71,17 @@ export class TransactionsService {
     });
 
     if (!currentTaxYear) {
-      throw new Error('No current tax year found');
+      return {
+        imported: 0,
+        skipped: data.length,
+        errors: ['No current tax year found - cannot import transactions'],
+      };
     }
 
     // Get all categories for mapping
     const categories = await this.prisma.transactionCategory.findMany();
 
+    // First validate all records
     for (const [index, record] of data.entries()) {
       try {
         // Parse and validate required fields
@@ -94,27 +100,46 @@ export class TransactionsService {
           throw new Error(`Unknown category: ${record.Category}`);
         }
 
-        // Create transaction
-        await this.prisma.transaction.create({
-          data: {
-            date,
-            amount: amount.abs(),
-            type: amount.isNegative() ? TransactionType.EXPENSE : TransactionType.INCOME,
-            description,
-            notes,
-            userId,
-            hobbyId,
-            categoryId: category.id,
-            taxYearId: currentTaxYear.id,
-            reference: record.Receipt || undefined,
-          },
+        // Store validated transaction data
+        parsedTransactions.push({
+          date,
+          amount: amount.abs(),
+          type: amount.isNegative() ? TransactionType.EXPENSE : TransactionType.INCOME,
+          description,
+          notes,
+          userId,
+          hobbyId,
+          categoryId: category.id,
+          taxYearId: currentTaxYear.id,
+          reference: record.Receipt || undefined,
         });
-
-        result.imported++;
       } catch (error) {
         result.skipped++;
         result.errors.push(`Row ${index + 2}: ${error.message}`);
       }
+    }
+
+    // If any validation failed, return without importing
+    if (result.errors.length > 0) {
+      return result;
+    }
+
+    try {
+      // Import all transactions in a single transaction
+      await this.prisma.$transaction(async (tx) => {
+        for (const transactionData of parsedTransactions) {
+          await tx.transaction.create({
+            data: transactionData,
+          });
+          result.imported++;
+        }
+      });
+    } catch (error) {
+      return {
+        imported: 0,
+        skipped: data.length,
+        errors: [`Failed to import transactions: ${error.message}`],
+      };
     }
 
     return result;
