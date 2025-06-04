@@ -5,7 +5,7 @@ import { TransactionResponse } from '../../types';
 import { ImportTransactionDto, ImportType } from '../../dtos/import-transaction.dto';
 import { Decimal } from '@prisma/client/runtime/library';
 import { parseISO } from 'date-fns';
-import { TransactionType } from '@prisma/client';
+import { Prisma, TransactionType } from '@prisma/client';
 
 @Injectable()
 export class TransactionsService {
@@ -57,13 +57,12 @@ export class TransactionsService {
 
   async importCsv(userId: string, importDto: ImportTransactionDto) {
     const result = {
-      imported: 0,
-      skipped: 0,
-      errors: [] as string[],
+      imported: 0 as number,
+      errors: [] as { row: number, error: string }[],
     };
 
     const { type, hobbyId, data } = importDto;
-    const parsedTransactions = [];
+    const parsedTransactions: Prisma.TransactionCreateManyInput[] = [];
 
     // Get all tax years
     const taxYears = await this.prisma.taxYear.findMany({
@@ -97,6 +96,7 @@ export class TransactionsService {
 
         // Map Intuit category to our category
         const category = type === ImportType.INTUIT ? this.mapIntuitCategory(record.Category, categories) : null;
+
         if (!category) {
           throw new Error(`Unknown category: ${record.Category}`);
         }
@@ -115,8 +115,11 @@ export class TransactionsService {
           reference: record.Receipt || undefined,
         });
       } catch (error) {
-        result.skipped++;
-        result.errors.push(`Row ${index + 2}: ${error.message}`);
+        const row = index + 1;
+        result.errors.push({
+          row,
+          error: error.message
+        });
       }
     }
 
@@ -126,19 +129,14 @@ export class TransactionsService {
     }
 
     try {
-      // Import all transactions in a single transaction
-      await this.prisma.$transaction(async (tx) => {
-        for (const transactionData of parsedTransactions) {
-          await tx.transaction.create({
-            data: transactionData,
-          });
-          result.imported++;
-        }
+      const {count} = await this.prisma.transaction.createMany({
+        data: parsedTransactions,
       });
+
+      result.imported = count;
     } catch (error) {
       return {
         imported: 0,
-        skipped: data.length,
         errors: [`Failed to import transactions: ${error.message}`],
       };
     }

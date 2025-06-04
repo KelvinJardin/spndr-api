@@ -20,8 +20,7 @@ export class ImportTransactionDto {
     required: false,
   })
   @IsString()
-  @IsOptional()
-  hobbyId?: string;
+  hobbyId: string;
 
   @ApiProperty({
     description: 'Array of transaction data to import',
@@ -57,5 +56,5 @@ export class ImportTransactionResponseDto {
     description: 'Array of error messages for skipped transactions',
     example: ['Invalid date format on row 3', 'Missing amount on row 5'],
   })
-  errors: string[];
+  errors: { row: number, error: string }[];
 }
