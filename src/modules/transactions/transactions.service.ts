@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service'; 
 import { PaginationQueryDto } from '../../dtos';
-import { TransactionResponse, TransactionType } from '../../types';
-import { parse } from 'csv-parse/sync';
+import { TransactionResponse } from '../../types';
+import { ImportTransactionDto, ImportType } from '../../dtos/import-transaction.dto';
 import { Decimal } from '@prisma/client/runtime/library';
 import { parseISO } from 'date-fns';
+import { TransactionType } from '@prisma/client';
 
 @Injectable()
 export class TransactionsService {
@@ -54,17 +55,14 @@ export class TransactionsService {
     });
   }
 
-  async importIntuitCsv(userId: string, csvContent: string) {
-    const records = parse(csvContent, {
-      columns: true,
-      skip_empty_lines: true,
-    });
-
+  async importCsv(userId: string, importDto: ImportTransactionDto) {
     const result = {
       imported: 0,
       skipped: 0,
       errors: [] as string[],
     };
+
+    const { type, hobbyId, data } = importDto;
 
     // Get current tax year
     const currentTaxYear = await this.prisma.taxYear.findFirst({
@@ -78,7 +76,7 @@ export class TransactionsService {
     // Get all categories for mapping
     const categories = await this.prisma.transactionCategory.findMany();
 
-    for (const [index, record] of records.entries()) {
+    for (const [index, record] of data.entries()) {
       try {
         // Parse and validate required fields
         const date = parseISO(record.Date);
@@ -91,7 +89,7 @@ export class TransactionsService {
         }
 
         // Map Intuit category to our category
-        const category = this.mapIntuitCategory(record.Category, categories);
+        const category = type === ImportType.INTUIT ? this.mapIntuitCategory(record.Category, categories) : null;
         if (!category) {
           throw new Error(`Unknown category: ${record.Category}`);
         }
@@ -105,6 +103,7 @@ export class TransactionsService {
             description,
             notes,
             userId,
+            hobbyId,
             categoryId: category.id,
             taxYearId: currentTaxYear.id,
             reference: record.Receipt || undefined,

@@ -12,6 +12,17 @@ export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {
   }
 
+  @Post('import/csv')
+  @ApiOperation({ summary: 'Import transactions from CSV' })
+  @ApiResponse({ status: 200, type: ImportTransactionResponseDto })
+  @ApiBody({ type: ImportTransactionDto })
+  async importCsv(
+    @Param('userId') userId: string,
+    @Body() importDto: ImportTransactionDto,
+  ) {
+    return this.transactionsService.importCsv(userId, importDto);
+  }
+
   @Get()
   @ApiOperation({ summary: 'Get all transactions for a user' })
   @ApiResponse({ status: 200, type: PaginatedResponseDto<TransactionDto> })
@@ -34,16 +45,5 @@ export class TransactionsController {
       throw new NotFoundException(`Transaction with ID ${id} not found`);
     }
     return transaction;
-  }
-
-  @Post('import/csv/intuit')
-  @ApiOperation({ summary: 'Import transactions from Intuit CSV' })
-  @ApiResponse({ status: 200, type: ImportTransactionResponseDto })
-  @ApiBody({ type: ImportTransactionDto })
-  async importIntuitCsv(
-    @Param('userId') userId: string,
-    @Body() importDto: ImportTransactionDto,
-  ) {
-    return this.transactionsService.importIntuitCsv(userId, importDto.csvContent);
   }
 }

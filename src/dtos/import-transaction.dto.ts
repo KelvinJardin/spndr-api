@@ -1,14 +1,43 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, IsObject, IsEnum, IsOptional } from 'class-validator';
+
+export enum ImportType {
+  INTUIT = 'Intuit',
+}
 
 export class ImportTransactionDto {
   @ApiProperty({
-    description: 'CSV content as a string',
-    example: 'Date,Bank,Account,Description,Amount,Type,Category,Receipt,Notes\n2024-01-01,Bank,Account,Test Transaction,100.00,Income,Turnover,,Test note',
+    enum: ImportType,
+    description: 'Type of import parser to use',
+    example: 'Intuit',
+  })
+  @IsEnum(ImportType)
+  type: ImportType;
+
+  @ApiProperty({
+    description: 'Optional hobby ID to associate transactions with',
+    example: 'cln1234567890',
+    required: false,
   })
   @IsString()
-  @IsNotEmpty()
-  csvContent: string;
+  @IsOptional()
+  hobbyId?: string;
+
+  @ApiProperty({
+    description: 'Array of transaction data to import',
+    example: [
+      {
+        Date: '2024-01-01',
+        Description: 'Test Transaction',
+        Amount: '100.00',
+        Category: 'Income',
+        Notes: 'Test note',
+      },
+    ],
+  })
+  @IsArray()
+  @IsObject({ each: true })
+  data: Record<string, string>[];
 }
 
 export class ImportTransactionResponseDto {
