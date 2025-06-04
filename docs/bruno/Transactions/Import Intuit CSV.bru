@@ -1,0 +1,19 @@
+meta {
+  name: Import Intuit CSV
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/users/:userId/transactions/import/csv/intuit
+  body: json
+  auth: none
+}
+
+body:json {
+  "csvContent": "Date,Bank,Account,Description,Amount,Type,Category,Receipt,Notes\n2024-01-01,Bank,Account,Test Transaction,100.00,Income,Income,,Test note"
+}
+
+params:path {
+  userId: 
+}

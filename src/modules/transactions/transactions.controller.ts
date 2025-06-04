@@ -1,8 +1,10 @@
 import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 import { TransactionsService } from './transactions.service';
 import { TransactionDto } from '../../dtos/transaction.dto';
-import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos/pagination.dto';
+import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos';
+import { ImportTransactionDto, ImportTransactionResponseDto } from '../../dtos/import-transaction.dto';
+import { Post, Body } from '@nestjs/common';
 
 @ApiTags('Transactions')
 @Controller('users/:userId/transactions')
@@ -32,5 +34,16 @@ export class TransactionsController {
       throw new NotFoundException(`Transaction with ID ${id} not found`);
     }
     return transaction;
+  }
+
+  @Post('import/csv/intuit')
+  @ApiOperation({ summary: 'Import transactions from Intuit CSV' })
+  @ApiResponse({ status: 200, type: ImportTransactionResponseDto })
+  @ApiBody({ type: ImportTransactionDto })
+  async importIntuitCsv(
+    @Param('userId') userId: string,
+    @Body() importDto: ImportTransactionDto,
+  ) {
+    return this.transactionsService.importIntuitCsv(userId, importDto.csvContent);
   }
 }
