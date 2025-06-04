@@ -438,6 +438,50 @@
         ]
       }
     },
+    "/users/{userId}/transactions/import/csv/intuit": {
+      "post": {
+        "operationId": "TransactionsController_importIntuitCsv",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportTransactionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportTransactionResponseDto"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Import transactions from Intuit CSV",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
     "/tax-years": {
       "get": {
         "operationId": "TaxYearsController_findAll",
@@ -938,6 +982,50 @@
           "taxYearId",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "ImportTransactionDto": {
+        "type": "object",
+        "properties": {
+          "csvContent": {
+            "type": "string",
+            "description": "CSV content as a string",
+            "example": "Date,Bank,Account,Description,Amount,Type,Category,Receipt,Notes\n2024-01-01,Bank,Account,Test Transaction,100.00,Income,Turnover,,Test note"
+          }
+        },
+        "required": [
+          "csvContent"
+        ]
+      },
+      "ImportTransactionResponseDto": {
+        "type": "object",
+        "properties": {
+          "imported": {
+            "type": "number",
+            "description": "Number of transactions successfully imported",
+            "example": 10
+          },
+          "skipped": {
+            "type": "number",
+            "description": "Number of transactions skipped due to errors",
+            "example": 2
+          },
+          "errors": {
+            "description": "Array of error messages for skipped transactions",
+            "example": [
+              "Invalid date format on row 3",
+              "Missing amount on row 5"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "imported",
+          "skipped",
+          "errors"
         ]
       },
       "TaxYearDto": {
