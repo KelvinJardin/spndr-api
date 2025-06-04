@@ -28,6 +28,7 @@ model User {
   Authenticator Authenticator[]
   hobbies      Hobby[]
   transactions Transaction[]
+  bankAccounts BankAccount[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -109,6 +110,8 @@ model Transaction {
   category   TransactionCategory @relation(fields: [categoryId], references: [id])
   taxYearId  String
   taxYear    TaxYear            @relation(fields: [taxYearId], references: [id])
+  bankAccountId String?
+  bankAccount   BankAccount?     @relation(fields: [bankAccountId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -117,6 +120,7 @@ model Transaction {
   @@index([hobbyId])
   @@index([categoryId])
   @@index([taxYearId])
+  @@index([bankAccountId])
 }
 
 model TransactionCategory {
@@ -167,5 +171,20 @@ model Hobby {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, name])
+  @@index([userId])
+}
+
+model BankAccount {
+  id            String   @id @default(cuid())
+  name          String
+  accountNumber String
+  sortCode      String
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions  Transaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@index([userId])
 }
