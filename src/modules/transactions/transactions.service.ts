@@ -148,12 +148,20 @@ export class TransactionsService {
       const categoryMap: Record<string, string> = {
         'Other business expenses': 'Other business expenses',
         'Cost of goods for resale': 'Cost of goods for resale',
-        'Travel and transport': 'Car / Van / Travel expenses',
-        'Professional fees': 'Accountancy / Legal / Other professional fees',
-        'Office costs': 'Office supplies',
-        'Repairs and maintenance': 'Property / Equipment Repairs',
+        'Car, van and travel expenses': 'Car / Van / Travel expenses',
+        'Professional fees': 'Accountancy / Legal / Other professional fees', 
+        'Phone, fax, stationery and other office costs': 'Office supplies',
+        'Repairs and maintenance': 'Property / Equipment Repairs', 
         'Business income': 'Sales',
         'Sales': 'Sales',
+        'Bank charges': 'Financial charges',
+        'Interest': 'Bank interest / Loans',
+        'Advertising': 'Advertising / Business entertainment',
+        'Bad debts': 'Bad debts',
+        'Depreciation': 'Asset Depreciation',
+        'Wages and salaries': 'Wages, salaries and other staff costs',
+        'Construction industry': 'Construction subcontractors',
+        'Disallowable': 'Disallowable expenses',
       };
 
       return categoryMap[transaction.type] ?? 'Other business expenses';
