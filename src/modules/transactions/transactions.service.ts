@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service'; 
 import { PaginationQueryDto } from '../../dtos';
 import { ImportTransactionDto, ImportType } from '../../dtos/import-transaction.dto';
-import { ParsedTransaction } from './parsers/transaction-parser.interface';
+import { ParsedTransaction } from './parsers/parser.interface';
 import { Prisma } from '@prisma/client';
 import { ParserFactory } from './parsers/parser.factory';
 import { TransactionResponse } from '../../types';
