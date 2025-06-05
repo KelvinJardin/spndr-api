@@ -6,6 +6,7 @@ import { UsersModule } from './modules/users/users.module';
 import { HobbiesModule } from './modules/hobbies/hobbies.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { TaxYearsModule } from './modules/tax-years/tax-years.module';
+import { TransactionCategoriesModule } from './modules/transaction-categories/transaction-categories.module';
 import { StatsService } from './services/stats.service';
 
 @Module({
@@ -15,6 +16,7 @@ import { StatsService } from './services/stats.service';
     HobbiesModule,
     TransactionsModule,
     TaxYearsModule,
+    TransactionCategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService, StatsService],
