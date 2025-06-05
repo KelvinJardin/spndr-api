@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Decimal } from '@prisma/client/runtime/library';
-import { TransactionType } from '../types/transaction.type';
+import { TransactionType } from '../../../types/transaction.type';
 
 export class TransactionDto {
   @ApiProperty({ example: 'cln1234567890' })
