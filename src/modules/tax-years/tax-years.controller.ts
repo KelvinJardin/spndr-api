@@ -1,7 +1,8 @@
 import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TaxYearsService } from './tax-years.service';
-import { PaginatedResponseDto, PaginationQueryDto, TaxYearDto, TaxYearStatsDto } from '../../dtos';
+import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
+import { TaxYearDto, TaxYearStatsDto } from './dto';
 
 @ApiTags('Tax Years')
 @Controller('tax-years')

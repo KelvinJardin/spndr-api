@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { PaginationQueryDto } from '../../dtos';
+import { PaginationQueryDto } from '../dto';
 import { CreateCategoryDto, UpdateCategoryDto, CreateCategoryMappingDto, UpdateCategoryMappingDto } from './dto';
 
 @Injectable()

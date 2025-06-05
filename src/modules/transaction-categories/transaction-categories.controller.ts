@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Q
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TransactionCategoriesService } from './transaction-categories.service';
 import { CreateCategoryDto, UpdateCategoryDto, CategoryDto, CategoryMappingDto, CreateCategoryMappingDto, UpdateCategoryMappingDto } from './dto';
-import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos';
+import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
 
 @ApiTags('Transaction Categories')
 @Controller('transaction-categories')

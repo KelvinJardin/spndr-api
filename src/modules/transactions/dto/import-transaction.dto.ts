@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsArray, IsObject, IsEnum, IsOptional } from 'class-validator';
+import { IsArray, IsEnum, IsObject, IsString } from 'class-validator';
 
 export enum ImportType {
   INTUIT = 'Intuit',

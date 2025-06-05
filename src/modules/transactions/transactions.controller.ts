@@ -1,10 +1,8 @@
-import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import { Body, Controller, Get, NotFoundException, Param, Post, Query, ValidationPipe } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TransactionsService } from './transactions.service';
-import { TransactionDto } from '../../dtos';
-import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos';
-import { ImportTransactionDto, ImportTransactionResponseDto } from '../../dtos/import-transaction.dto';
-import { Post, Body } from '@nestjs/common';
+import { ImportTransactionDto, ImportTransactionResponseDto, TransactionDto } from './dto';
+import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
 
 @ApiTags('Transactions')
 @Controller('users/:userId/transactions')

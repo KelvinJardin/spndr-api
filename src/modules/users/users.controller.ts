@@ -1,7 +1,8 @@
 import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
-import { PaginatedResponseDto, PaginationQueryDto, UserDto, UserStatsDto } from '../../dtos';
+import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
+import { UserDto, UserStatsDto } from './dto';
 
 @ApiTags('Users')
 @Controller('users')

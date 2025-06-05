@@ -1,7 +1,8 @@
 import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HobbiesService } from './hobbies.service';
-import { HobbyDto, HobbyStatsDto, PaginatedResponseDto, PaginationQueryDto } from '../../dtos';
+import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
+import { HobbyDto, HobbyStatsDto } from './dto';
 import { HobbyResponse } from '../../types';
 
 @ApiTags('Hobbies')

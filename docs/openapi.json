@@ -1,0 +1,1789 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/app/health": {
+      "get": {
+        "description": "Get the app status",
+        "operationId": "AppController_health",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Health",
+        "tags": [
+          "App"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "operationId": "UsersController_findAll",
+        "parameters": [
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all users",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "operationId": "UsersController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "summary": "Get user by ID",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{id}/stats": {
+      "get": {
+        "operationId": "UsersController_getStats",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "months",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "includeMonthlyStats",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeAverages",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includePeaks",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserStatsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        },
+        "summary": "Get user transaction statistics",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{userId}/hobbies": {
+      "get": {
+        "operationId": "HobbiesController_findAll",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all hobbies for a user",
+        "tags": [
+          "Hobbies"
+        ]
+      }
+    },
+    "/users/{userId}/hobbies/{id}": {
+      "get": {
+        "operationId": "HobbiesController_findOne",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HobbyDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Hobby not found"
+          }
+        },
+        "summary": "Get hobby by ID",
+        "tags": [
+          "Hobbies"
+        ]
+      }
+    },
+    "/users/{userId}/hobbies/{id}/stats": {
+      "get": {
+        "operationId": "HobbiesController_getStats",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "months",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "includeMonthlyStats",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includeAverages",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "includePeaks",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HobbyStatsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Hobby not found"
+          }
+        },
+        "summary": "Get hobby transaction statistics",
+        "tags": [
+          "Hobbies"
+        ]
+      }
+    },
+    "/users/{userId}/transactions/import/csv": {
+      "post": {
+        "operationId": "TransactionsController_importCsv",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImportTransactionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportTransactionResponseDto"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Import transactions from CSV",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/users/{userId}/transactions": {
+      "get": {
+        "operationId": "TransactionsController_findAll",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "type": "number"
+            }
+          },
+          {
+            "name": "hobbyId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all transactions for a user",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/users/{userId}/transactions/{id}": {
+      "get": {
+        "operationId": "TransactionsController_findOne",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          }
+        },
+        "summary": "Get transaction by ID",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
+    "/tax-years": {
+      "get": {
+        "operationId": "TaxYearsController_findAll",
+        "parameters": [
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all tax years",
+        "tags": [
+          "Tax Years"
+        ]
+      }
+    },
+    "/tax-years/current": {
+      "get": {
+        "operationId": "TaxYearsController_findCurrent",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxYearDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Current tax year not found"
+          }
+        },
+        "summary": "Get current tax year",
+        "tags": [
+          "Tax Years"
+        ]
+      }
+    },
+    "/tax-years/{id}": {
+      "get": {
+        "operationId": "TaxYearsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxYearDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tax year not found"
+          }
+        },
+        "summary": "Get tax year by ID",
+        "tags": [
+          "Tax Years"
+        ]
+      }
+    },
+    "/tax-years/{year}/tax_report/{userId}": {
+      "get": {
+        "operationId": "TaxYearsController_getTaxReport",
+        "parameters": [
+          {
+            "name": "year",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxYearStatsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tax year not found"
+          }
+        },
+        "summary": "Get tax year report for a user",
+        "tags": [
+          "Tax Years"
+        ]
+      }
+    },
+    "/transaction-categories": {
+      "get": {
+        "operationId": "TransactionCategoriesController_findAll",
+        "parameters": [
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all transaction categories",
+        "tags": [
+          "Transaction Categories"
+        ]
+      },
+      "post": {
+        "operationId": "TransactionCategoriesController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create transaction category",
+        "tags": [
+          "Transaction Categories"
+        ]
+      }
+    },
+    "/transaction-categories/{id}": {
+      "get": {
+        "operationId": "TransactionCategoriesController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get transaction category by ID",
+        "tags": [
+          "Transaction Categories"
+        ]
+      },
+      "patch": {
+        "operationId": "TransactionCategoriesController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update transaction category",
+        "tags": [
+          "Transaction Categories"
+        ]
+      },
+      "delete": {
+        "operationId": "TransactionCategoriesController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "204": {
+            "description": ""
+          }
+        },
+        "summary": "Delete transaction category",
+        "tags": [
+          "Transaction Categories"
+        ]
+      }
+    },
+    "/transaction-categories/{id}/tax-years/{taxYearId}": {
+      "get": {
+        "operationId": "TransactionCategoriesController_findMapping",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taxYearId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryMappingDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get category mapping for tax year",
+        "tags": [
+          "Transaction Categories"
+        ]
+      },
+      "post": {
+        "operationId": "TransactionCategoriesController_createMapping",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taxYearId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryMappingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryMappingDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create category mapping for tax year",
+        "tags": [
+          "Transaction Categories"
+        ]
+      },
+      "patch": {
+        "operationId": "TransactionCategoriesController_updateMapping",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taxYearId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoryMappingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryMappingDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update category mapping for tax year",
+        "tags": [
+          "Transaction Categories"
+        ]
+      },
+      "delete": {
+        "operationId": "TransactionCategoriesController_removeMapping",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taxYearId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "204": {
+            "description": ""
+          }
+        },
+        "summary": "Delete category mapping for tax year",
+        "tags": [
+          "Transaction Categories"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "spndr-api",
+    "description": "API for Spndr, a platform for managing and tracking financial flows of multiple income streams.",
+    "version": "0.0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "HealthResponseDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Current health status of the application",
+            "example": "healthy"
+          },
+          "version": {
+            "type": "string",
+            "description": "Application version",
+            "example": "1.0.0"
+          }
+        },
+        "required": [
+          "status",
+          "version"
+        ]
+      },
+      "PaginatedResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "number"
+              },
+              "offset": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "total",
+              "offset"
+            ]
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "example": "John Doe"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "example": "john@example.com"
+          },
+          "type": {
+            "type": "string",
+            "example": "user"
+          },
+          "provider": {
+            "type": "string",
+            "example": "email"
+          },
+          "providerAccountId": {
+            "type": "string",
+            "example": "john@example.com"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+          "type",
+          "provider",
+          "providerAccountId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "MonthlyStatsDto": {
+        "type": "object",
+        "properties": {
+          "month": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "income": {
+            "type": "string",
+            "example": "1250.00"
+          },
+          "expenses": {
+            "type": "string",
+            "example": "450.00"
+          },
+          "net": {
+            "type": "string",
+            "example": "800.00"
+          }
+        },
+        "required": [
+          "month",
+          "income",
+          "expenses",
+          "net"
+        ]
+      },
+      "AveragesDto": {
+        "type": "object",
+        "properties": {
+          "monthlyIncome": {
+            "type": "string",
+            "example": "1500.00"
+          },
+          "monthlyExpenses": {
+            "type": "string",
+            "example": "500.00"
+          },
+          "monthlyNet": {
+            "type": "string",
+            "example": "1000.00"
+          }
+        },
+        "required": [
+          "monthlyIncome",
+          "monthlyExpenses",
+          "monthlyNet"
+        ]
+      },
+      "PeakTransactionDto": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "string",
+            "example": "2500.00"
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "example": "Website Development Project"
+          }
+        },
+        "required": [
+          "amount",
+          "date",
+          "description"
+        ]
+      },
+      "PeaksDto": {
+        "type": "object",
+        "properties": {
+          "highestIncome": {
+            "$ref": "#/components/schemas/PeakTransactionDto"
+          },
+          "highestExpense": {
+            "$ref": "#/components/schemas/PeakTransactionDto"
+          }
+        },
+        "required": [
+          "highestIncome",
+          "highestExpense"
+        ]
+      },
+      "UserStatsDto": {
+        "type": "object",
+        "properties": {
+          "monthlyStats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthlyStatsDto"
+            }
+          },
+          "averages": {
+            "$ref": "#/components/schemas/AveragesDto"
+          },
+          "peaks": {
+            "$ref": "#/components/schemas/PeaksDto"
+          }
+        }
+      },
+      "HobbyDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "name": {
+            "type": "string",
+            "example": "Photography"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "example": "Wedding and event photography"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "userId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "transactions": {
+            "type": "object",
+            "properties": {
+              "count": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "count"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "isActive",
+          "userId",
+          "createdAt",
+          "updatedAt",
+          "transactions"
+        ]
+      },
+      "HobbyStatsDto": {
+        "type": "object",
+        "properties": {
+          "monthlyStats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthlyStatsDto"
+            }
+          },
+          "averages": {
+            "$ref": "#/components/schemas/AveragesDto"
+          },
+          "peaks": {
+            "$ref": "#/components/schemas/PeaksDto"
+          }
+        }
+      },
+      "ImportTransactionDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "Intuit"
+            ],
+            "description": "Type of import parser to use",
+            "example": "Intuit"
+          },
+          "hobbyId": {
+            "type": "string",
+            "description": "Optional hobby ID to associate transactions with",
+            "example": "cln1234567890"
+          },
+          "data": {
+            "description": "Array of transaction data to import",
+            "example": [
+              {
+                "Date": "2024-01-01",
+                "Description": "Test Transaction",
+                "Amount": "100.00",
+                "Category": "Income",
+                "Notes": "Test note"
+              }
+            ],
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "data"
+        ]
+      },
+      "ImportTransactionResponseDto": {
+        "type": "object",
+        "properties": {
+          "imported": {
+            "type": "number",
+            "description": "Number of transactions successfully imported",
+            "example": 10
+          },
+          "skipped": {
+            "type": "number",
+            "description": "Number of transactions skipped due to errors",
+            "example": 2
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "row": {
+                  "type": "number"
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "row",
+                "error"
+              ]
+            }
+          }
+        },
+        "required": [
+          "imported",
+          "skipped",
+          "errors"
+        ]
+      },
+      "TransactionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "INCOME",
+              "EXPENSE"
+            ]
+          },
+          "amount": {
+            "type": "string",
+            "example": "199.99"
+          },
+          "date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "example": "Website Development"
+          },
+          "reference": {
+            "type": "string",
+            "nullable": true,
+            "example": "INV-2024-001"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "hobbyId": {
+            "type": "string",
+            "nullable": true,
+            "example": "cln1234567890"
+          },
+          "categoryId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "taxYearId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "amount",
+          "date",
+          "description",
+          "userId",
+          "categoryId",
+          "taxYearId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "TaxYearDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "startYear": {
+            "type": "number",
+            "example": 2024
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "isCurrent": {
+            "type": "boolean",
+            "example": true
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "startYear",
+          "startDate",
+          "endDate",
+          "isCurrent",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "i": {
+        "type": "object",
+        "properties": {}
+      },
+      "CategoryStatsDto": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "categoryName": {
+            "type": "string",
+            "example": "Freelance Work"
+          },
+          "sa103fBox": {
+            "type": "string",
+            "enum": [
+              "BOX_15",
+              "BOX_16",
+              "BOX_17",
+              "BOX_18",
+              "BOX_19",
+              "BOX_20",
+              "BOX_21",
+              "BOX_22",
+              "BOX_23",
+              "BOX_24",
+              "BOX_25",
+              "BOX_26",
+              "BOX_27",
+              "BOX_28",
+              "BOX_29",
+              "BOX_30",
+              "BOX_32"
+            ]
+          },
+          "total": {
+            "example": "1500.00",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          },
+          "count": {
+            "type": "number",
+            "example": 10
+          },
+          "allowable": {
+            "type": "boolean",
+            "example": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true,
+            "example": "Additional notes about tax treatment"
+          }
+        },
+        "required": [
+          "categoryId",
+          "categoryName",
+          "sa103fBox",
+          "total",
+          "count",
+          "allowable",
+          "notes"
+        ]
+      },
+      "TaxYearStatsDto": {
+        "type": "object",
+        "properties": {
+          "incomeByCategory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryStatsDto"
+            }
+          },
+          "expensesByCategory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryStatsDto"
+            }
+          },
+          "totalIncome": {
+            "example": "5000.00",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          },
+          "totalExpenses": {
+            "example": "1500.00",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          },
+          "netIncome": {
+            "example": "3500.00",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          }
+        },
+        "required": [
+          "incomeByCategory",
+          "expensesByCategory",
+          "totalIncome",
+          "totalExpenses",
+          "netIncome"
+        ]
+      },
+      "CategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "name": {
+            "type": "string",
+            "example": "Sales"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "example": "Sales/turnover"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "INCOME",
+              "EXPENSE"
+            ]
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Sales"
+          },
+          "description": {
+            "type": "string",
+            "example": "Sales/turnover"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "INCOME",
+              "EXPENSE"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "type"
+        ]
+      },
+      "UpdateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Sales"
+          },
+          "description": {
+            "type": "string",
+            "example": "Sales/turnover"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "INCOME",
+              "EXPENSE"
+            ]
+          }
+        }
+      },
+      "CategoryMappingDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "categoryId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "taxYearId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "sa103fBox": {
+            "type": "string",
+            "enum": [
+              "BOX_15",
+              "BOX_16",
+              "BOX_17",
+              "BOX_18",
+              "BOX_19",
+              "BOX_20",
+              "BOX_21",
+              "BOX_22",
+              "BOX_23",
+              "BOX_24",
+              "BOX_25",
+              "BOX_26",
+              "BOX_27",
+              "BOX_28",
+              "BOX_29",
+              "BOX_30",
+              "BOX_32"
+            ]
+          },
+          "allowable": {
+            "type": "boolean",
+            "example": true
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true,
+            "example": "Additional notes about tax treatment"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "categoryId",
+          "taxYearId",
+          "sa103fBox",
+          "allowable",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CreateCategoryMappingDto": {
+        "type": "object",
+        "properties": {
+          "sa103fBox": {
+            "type": "string",
+            "enum": [
+              "BOX_15",
+              "BOX_16",
+              "BOX_17",
+              "BOX_18",
+              "BOX_19",
+              "BOX_20",
+              "BOX_21",
+              "BOX_22",
+              "BOX_23",
+              "BOX_24",
+              "BOX_25",
+              "BOX_26",
+              "BOX_27",
+              "BOX_28",
+              "BOX_29",
+              "BOX_30",
+              "BOX_32"
+            ]
+          },
+          "allowable": {
+            "type": "boolean",
+            "example": true
+          },
+          "notes": {
+            "type": "string",
+            "example": "Additional notes about tax treatment"
+          }
+        },
+        "required": [
+          "sa103fBox",
+          "allowable"
+        ]
+      },
+      "UpdateCategoryMappingDto": {
+        "type": "object",
+        "properties": {
+          "sa103fBox": {
+            "type": "string",
+            "enum": [
+              "BOX_15",
+              "BOX_16",
+              "BOX_17",
+              "BOX_18",
+              "BOX_19",
+              "BOX_20",
+              "BOX_21",
+              "BOX_22",
+              "BOX_23",
+              "BOX_24",
+              "BOX_25",
+              "BOX_26",
+              "BOX_27",
+              "BOX_28",
+              "BOX_29",
+              "BOX_30",
+              "BOX_32"
+            ]
+          },
+          "allowable": {
+            "type": "boolean",
+            "example": true
+          },
+          "notes": {
+            "type": "string",
+            "example": "Additional notes about tax treatment"
+          }
+        }
+      }
+    }
+  }
+}

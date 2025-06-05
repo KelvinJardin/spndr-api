@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionParser } from './parser.interface';
 import { IntuitParserService } from './intuit-parser.service';
-import { ImportType } from '../../../dtos/import-transaction.dto';
+import { ImportType } from '../dto';
 
 @Injectable()
 export class ParserFactory {
