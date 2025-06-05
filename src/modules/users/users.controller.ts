@@ -12,7 +12,7 @@ export class UsersController {
   @Get()
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, type: PaginatedResponseDto<UserDto> })
-  async findAll(@Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto) {
+  async findAll(@Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto): Promise<PaginatedResponseDto<UserResponse>> {
     return this.usersService.findAll(query);
   }
 
@@ -20,7 +20,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Get user by ID' })
   @ApiResponse({ status: 200, type: UserDto })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<UserResponse> {
     const user = await this.usersService.findOne(id);
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
@@ -42,7 +42,7 @@ export class UsersController {
     @Query('includeMonthlyStats') includeMonthlyStats?: boolean,
     @Query('includeAverages') includeAverages?: boolean,
     @Query('includePeaks') includePeaks?: boolean,
-  ) {
+  ): Promise<UserStatsResponse> {
     const user = await this.usersService.findOne(id);
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);

@@ -16,7 +16,7 @@ export class HobbiesController {
   async findAll(
     @Param('userId') userId: string,
     @Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto,
-  ) {
+  ): Promise<PaginatedResponseDto<HobbyResponse>> {
     return this.hobbiesService.findAll(userId, query);
   }
 
@@ -24,7 +24,7 @@ export class HobbiesController {
   @ApiOperation({ summary: 'Get hobby by ID' })
   @ApiResponse({ status: 200, type: HobbyDto })
   @ApiResponse({ status: 404, description: 'Hobby not found' })
-  async findOne(@Param('userId') userId: string, @Param('id') id: string) {
+  async findOne(@Param('userId') userId: string, @Param('id') id: string): Promise<HobbyResponse> {
     const hobby = await this.hobbiesService.findOne(userId, id);
     if (!hobby) {
       throw new NotFoundException(`Hobby with ID ${id} not found`);
@@ -47,7 +47,7 @@ export class HobbiesController {
     @Query('includeMonthlyStats') includeMonthlyStats?: boolean,
     @Query('includeAverages') includeAverages?: boolean,
     @Query('includePeaks') includePeaks?: boolean,
-  ) {
+  ): Promise<HobbyStatsResponse> {
     const hobby = await this.hobbiesService.findOne(userId, id);
     if (!hobby) {
       throw new NotFoundException(`Hobby with ID ${id} not found`);

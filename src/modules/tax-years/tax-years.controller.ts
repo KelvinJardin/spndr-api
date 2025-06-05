@@ -12,7 +12,7 @@ export class TaxYearsController {
   @Get()
   @ApiOperation({ summary: 'Get all tax years' })
   @ApiResponse({ status: 200, type: PaginatedResponseDto<TaxYearDto> })
-  async findAll(@Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto) {
+  async findAll(@Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto): Promise<PaginatedResponseDto<TaxYearResponse>> {
     return this.taxYearsService.findAll(query);
   }
 
@@ -20,7 +20,7 @@ export class TaxYearsController {
   @ApiOperation({ summary: 'Get current tax year' })
   @ApiResponse({ status: 200, type: TaxYearDto })
   @ApiResponse({ status: 404, description: 'Current tax year not found' })
-  async findCurrent() {
+  async findCurrent(): Promise<TaxYearResponse> {
     const taxYear = await this.taxYearsService.findCurrent();
     if (!taxYear) {
       throw new NotFoundException('Current tax year not found');
@@ -32,7 +32,7 @@ export class TaxYearsController {
   @ApiOperation({ summary: 'Get tax year by ID' })
   @ApiResponse({ status: 200, type: TaxYearDto })
   @ApiResponse({ status: 404, description: 'Tax year not found' })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<TaxYearResponse> {
     const taxYear = await this.taxYearsService.findOne(id);
     if (!taxYear) {
       throw new NotFoundException(`Tax year with ID ${id} not found`);
@@ -47,7 +47,7 @@ export class TaxYearsController {
   async getTaxReport(
     @Param('year') year: string,
     @Param('userId') userId: string,
-  ) {
+  ): Promise<TaxYearStatsResponse> {
     const parsedYear = parseInt(year, 10);
     if (isNaN(parsedYear)) {
       throw new NotFoundException('Invalid year format. Please provide a valid year (e.g., 2024)');

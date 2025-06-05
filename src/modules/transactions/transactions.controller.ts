@@ -19,7 +19,7 @@ export class TransactionsController {
   async importCsv(
     @Param('userId') userId: string,
     @Body() importDto: ImportTransactionDto,
-  ) {
+  ): Promise<ImportTransactionResponseDto> {
     return this.transactionsService.importCsv(userId, importDto);
   }
 
@@ -31,7 +31,7 @@ export class TransactionsController {
     @Param('userId') userId: string,
     @Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto,
     @Query('hobbyId') hobbyId?: string,
-  ) {
+  ): Promise<PaginatedResponseDto<TransactionResponse>> {
     return this.transactionsService.findAll(userId, query, hobbyId);
   }
 
@@ -39,7 +39,7 @@ export class TransactionsController {
   @ApiOperation({ summary: 'Get transaction by ID' })
   @ApiResponse({ status: 200, type: TransactionDto })
   @ApiResponse({ status: 404, description: 'Transaction not found' })
-  async findOne(@Param('userId') userId: string, @Param('id') id: string) {
+  async findOne(@Param('userId') userId: string, @Param('id') id: string): Promise<TransactionResponse> {
     const transaction = await this.transactionsService.findOne(userId, id);
     if (!transaction) {
       throw new NotFoundException(`Transaction with ID ${id} not found`);
