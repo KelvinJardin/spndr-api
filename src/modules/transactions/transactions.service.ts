@@ -83,7 +83,7 @@ export class TransactionsService {
           const { date } = transaction;
 
           const taxYear = taxYears.find(
-            ty => date >= ty.startDate && date <= ty.endDate
+            (ty) => (date >= ty.startDate && date <= ty.endDate)
           );
           
           if (!taxYear) {
