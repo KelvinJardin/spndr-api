@@ -1127,8 +1127,8 @@
           "sa103fBox": {
             "type": "string",
             "enum": [
-              "BOX_8",
-              "BOX_9",
+              "BOX_15",
+              "BOX_16",
               "BOX_17",
               "BOX_18",
               "BOX_19",
@@ -1140,8 +1140,10 @@
               "BOX_25",
               "BOX_26",
               "BOX_27",
+              "BOX_28",
+              "BOX_29",
               "BOX_30",
-              "BOX_31"
+              "BOX_32"
             ]
           },
           "total": {
