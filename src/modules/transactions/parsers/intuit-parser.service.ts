@@ -12,7 +12,7 @@ export class IntuitParserService implements TransactionParser {
       
       return {
         date: parse(record.Date, 'dd/MM/yyyy', new Date()),
-        amount: amount.abs(),
+        amount: amount,
         type: amount.isNegative() ? TransactionType.EXPENSE : TransactionType.INCOME,
         description: record.Description?.trim() ?? '',
         notes: record.Notes?.trim() || null,
