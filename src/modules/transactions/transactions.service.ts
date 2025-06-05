@@ -155,6 +155,7 @@ export class TransactionsService {
         'Business income': 'Turnover',
         'Sales': 'Turnover',
       };
+
       return categoryMap[transaction.type] ?? 'Other Business Expenses';
     }
     throw new Error(`Unsupported import type: ${type}`);
