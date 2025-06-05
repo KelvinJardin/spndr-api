@@ -3,6 +3,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TaxYearsService } from './tax-years.service';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
 import { TaxYearDto, TaxYearStatsDto } from './dto';
+import { TaxYearResponse } from './types';
+import { TaxYearStatsResponse } from './types/tax-year-stats.type';
 
 @ApiTags('Tax Years')
 @Controller('tax-years')

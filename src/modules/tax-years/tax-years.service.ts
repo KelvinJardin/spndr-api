@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationQueryDto } from '../dto';
-import { TaxYearResponse } from '../../types';
-import type { TaxYearStatsResponse } from '../../types/tax-year-stats.type';
+import { TaxYearResponse, TaxYearStatsResponse } from "./types";
 import { TransactionType } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 

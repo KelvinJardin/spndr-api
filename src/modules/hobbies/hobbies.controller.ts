@@ -3,7 +3,7 @@ import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HobbiesService } from './hobbies.service';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
 import { HobbyDto, HobbyStatsDto } from './dto';
-import { HobbyResponse } from '../../types';
+import { HobbyResponse, HobbyStatsResponse } from './types';
 
 @ApiTags('Hobbies')
 @Controller('users/:userId/hobbies')

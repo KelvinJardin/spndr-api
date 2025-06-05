@@ -5,13 +5,13 @@ import { ImportTransactionDto, ImportType } from './dto';
 import { ParsedTransaction } from './parsers/parser.interface';
 import { Prisma } from '@prisma/client';
 import { ParserFactory } from './parsers/parser.factory';
-import { TransactionResponse } from '../../types';
+import { TransactionResponse } from './types';
 
 @Injectable()
 export class TransactionsService {
   constructor(
-    private prisma: PrismaService,
-    private parserFactory: ParserFactory,
+    private readonly prisma: PrismaService,
+    private readonly parserFactory: ParserFactory,
   ) {}
 
   async findAll(

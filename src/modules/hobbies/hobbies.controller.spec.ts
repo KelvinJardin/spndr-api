@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HobbiesController } from './hobbies.controller';
 import { HobbiesService } from './hobbies.service';
 import { NotFoundException } from '@nestjs/common';
-import type { HobbyResponse, HobbyStatsResponse } from '../../types';
+import type { HobbyResponse, HobbyStatsResponse } from './types';
 import { Prisma } from '@prisma/client';
 
 describe('HobbiesController', () => {

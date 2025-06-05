@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { NotFoundException } from '@nestjs/common';
-import type { UserResponse, UserStatsResponse } from '../../types';
+import type { UserResponse, UserStatsResponse } from './types';
 import { Prisma } from '@prisma/client';
 
 describe('UsersController', () => {
