@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionParser, ParsedTransaction } from './transaction-parser.interface';
+import { TransactionParser, ParsedTransaction } from './parser.interface';
 import { TransactionType } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 import { parse } from 'date-fns';
