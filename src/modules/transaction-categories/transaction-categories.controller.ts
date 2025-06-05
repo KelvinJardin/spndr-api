@@ -102,3 +102,4 @@ export class TransactionCategoriesController {
       throw new NotFoundException(`Mapping not found for category ${id} and tax year ${taxYearId}`);
     }
   }
+}
