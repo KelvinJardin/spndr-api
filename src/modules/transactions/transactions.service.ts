@@ -146,17 +146,17 @@ export class TransactionsService {
   private mapCategory(type: ImportType, transaction: ParsedTransaction): string {
     if (type === ImportType.INTUIT) {
       const categoryMap: Record<string, string> = {
-        'Other business expenses': 'Other Business Expenses',
-        'Cost of goods for resale': 'Cost of Goods',
-        'Travel and transport': 'Travel and Transport',
-        'Professional fees': 'Professional Fees',
-        'Office costs': 'Office Costs',
-        'Repairs and maintenance': 'Repairs and Maintenance',
-        'Business income': 'Turnover',
-        'Sales': 'Turnover',
+        'Other business expenses': 'Other business expenses',
+        'Cost of goods for resale': 'Cost of goods for resale',
+        'Travel and transport': 'Car / Van / Travel expenses',
+        'Professional fees': 'Accountancy / Legal / Other professional fees',
+        'Office costs': 'Office supplies',
+        'Repairs and maintenance': 'Property / Equipment Repairs',
+        'Business income': 'Sales',
+        'Sales': 'Sales',
       };
 
-      return categoryMap[transaction.type] ?? 'Other Business Expenses';
+      return categoryMap[transaction.type] ?? 'Other business expenses';
     }
     throw new Error(`Unsupported import type: ${type}`);
   }

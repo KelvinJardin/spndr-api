@@ -4,75 +4,90 @@ export async function seedTransactionCategories(prisma: PrismaClient) {
   const categories = [
     // Income categories
     {
-      name: 'Turnover',
-      description: 'Your business turnover',
+      name: 'Sales',
+      description: 'Income from sales of goods or services',
       type: TransactionType.INCOME,
     },
     {
-      name: 'Other Income',
-      description: 'Other business income',
+      name: 'Other business income',
+      description: 'Other sources of business income',
       type: TransactionType.INCOME,
     },
 
     // Expense categories
     {
-      name: 'Cost of Goods',
-      description: 'Cost of goods bought for resale or goods used',
+      name: 'Cost of goods for resale',
+      description: 'Cost of goods bought for resale',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Construction Costs',
-      description: 'Construction industry subcontractor costs',
+      name: 'Construction subcontractors',
+      description: 'Payments to construction industry subcontractors',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Other Direct Costs',
-      description: 'Other direct expenses',
+      name: 'Wages, salaries and other staff costs',
+      description: 'Employee and staff related costs',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Travel and Transport',
-      description: 'Car, van and travel expenses',
+      name: 'Car / Van / Travel expenses',
+      description: 'Vehicle and travel related expenses',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Premises Costs',
-      description: 'Rent, rates, power and insurance costs',
+      name: 'Rent / Utilities / Insurance',
+      description: 'Property and premises costs',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Repairs and Maintenance',
-      description: 'Repairs and maintenance of property and equipment',
+      name: 'Property / Equipment Repairs',
+      description: 'Repairs and maintenance costs',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Professional Fees',
-      description: 'Accountancy, legal and other professional fees',
+      name: 'Office supplies',
+      description: 'Office stationery and supplies',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Financial Charges',
-      description: 'Interest and bank charges',
+      name: 'Advertising / Business entertainment',
+      description: 'Marketing and entertainment expenses',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Office Costs',
-      description: 'Phone, fax, stationery and other office costs',
+      name: 'Bank interest / Loans',
+      description: 'Interest payments on business loans',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Other Business Expenses',
-      description: 'Other business expenses',
+      name: 'Financial charges',
+      description: 'Bank and other financial charges',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Capital Allowances',
-      description: 'Annual investment allowance',
+      name: 'Bad debts',
+      description: 'Write-offs for uncollectible debts',
       type: TransactionType.EXPENSE,
     },
     {
-      name: 'Other Capital Allowances',
-      description: 'Other capital allowances',
+      name: 'Accountancy / Legal / Other professional fees',
+      description: 'Professional services costs',
+      type: TransactionType.EXPENSE,
+    },
+    {
+      name: 'Asset Depreciation',
+      description: 'Depreciation of business assets',
+      type: TransactionType.EXPENSE,
+    },
+    {
+      name: 'Other business expenses',
+      description: 'Other allowable business expenses',
+      type: TransactionType.EXPENSE,
+    },
+    {
+      name: 'Disallowable expenses',
+      description: 'Non-allowable business expenses',
       type: TransactionType.EXPENSE,
     },
   ];
