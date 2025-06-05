@@ -1,7 +1,7 @@
 import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 import { TransactionsService } from './transactions.service';
-import { TransactionDto } from '../../dtos/transaction.dto';
+import { TransactionDto } from '../../dtos';
 import { PaginatedResponseDto, PaginationQueryDto } from '../../dtos';
 import { ImportTransactionDto, ImportTransactionResponseDto } from '../../dtos/import-transaction.dto';
 import { Post, Body } from '@nestjs/common';

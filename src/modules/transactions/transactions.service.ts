@@ -4,7 +4,7 @@ import { PaginationQueryDto } from '../../dtos';
 import { TransactionResponse } from '../../types';
 import { ImportTransactionDto, ImportType } from '../../dtos/import-transaction.dto';
 import { Decimal } from '@prisma/client/runtime/library';
-import { parseISO } from 'date-fns';
+import { parse, parseISO } from 'date-fns';
 import { Prisma, TransactionType } from '@prisma/client';
 
 @Injectable()
@@ -76,7 +76,7 @@ export class TransactionsService {
     for (const [index, record] of data.entries()) {
       try {
         // Parse and validate required fields
-        const date = parseISO(record.Date);
+        const date = parse(record.Date, 'dd/MM/yyyy', new Date());
         const amount = new Decimal(record.Amount);
         const description = record.Description?.trim();
         const notes = record.Notes?.trim();
@@ -104,7 +104,7 @@ export class TransactionsService {
         // Store validated transaction data
         parsedTransactions.push({
           date,
-          amount: amount.abs(),
+          amount: amount,
           type: amount.isNegative() ? TransactionType.EXPENSE : TransactionType.INCOME,
           description,
           notes,
@@ -129,11 +129,15 @@ export class TransactionsService {
     }
 
     try {
-      const {count} = await this.prisma.transaction.createMany({
-        data: parsedTransactions,
+      // Import all transactions in a single transaction
+      await this.prisma.$transaction(async (tx) => {
+        for (const transactionData of parsedTransactions) {
+          await tx.transaction.create({
+            data: transactionData,
+          });
+          result.imported++;
+        }
       });
-
-      result.imported = count;
     } catch (error) {
       return {
         imported: 0,
@@ -153,7 +157,7 @@ export class TransactionsService {
       'Professional fees': 'Professional Fees',
       'Office costs': 'Office Costs',
       'Repairs and maintenance': 'Repairs and Maintenance',
-      'Income': 'Turnover',
+      'Business income': 'Turnover',
       'Sales': 'Turnover',
     };
 
