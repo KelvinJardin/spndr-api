@@ -59,60 +59,48 @@ export class TransactionsService {
   async importCsv(userId: string, importDto: ImportTransactionDto) {
     const parser = this.parserFactory.getParser(importDto.type);
     const result = {
-      imported: 0 as number,
+      imported: 0,
       errors: [] as { row: number, error: string }[],
     };
 
     const { type, hobbyId, data } = importDto;
 
-    // Get all tax years
     const taxYears = await this.prisma.taxYear.findMany({
       orderBy: { startDate: 'desc' },
     });
 
-    // Get all categories for mapping
     const categories = await this.prisma.transactionCategory.findMany();
     const categoryMap = new Map(categories.map(c => [c.name, c]));
 
-    // Parse all transactions
     let parsedTransactions: Prisma.TransactionCreateManyInput[] = [];
 
-    // First validate all records
     try {
       const parsed = parser.parse(data);
       
       for (const [index, transaction] of parsed.entries()) {
         try {
-          const { date, amount, type, description, notes, reference, categoryName } = transaction;
+          const { date } = transaction;
 
-          // Find matching tax year for the transaction date
           const taxYear = taxYears.find(
             ty => date >= ty.startDate && date <= ty.endDate
           );
 
           if (!taxYear) {
-            throw new Error(`No tax year found for date ${record.Date}`);
+            throw new Error(`No tax year found for date ${date.toISOString()}`);
           }
 
-          // Find matching category
-          const category = categoryMap.get(categoryName);
+          const category = categoryMap.get(this.mapCategory(importDto.type, transaction));
 
           if (!category) {
-            throw new Error(`Unknown category: ${categoryName}`);
+            throw new Error('Unknown category');
           }
 
-          // Store validated transaction data
           parsedTransactions.push({
-            date,
-            amount,
-            type,
-            description,
-            notes,
+            ...transaction,
             userId,
             hobbyId,
             categoryId: category.id,
             taxYearId: taxYear.id,
-            reference,
           });
         } catch (error) {
           const row = index + 1;
@@ -152,5 +140,22 @@ export class TransactionsService {
     }
 
     return result;
+  }
+
+  private mapCategory(type: ImportType, transaction: ParsedTransaction): string {
+    if (type === ImportType.INTUIT) {
+      const categoryMap: Record<string, string> = {
+        'Other business expenses': 'Other Business Expenses',
+        'Cost of goods for resale': 'Cost of Goods',
+        'Travel and transport': 'Travel and Transport',
+        'Professional fees': 'Professional Fees',
+        'Office costs': 'Office Costs',
+        'Repairs and maintenance': 'Repairs and Maintenance',
+        'Business income': 'Turnover',
+        'Sales': 'Turnover',
+      };
+      return categoryMap[transaction.type] ?? 'Other Business Expenses';
+    }
+    throw new Error(`Unsupported import type: ${type}`);
   }
 }

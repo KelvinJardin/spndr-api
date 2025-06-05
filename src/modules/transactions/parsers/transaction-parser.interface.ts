@@ -1,15 +1,9 @@
-import { TransactionType } from '@prisma/client';
-import { Decimal } from '@prisma/client/runtime/library';
+import { Prisma } from '@prisma/client';
 
-export interface ParsedTransaction {
-  date: Date;
-  amount: Decimal;
-  type: TransactionType;
-  description: string;
-  notes?: string;
-  reference?: string;
-  categoryName: string;
-}
+export type ParsedTransaction = Omit<
+  Prisma.TransactionCreateManyInput,
+  'id' | 'userId' | 'hobbyId' | 'categoryId' | 'taxYearId' | 'createdAt' | 'updatedAt'
+>;
 
 export interface TransactionParser {
   parse(data: Record<string, string>[]): ParsedTransaction[];
