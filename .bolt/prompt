@@ -1,1 +1,2 @@
 `npm run start:dev` starts the app
+i do not use supabase, do not make supabase migrations
