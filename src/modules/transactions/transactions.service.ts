@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service'; 
 import { PaginationQueryDto } from '../../dtos';
+import { ImportTransactionDto } from '../../dtos/import-transaction.dto';
+import { Prisma } from '@prisma/client';
+import { ParserFactory } from './parsers/parser.factory';
 import { TransactionResponse } from '../../types';
-import { ImportTransactionDto, ImportType } from '../../dtos/import-transaction.dto';
-import { Decimal } from '@prisma/client/runtime/library';
-import { parse, parseISO } from 'date-fns';
-import { Prisma, TransactionType } from '@prisma/client';
 
 @Injectable()
 export class TransactionsService {
-  constructor(private prisma: PrismaService) {
-  }
+  constructor(
+    private prisma: PrismaService,
+    private parserFactory: ParserFactory,
+  ) {}
 
   async findAll(
     userId: string,
@@ -56,13 +57,13 @@ export class TransactionsService {
   }
 
   async importCsv(userId: string, importDto: ImportTransactionDto) {
+    const parser = this.parserFactory.getParser(importDto.type);
     const result = {
       imported: 0 as number,
       errors: [] as { row: number, error: string }[],
     };
 
     const { type, hobbyId, data } = importDto;
-    const parsedTransactions: Prisma.TransactionCreateManyInput[] = [];
 
     // Get all tax years
     const taxYears = await this.prisma.taxYear.findMany({
@@ -71,56 +72,61 @@ export class TransactionsService {
 
     // Get all categories for mapping
     const categories = await this.prisma.transactionCategory.findMany();
+    const categoryMap = new Map(categories.map(c => [c.name, c]));
+
+    // Parse all transactions
+    let parsedTransactions: Prisma.TransactionCreateManyInput[] = [];
 
     // First validate all records
-    for (const [index, record] of data.entries()) {
-      try {
-        // Parse and validate required fields
-        const date = parse(record.Date, 'dd/MM/yyyy', new Date());
-        const amount = new Decimal(record.Amount);
-        const description = record.Description?.trim();
-        const notes = record.Notes?.trim();
-        
-        if (!date || !amount || !description) {
-          throw new Error('Missing required fields');
+    try {
+      const parsed = parser.parse(data);
+      
+      for (const [index, transaction] of parsed.entries()) {
+        try {
+          const { date, amount, type, description, notes, reference, categoryName } = transaction;
+
+          // Find matching tax year for the transaction date
+          const taxYear = taxYears.find(
+            ty => date >= ty.startDate && date <= ty.endDate
+          );
+
+          if (!taxYear) {
+            throw new Error(`No tax year found for date ${record.Date}`);
+          }
+
+          // Find matching category
+          const category = categoryMap.get(categoryName);
+
+          if (!category) {
+            throw new Error(`Unknown category: ${categoryName}`);
+          }
+
+          // Store validated transaction data
+          parsedTransactions.push({
+            date,
+            amount,
+            type,
+            description,
+            notes,
+            userId,
+            hobbyId,
+            categoryId: category.id,
+            taxYearId: taxYear.id,
+            reference,
+          });
+        } catch (error) {
+          const row = index + 1;
+          result.errors.push({
+            row,
+            error: error.message
+          });
         }
-
-        // Find matching tax year for the transaction date
-        const taxYear = taxYears.find(
-          ty => date >= ty.startDate && date <= ty.endDate
-        );
-
-        if (!taxYear) {
-          throw new Error(`No tax year found for date ${record.Date}`);
-        }
-
-        // Map Intuit category to our category
-        const category = type === ImportType.INTUIT ? this.mapIntuitCategory(record.Category, categories) : null;
-
-        if (!category) {
-          throw new Error(`Unknown category: ${record.Category}`);
-        }
-
-        // Store validated transaction data
-        parsedTransactions.push({
-          date,
-          amount: amount,
-          type: amount.isNegative() ? TransactionType.EXPENSE : TransactionType.INCOME,
-          description,
-          notes,
-          userId,
-          hobbyId,
-          categoryId: category.id,
-          taxYearId: taxYear.id,
-          reference: record.Receipt || undefined,
-        });
-      } catch (error) {
-        const row = index + 1;
-        result.errors.push({
-          row,
-          error: error.message
-        });
       }
+    } catch (error) {
+      return {
+        imported: 0,
+        errors: [`Failed to parse transactions: ${error.message}`],
+      };
     }
 
     // If any validation failed, return without importing
@@ -146,22 +152,5 @@ export class TransactionsService {
     }
 
     return result;
-  }
-
-  private mapIntuitCategory(intuitCategory: string, categories: any[]) {
-    // Map common Intuit categories to our tax categories
-    const categoryMap: Record<string, string> = {
-      'Other business expenses': 'Other Business Expenses',
-      'Cost of goods for resale': 'Cost of Goods',
-      'Travel and transport': 'Travel and Transport',
-      'Professional fees': 'Professional Fees',
-      'Office costs': 'Office Costs',
-      'Repairs and maintenance': 'Repairs and Maintenance',
-      'Business income': 'Turnover',
-      'Sales': 'Turnover',
-    };
-
-    const mappedCategory = categoryMap[intuitCategory];
-    return categories.find(c => c.name === mappedCategory);
   }
 }
