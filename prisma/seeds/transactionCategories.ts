@@ -3,12 +3,21 @@ import { PrismaClient, TransactionType, Sa103fBox } from '@prisma/client';
 export async function seedTransactionCategories(prisma: PrismaClient) {
   const categories = [
     // Income categories
+    {
+      name: 'Turnover',
+      description: 'Your business turnover',
       type: TransactionType.INCOME
     },
+    {
+      name: 'Other Income',
+      description: 'Other business income',
       type: TransactionType.INCOME
     },
     
     // Expense categories
+    {
+      name: 'Cost of Goods',
+      description: 'Cost of goods bought for resale or goods used',
       type: TransactionType.EXPENSE
     },
     {
