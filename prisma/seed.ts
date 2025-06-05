@@ -6,12 +6,14 @@ import { seedPhotographer } from './seeds/users/photographer';
 import { seedConsultant } from './seeds/users/consultant';
 import { seedArtist } from './seeds/users/artist';
 import { seedWriter } from './seeds/users/writer';
+import { seedTaxCategoryMappings } from './seeds/taxCategoryMappings';
 
 const prisma = new PrismaClient();
 
 const seeds: ((prisma: PrismaClient) => Promise<void>)[] = [
   seedTaxYears,
   seedTransactionCategories,
+  seedTaxCategoryMappings,
   seedDeveloper,
   seedPhotographer,
   seedConsultant,

@@ -130,15 +130,32 @@ model TransactionCategory {
   type        TransactionType
   transactions Transaction[]
 
-  // SA103F specific fields
-  sa103fBox   Sa103fBox // Corresponding box on the SA103F form
-  allowable   Boolean @default(true) // Whether expenses in this category are tax-deductible
-  notes       String? // Additional notes about tax treatment
+  // Tax year specific mappings
+  taxYearMappings TaxCategoryMapping[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([name, type])
+}
+
+model TaxCategoryMapping {
+  id          String    @id @default(cuid())
+  categoryId  String
+  taxYearId   String
+  sa103fBox   Sa103fBox
+  allowable   Boolean   @default(true)
+  notes       String?
+
+  category    TransactionCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  taxYear     TaxYear            @relation(fields: [taxYearId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([categoryId, taxYearId])
+  @@index([categoryId])
+  @@index([taxYearId])
 }
 
 model TaxYear {
@@ -149,6 +166,7 @@ model TaxYear {
   isCurrent Boolean  @default(false)
 
   transactions Transaction[]
+  categoryMappings TaxCategoryMapping[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

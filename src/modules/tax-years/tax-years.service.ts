@@ -70,15 +70,17 @@ export class TaxYearsService {
       _count: true,
     });
 
-    const categories = await this.prisma.transactionCategory.findMany({
-      select: {
-        id: true,
-        name: true,
-        type: true,
-        sa103fBox: true,
-        allowable: true,
-        notes: true,
-      }
+    const categoryMappings = await this.prisma.taxCategoryMapping.findMany({
+      where: { taxYearId },
+      include: {
+        category: {
+          select: {
+            id: true,
+            name: true,
+            type: true,
+          }
+        }
+      },
     });
 
     const incomeByCategory: TaxYearStatsResponse['incomeByCategory'] = [];
@@ -87,20 +89,20 @@ export class TaxYearsService {
     let totalExpenses = new Decimal(0);
 
     for (const transaction of transactions) {
-      const category = categories.find(c => c.id === transaction.categoryId);
-      if (!category) continue;
+      const mapping = categoryMappings.find(m => m.category.id === transaction.categoryId);
+      if (!mapping) continue;
 
       const stats = {
-        categoryId: category.id,
-        categoryName: category.name,
-        sa103fBox: category.sa103fBox,
-        allowable: category.allowable,
-        notes: category.notes,
+        categoryId: mapping.category.id,
+        categoryName: mapping.category.name,
+        sa103fBox: mapping.sa103fBox,
+        allowable: mapping.allowable,
+        notes: mapping.notes,
         total: transaction._sum.amount ?? new Decimal(0),
         count: transaction._count,
       };
 
-      if (transaction.type === TransactionType.INCOME) {
+      if (mapping.category.type === TransactionType.INCOME) {
         incomeByCategory.push(stats);
         totalIncome = totalIncome.plus(stats.total);
       } else {
