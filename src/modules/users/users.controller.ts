@@ -3,6 +3,7 @@ import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
 import { UserDto, UserStatsDto } from './dto';
+import { UserResponse, UserStatsResponse } from './types';
 
 @ApiTags('Users')
 @Controller('users')

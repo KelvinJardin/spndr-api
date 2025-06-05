@@ -1,5 +1,5 @@
 import { Decimal } from '@prisma/client/runtime/library';
-import { MonthlyStats } from './monthly-stats.type';
+import { MonthlyStats } from '../../../types';
 
 export type HobbyStatsOptions = {
   includeMonthlyStats?: boolean;

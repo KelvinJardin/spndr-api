@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
-import type { HealthResponse } from './types';
+import { HealthResponse } from './types';
 import { HealthResponseDto } from './dto';
 
 @Controller('app')
