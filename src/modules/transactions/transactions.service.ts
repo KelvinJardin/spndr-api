@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service'; 
 import { PaginationQueryDto } from '../../dtos';
-import { ImportTransactionDto } from '../../dtos/import-transaction.dto';
+import { ImportTransactionDto, ImportType } from '../../dtos/import-transaction.dto';
+import { ParsedTransaction } from './parsers/transaction-parser.interface';
 import { Prisma } from '@prisma/client';
 import { ParserFactory } from './parsers/parser.factory';
 import { TransactionResponse } from '../../types';
@@ -84,9 +85,9 @@ export class TransactionsService {
           const taxYear = taxYears.find(
             ty => date >= ty.startDate && date <= ty.endDate
           );
-
+          
           if (!taxYear) {
-            throw new Error(`No tax year found for date ${date.toISOString()}`);
+            throw new Error(`No tax year found for date ${new Date(date).toISOString()}`);
           }
 
           const category = categoryMap.get(this.mapCategory(importDto.type, transaction));
