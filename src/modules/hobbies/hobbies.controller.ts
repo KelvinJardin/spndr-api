@@ -1,8 +1,8 @@
-import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, NotFoundException, Param, Query, Body, ValidationPipe } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HobbiesService } from './hobbies.service';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
-import { HobbyDto, HobbyStatsDto } from './dto';
+import { HobbyDto, HobbyStatsDto, CreateHobbyDto, UpdateHobbyDto } from './dto';
 import { HobbyResponse, HobbyStatsResponse } from './types';
 
 @ApiTags('Hobbies')
@@ -60,5 +60,45 @@ export class HobbiesController {
       includeAverages,
       includePeaks,
     });
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Create a new hobby' })
+  @ApiResponse({ status: 201, type: HobbyDto })
+  async create(
+    @Param('userId') userId: string,
+    @Body() createDto: CreateHobbyDto,
+  ): Promise<HobbyResponse> {
+    return this.hobbiesService.create(userId, createDto);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update hobby by ID' })
+  @ApiResponse({ status: 200, type: HobbyDto })
+  @ApiResponse({ status: 404, description: 'Hobby not found' })
+  async update(
+    @Param('userId') userId: string,
+    @Param('id') id: string,
+    @Body() updateDto: UpdateHobbyDto,
+  ): Promise<HobbyResponse> {
+    const hobby = await this.hobbiesService.update(userId, id, updateDto);
+    if (!hobby) {
+      throw new NotFoundException(`Hobby with ID ${id} not found`);
+    }
+    return hobby;
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete hobby by ID' })
+  @ApiResponse({ status: 204, description: 'Hobby deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Hobby not found' })
+  async remove(
+    @Param('userId') userId: string,
+    @Param('id') id: string,
+  ): Promise<void> {
+    const deleted = await this.hobbiesService.remove(userId, id);
+    if (!deleted) {
+      throw new NotFoundException(`Hobby with ID ${id} not found`);
+    }
   }
 }

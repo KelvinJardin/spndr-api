@@ -1,7 +1,7 @@
-import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from "@nestjs/common";
+import { Controller, Get, Post, Patch, Delete, NotFoundException, Param, Query, Body, ValidationPipe } from "@nestjs/common";
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { TransactionsService } from "./transactions.service";
-import { TransactionDto } from "./dto";
+import { TransactionDto, CreateTransactionDto, UpdateTransactionDto } from "./dto";
 import { PaginatedResponseDto, PaginationQueryDto } from "../dto";
 import { TransactionResponse } from "./types";
 
@@ -33,5 +33,45 @@ export class TransactionsController {
       throw new NotFoundException(`Transaction with ID ${id} not found`);
     }
     return transaction;
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Create a new transaction' })
+  @ApiResponse({ status: 201, type: TransactionDto })
+  async create(
+    @Param('userId') userId: string,
+    @Body() createDto: CreateTransactionDto,
+  ): Promise<TransactionResponse> {
+    return this.transactionsService.create(userId, createDto);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Update transaction by ID' })
+  @ApiResponse({ status: 200, type: TransactionDto })
+  @ApiResponse({ status: 404, description: 'Transaction not found' })
+  async update(
+    @Param('userId') userId: string,
+    @Param('id') id: string,
+    @Body() updateDto: UpdateTransactionDto,
+  ): Promise<TransactionResponse> {
+    const transaction = await this.transactionsService.update(userId, id, updateDto);
+    if (!transaction) {
+      throw new NotFoundException(`Transaction with ID ${id} not found`);
+    }
+    return transaction;
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete transaction by ID' })
+  @ApiResponse({ status: 204, description: 'Transaction deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Transaction not found' })
+  async remove(
+    @Param('userId') userId: string,
+    @Param('id') id: string,
+  ): Promise<void> {
+    const deleted = await this.transactionsService.remove(userId, id);
+    if (!deleted) {
+      throw new NotFoundException(`Transaction with ID ${id} not found`);
+    }
   }
 }

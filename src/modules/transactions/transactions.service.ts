@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationQueryDto } from '../dto';
-import { ImportTransactionDto, ImportType } from './dto';
+import { ImportTransactionDto, ImportType, CreateTransactionDto, UpdateTransactionDto } from './dto';
 import { ParsedTransaction } from './parsers/parser.interface';
 import { Prisma } from '@prisma/client';
 import { ParserFactory } from './parsers/parser.factory';
@@ -56,6 +56,70 @@ export class TransactionsService {
         userId,
       },
     });
+  }
+
+  async create(
+    userId: string,
+    createDto: CreateTransactionDto,
+  ): Promise<TransactionResponse> {
+    // Get current tax year if not provided
+    const currentTaxYear = await this.prisma.taxYear.findFirst({
+      where: { isCurrent: true },
+    });
+
+    if (!currentTaxYear) {
+      throw new Error('No current tax year found');
+    }
+
+    return this.prisma.transaction.create({
+      data: {
+        ...createDto,
+        date: new Date(createDto.date),
+        userId,
+        taxYearId: currentTaxYear.id,
+      },
+    });
+  }
+
+  async update(
+    userId: string,
+    id: string,
+    updateDto: UpdateTransactionDto,
+  ): Promise<TransactionResponse | null> {
+    try {
+      return await this.prisma.transaction.update({
+        where: {
+          id,
+          userId,
+        },
+        data: {
+          ...updateDto,
+          ...(updateDto.date && { date: new Date(updateDto.date) }),
+        },
+      });
+    } catch (error) {
+      if (error.code === 'P2025') {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  async remove(userId: string, id: string): Promise<boolean> {
+    try {
+      await this.prisma.transaction.delete({
+        where: {
+          id,
+          userId,
+        },
+      });
+      return true;
+    } catch (error) {
+      if (error.code === 'P2025') {
+        return false;
+      }
+      throw error;
+    }
   }
 
   async importCsv(userId: string, importDto: ImportTransactionDto) {

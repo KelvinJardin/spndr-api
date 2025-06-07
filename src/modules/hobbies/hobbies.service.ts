@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StatsService } from '../../services';
 import { PaginationQueryDto, PaginatedResponseDto } from '../dto';
+import { CreateHobbyDto, UpdateHobbyDto } from './dto';
 import type { HobbyResponse, HobbyStatsOptions, HobbyStatsResponse } from './types';
 
 @Injectable()
@@ -67,6 +68,77 @@ export class HobbiesService {
         count: hobby._count.transactions,
       },
     };
+  }
+
+  async create(userId: string, createDto: CreateHobbyDto): Promise<HobbyResponse> {
+    const hobby = await this.prisma.hobby.create({
+      data: {
+        ...createDto,
+        userId,
+      },
+      include: {
+        _count: {
+          select: { transactions: true },
+        },
+      },
+    });
+
+    return {
+      ...hobby,
+      transactions: {
+        count: hobby._count.transactions,
+      },
+    };
+  }
+
+  async update(
+    userId: string,
+    id: string,
+    updateDto: UpdateHobbyDto,
+  ): Promise<HobbyResponse | null> {
+    try {
+      const hobby = await this.prisma.hobby.update({
+        where: {
+          id,
+          userId,
+        },
+        data: updateDto,
+        include: {
+          _count: {
+            select: { transactions: true },
+          },
+        },
+      });
+
+      return {
+        ...hobby,
+        transactions: {
+          count: hobby._count.transactions,
+        },
+      };
+    } catch (error) {
+      if (error.code === 'P2025') {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  async remove(userId: string, id: string): Promise<boolean> {
+    try {
+      await this.prisma.hobby.delete({
+        where: {
+          id,
+          userId,
+        },
+      });
+      return true;
+    } catch (error) {
+      if (error.code === 'P2025') {
+        return false;
+      }
+      throw error;
+    }
   }
 
   async getHobbyStats(
