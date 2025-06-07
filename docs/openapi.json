@@ -218,6 +218,45 @@
         "tags": [
           "Hobbies"
         ]
+      },
+      "post": {
+        "operationId": "HobbiesController_create",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHobbyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HobbyDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a new hobby",
+        "tags": [
+          "Hobbies"
+        ]
       }
     },
     "/users/{userId}/hobbies/{id}": {
@@ -257,6 +296,92 @@
           }
         },
         "summary": "Get hobby by ID",
+        "tags": [
+          "Hobbies"
+        ]
+      },
+      "patch": {
+        "operationId": "HobbiesController_update",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHobbyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HobbyDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Hobby not found"
+          }
+        },
+        "summary": "Update hobby by ID",
+        "tags": [
+          "Hobbies"
+        ]
+      },
+      "delete": {
+        "operationId": "HobbiesController_remove",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "204": {
+            "description": "Hobby deleted successfully"
+          },
+          "404": {
+            "description": "Hobby not found"
+          }
+        },
+        "summary": "Delete hobby by ID",
         "tags": [
           "Hobbies"
         ]
@@ -394,6 +519,45 @@
         "tags": [
           "Transactions"
         ]
+      },
+      "post": {
+        "operationId": "TransactionsController_create",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransactionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a new transaction",
+        "tags": [
+          "Transactions"
+        ]
       }
     },
     "/users/{userId}/transactions/{id}": {
@@ -433,6 +597,92 @@
           }
         },
         "summary": "Get transaction by ID",
+        "tags": [
+          "Transactions"
+        ]
+      },
+      "patch": {
+        "operationId": "TransactionsController_update",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTransactionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          }
+        },
+        "summary": "Update transaction by ID",
+        "tags": [
+          "Transactions"
+        ]
+      },
+      "delete": {
+        "operationId": "TransactionsController_remove",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "204": {
+            "description": "Transaction deleted successfully"
+          },
+          "404": {
+            "description": "Transaction not found"
+          }
+        },
+        "summary": "Delete transaction by ID",
         "tags": [
           "Transactions"
         ]
@@ -1201,6 +1451,44 @@
           }
         }
       },
+      "CreateHobbyDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Photography"
+          },
+          "description": {
+            "type": "string",
+            "example": "Wedding and event photography"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true,
+            "example": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateHobbyDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Photography"
+          },
+          "description": {
+            "type": "string",
+            "example": "Wedding and event photography"
+          },
+          "isActive": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
       "TransactionDto": {
         "type": "object",
         "properties": {
@@ -1275,6 +1563,113 @@
           "updatedAt"
         ]
       },
+      "i": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateTransactionDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "INCOME",
+              "EXPENSE"
+            ]
+          },
+          "amount": {
+            "example": "199.99",
+            "description": "Transaction amount",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          },
+          "date": {
+            "type": "string",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "description": {
+            "type": "string",
+            "example": "Website Development"
+          },
+          "reference": {
+            "type": "string",
+            "example": "INV-2024-001"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "hobbyId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "categoryId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "bankAccountId": {
+            "type": "string",
+            "example": "cln1234567890"
+          }
+        },
+        "required": [
+          "type",
+          "amount",
+          "date",
+          "description",
+          "categoryId"
+        ]
+      },
+      "UpdateTransactionDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "INCOME",
+              "EXPENSE"
+            ]
+          },
+          "amount": {
+            "example": "199.99",
+            "description": "Transaction amount",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          },
+          "date": {
+            "type": "string",
+            "example": "2024-01-01T00:00:00.000Z"
+          },
+          "description": {
+            "type": "string",
+            "example": "Website Development"
+          },
+          "reference": {
+            "type": "string",
+            "example": "INV-2024-001"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "hobbyId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "categoryId": {
+            "type": "string",
+            "example": "cln1234567890"
+          },
+          "bankAccountId": {
+            "type": "string",
+            "example": "cln1234567890"
+          }
+        }
+      },
       "TaxYearDto": {
         "type": "object",
         "properties": {
@@ -1316,10 +1711,6 @@
           "createdAt",
           "updatedAt"
         ]
-      },
-      "i": {
-        "type": "object",
-        "properties": {}
       },
       "CategoryStatsDto": {
         "type": "object",
