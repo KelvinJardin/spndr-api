@@ -3,10 +3,16 @@ import { PrismaClient } from '@prisma/client';
 export async function seedTaxYears(prisma: PrismaClient) {
   const taxYears = [
     {
+      startYear: 2025,
+      startDate: new Date('2025-04-06'),
+      endDate: new Date('2026-04-05'),
+      isCurrent: true,
+    },
+    {
       startYear: 2024,
       startDate: new Date('2024-04-06'),
       endDate: new Date('2025-04-05'),
-      isCurrent: true,
+      isCurrent: false,
     },
     {
       startYear: 2023,

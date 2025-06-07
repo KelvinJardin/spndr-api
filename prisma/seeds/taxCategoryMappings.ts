@@ -238,6 +238,13 @@ export async function seedTaxCategoryMappings(prisma: PrismaClient) {
     },
   };
 
+  const taxYearMappings: Record<string, Record<string, CategoryMapping > > = {
+    2025: mappings,
+    2024: mappings,
+    2023: mappings,
+    2022: mappings,
+  }
+
   // Get all tax years
   const taxYears = await prisma.taxYear.findMany();
 
@@ -246,7 +253,9 @@ export async function seedTaxCategoryMappings(prisma: PrismaClient) {
 
   // Create mappings for each tax year
   for (const taxYear of taxYears) {
-    for (const [name, mapping] of Object.entries(mappings)) {
+    const yearsCatMap = taxYearMappings[taxYear.startYear] ?? {};
+
+    for (const [name, mapping] of Object.entries(yearsCatMap)) {
       const category = categories.find(
         c => c.name === name && c.type === mapping.type,
       );

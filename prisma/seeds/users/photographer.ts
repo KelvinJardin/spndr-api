@@ -53,8 +53,9 @@ export async function seedPhotographer(prisma: PrismaClient) {
 
   // Get categories
   const incomeCategory = await prisma.transactionCategory.findFirstOrThrow({
-    where: { name: 'Turnover' },
+    where: { name: 'Sales' },
   });
+
   const expenseCategories = await prisma.transactionCategory.findMany({
     where: { type: TransactionType.EXPENSE },
   });
