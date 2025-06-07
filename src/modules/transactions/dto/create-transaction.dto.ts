@@ -33,10 +33,9 @@ export class CreateTransactionDto {
   @IsOptional()
   notes?: string;
 
-  @ApiProperty({ example: 'cln1234567890', required: false })
+  @ApiProperty({ example: 'cln1234567890', required: true })
   @IsString()
-  @IsOptional()
-  hobbyId?: string;
+  hobbyId: string;
 
   @ApiProperty({ example: 'cln1234567890' })
   @IsString()

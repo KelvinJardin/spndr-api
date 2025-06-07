@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { mkdir, writeFile } from 'fs/promises';
 import path from 'path';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 
 const updateOpenApiSpec = async (app: INestApplication) => {
   const openApiFilePath = path.resolve(__dirname, '../../docs/openapi.json');
@@ -28,6 +28,8 @@ const updateOpenApiSpec = async (app: INestApplication) => {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
+
+  app.useGlobalPipes(new ValidationPipe());
 
   await updateOpenApiSpec(app);
 

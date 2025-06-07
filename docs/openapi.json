@@ -552,6 +552,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorDto"
+                }
+              }
+            }
           }
         },
         "summary": "Create a new transaction",
@@ -1171,7 +1181,7 @@
   },
   "info": {
     "title": "spndr-api",
-    "description": "",
+    "description": "API for Spndr, a platform for managing and tracking financial flows of multiple income streams.",
     "version": "0.0.1",
     "contact": {}
   },
@@ -1619,7 +1629,35 @@
           "amount",
           "date",
           "description",
+          "hobbyId",
           "categoryId"
+        ]
+      },
+      "ValidationErrorDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "example": [
+              "Field must be a number"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "error": {
+            "type": "string",
+            "example": "Bad Request"
+          },
+          "statusCode": {
+            "type": "number",
+            "example": 400
+          }
+        },
+        "required": [
+          "message",
+          "error",
+          "statusCode"
         ]
       },
       "UpdateTransactionDto": {

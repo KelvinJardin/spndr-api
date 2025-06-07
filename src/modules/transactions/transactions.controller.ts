@@ -15,6 +15,7 @@ import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto, TransactionDto, UpdateTransactionDto } from './dto';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
 import { TransactionResponse } from './types';
+import { ValidationErrorDto } from '../../dto';
 
 @ApiTags('Transactions')
 @Controller('users/:userId/transactions')
@@ -49,6 +50,7 @@ export class TransactionsController {
   @Post()
   @ApiOperation({ summary: 'Create a new transaction' })
   @ApiResponse({ status: 201, type: TransactionDto })
+  @ApiResponse({ status: 400, type: ValidationErrorDto })
   async create(
     @Param('userId') userId: string,
     @Body() createDto: CreateTransactionDto,

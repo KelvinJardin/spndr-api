@@ -62,13 +62,19 @@ export class TransactionsService {
     userId: string,
     createDto: CreateTransactionDto,
   ): Promise<TransactionResponse> {
-    // Get current tax year if not provided
-    const currentTaxYear = await this.prisma.taxYear.findFirst({
-      where: { isCurrent: true },
+    const taxYear = await this.prisma.taxYear.findFirst({
+      where: {
+        startDate: {
+          lte: new Date(createDto.date),
+        },
+        endDate: {
+          gte: new Date(createDto.date),
+        },
+      },
     });
 
-    if (!currentTaxYear) {
-      throw new Error('No current tax year found');
+    if (!taxYear) {
+      throw new Error('No tax year found');
     }
 
     return this.prisma.transaction.create({
@@ -76,7 +82,7 @@ export class TransactionsService {
         ...createDto,
         date: new Date(createDto.date),
         userId,
-        taxYearId: currentTaxYear.id,
+        taxYearId: taxYear.id,
       },
     });
   }
