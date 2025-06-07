@@ -336,57 +336,6 @@
         ]
       }
     },
-    "/users/{userId}/transactions/import/csv": {
-      "post": {
-        "operationId": "TransactionsController_importCsv",
-        "parameters": [
-          {
-            "name": "userId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ImportTransactionDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportTransactionResponseDto"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ImportTransactionResponseDto"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Import transactions from CSV",
-        "tags": [
-          "Transactions"
-        ]
-      }
-    },
     "/users/{userId}/transactions": {
       "get": {
         "operationId": "TransactionsController_findAll",
@@ -1251,80 +1200,6 @@
             "$ref": "#/components/schemas/PeaksDto"
           }
         }
-      },
-      "ImportTransactionDto": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "Intuit"
-            ],
-            "description": "Type of import parser to use",
-            "example": "Intuit"
-          },
-          "hobbyId": {
-            "type": "string",
-            "description": "Optional hobby ID to associate transactions with",
-            "example": "cln1234567890"
-          },
-          "data": {
-            "description": "Array of transaction data to import",
-            "example": [
-              {
-                "Date": "2024-01-01",
-                "Description": "Test Transaction",
-                "Amount": "100.00",
-                "Category": "Income",
-                "Notes": "Test note"
-              }
-            ],
-            "type": "array",
-            "items": {
-              "type": "object"
-            }
-          }
-        },
-        "required": [
-          "type",
-          "data"
-        ]
-      },
-      "ImportTransactionResponseDto": {
-        "type": "object",
-        "properties": {
-          "imported": {
-            "type": "number",
-            "description": "Number of transactions successfully imported",
-            "example": 10
-          },
-          "errors": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "row": {
-                  "type": "number"
-                },
-                "error": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "row",
-                "error"
-              ]
-            }
-          },
-          "error": {
-            "type": "string",
-            "description": "Error message if any",
-            "example": "Failed to import transactions"
-          }
-        },
-        "required": [
-          "imported"
-        ]
       },
       "TransactionDto": {
         "type": "object",

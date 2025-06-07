@@ -1,25 +1,14 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, Query, ValidationPipe } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { TransactionsService } from './transactions.service';
-import { ImportTransactionDto, ImportTransactionResponseDto, TransactionDto } from './dto';
-import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
-import { TransactionResponse } from './types';
+import { Controller, Get, NotFoundException, Param, Query, ValidationPipe } from "@nestjs/common";
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { TransactionsService } from "./transactions.service";
+import { TransactionDto } from "./dto";
+import { PaginatedResponseDto, PaginationQueryDto } from "../dto";
+import { TransactionResponse } from "./types";
 
 @ApiTags('Transactions')
 @Controller('users/:userId/transactions')
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {
-  }
-
-  @Post('import/csv')
-  @ApiOperation({ summary: 'Import transactions from CSV' })
-  @ApiResponse({ status: 200, type: ImportTransactionResponseDto })
-  @ApiBody({ type: ImportTransactionDto })
-  async importCsv(
-    @Param('userId') userId: string,
-    @Body() importDto: ImportTransactionDto,
-  ): Promise<ImportTransactionResponseDto> {
-    return this.transactionsService.importCsv(userId, importDto);
   }
 
   @Get()
