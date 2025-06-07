@@ -1,137 +1,242 @@
-import { PrismaClient, Sa103fBox, TransactionType } from '@prisma/client';
+import { PrismaClient, Sa103fBox, TransactionType, TaxCategoryMapping } from '@prisma/client';
 
-type CategoryMapping = {
-  name: string;
+type CategoryMapping = Omit<
+    TaxCategoryMapping,
+    'id' | 'createdAt' | 'updatedAt' | 'categoryId' | 'taxYearId'
+  >
+  & {
   type: TransactionType;
-  sa103fBox: Sa103fBox;
-  allowable: boolean;
-  notes: string | null;
 };
 
 export async function seedTaxCategoryMappings(prisma: PrismaClient) {
   console.log('🌱 Seeding tax category mappings...');
 
-  const mappings: CategoryMapping[] = [
-    {
-      name: 'Sales',
+  const mappings: Record<string, CategoryMapping > = {
+    "Sales": {
       type: TransactionType.INCOME,
       sa103fBox: Sa103fBox.BOX_15,
       allowable: true,
       notes: 'Sales/turnover',
+      visible: true,
     },
-    {
-      name: 'Other business income',
+    "Other business income": {
       type: TransactionType.INCOME,
       sa103fBox: Sa103fBox.BOX_16,
       allowable: true,
       notes: 'Any other business income not included in box 15',
+      visible: true,
     },
-    {
-      name: 'Cost of goods for resale',
+    "Cost of goods for resale": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_17,
       allowable: true,
       notes: 'Cost of goods bought for resale or goods used',
+      visible: true,
     },
-    {
-      name: 'Construction subcontractors',
+    "Construction subcontractors": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_18,
       allowable: true,
       notes: 'Construction industry – payments to subcontractors',
+      visible: true,
     },
-    {
-      name: 'Wages, salaries and other staff costs',
+    "Wages, salaries and other staff costs": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_19,
       allowable: true,
       notes: 'Wages, salaries and other staff costs',
+      visible: true,
     },
-    {
-      name: 'Car / Van / Travel expenses',
+    "Car / Van / Travel expenses": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_20,
       allowable: true,
       notes: 'Car, van and travel expenses',
+      visible: true,
     },
-    {
-      name: 'Rent / Utilities / Insurance',
+    "Rent / Utilities / Insurance": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_21,
       allowable: true,
       notes: 'Rent, rates, power and insurance costs',
+      visible: true,
     },
-    {
-      name: 'Property / Equipment Repairs',
+    "Property / Equipment Repairs": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_22,
       allowable: true,
       notes: 'Repairs and maintenance of property and equipment',
+      visible: true,
     },
-    {
-      name: 'Office supplies',
+    "Office supplies": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_23,
       allowable: true,
       notes: 'Phone, fax, stationery and other office costs',
+      visible: true,
     },
-    {
-      name: 'Advertising / Business entertainment',
+    "Advertising / Business entertainment": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_24,
       allowable: false,
       notes: 'Advertising and business entertainment costs',
+      visible: true,
     },
-    {
-      name: 'Bank interest / Loans',
+    "Bank interest / Loans": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_25,
       allowable: true,
       notes: 'Interest on bank and other loans',
+      visible: true,
     },
-    {
-      name: 'Financial charges',
+    "Financial charges": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_26,
       allowable: true,
       notes: 'Bank, credit card and other financial charges',
+      visible: true,
     },
-    {
-      name: 'Bad debts',
+    "Bad debts": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_27,
       allowable: true,
       notes: 'Irrecoverable debts written off',
+      visible: true,
     },
-    {
-      name: 'Accountancy / Legal / Other professional fees',
+    "Accountancy / Legal / Other professional fees": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_28,
       allowable: true,
       notes: 'Accountancy, legal and other professional fees',
+      visible: true,
     },
-    {
-      name: 'Asset Depreciation',
+    "Asset Depreciation": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_29,
       allowable: true,
       notes: 'Depreciation and loss or profit on sale of assets',
+      visible: true,
     },
-    {
-      name: 'Other business expenses',
+    "Other business expenses": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_30,
       allowable: true,
       notes: 'Other business expenses',
+      visible: true,
     },
-    {
-      name: 'Disallowable expenses',
+    "Total expenses": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_31,
+      allowable: true,
+      notes: 'Total number of expenses',
+      visible: false,
+    },
+    "Disallowable cost of goods for resale": {
       type: TransactionType.EXPENSE,
       sa103fBox: Sa103fBox.BOX_32,
       allowable: false,
-      notes: 'Disallowable expenses (mirrors boxes 17–30)',
+      notes: 'Cost of goods bought for resale or goods used',
+      visible: true,
     },
-  ];
+    "Disallowable construction subcontractors": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_33,
+      allowable: false,
+      notes: 'Construction industry – payments to subcontractors',
+      visible: true,
+    },
+    "Disallowable wages, salaries and other staff costs": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_34,
+      allowable: false,
+      notes: 'Wages, salaries and other staff costs',
+      visible: true,
+    },
+    "Disallowable car / van / travel expenses": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_35,
+      allowable: false,
+      notes: 'Car, van and travel expenses',
+      visible: true,
+    },
+    "Disallowable rent / utilities / insurance": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_36,
+      allowable: false,
+      notes: 'Rent, rates, power and insurance costs',
+      visible: true,
+    },
+    "Disallowable property / equipment Repairs": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_37,
+      allowable: false,
+      notes: 'Repairs and maintenance of property and equipment',
+      visible: true,
+    },
+    "Disallowable office supplies": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_38,
+      allowable: false,
+      notes: 'Phone, fax, stationery and other office costs',
+      visible: true,
+    },
+    "Disallowable advertising / business entertainment": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_39,
+      allowable: false,
+      notes: 'Advertising and business entertainment costs',
+      visible: true,
+    },
+    "Disallowable bank interest / loans": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_40,
+      allowable: false,
+      notes: 'Interest on bank and other loans',
+      visible: true,
+    },
+    "Disallowable financial charges": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_41,
+      allowable: false,
+      notes: 'Bank, credit card and other financial charges',
+      visible: true,
+    },
+    "Disallowable bad debts": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_42,
+      allowable: false,
+      notes: 'Irrecoverable debts written off',
+      visible: true,
+    },
+    "Disallowable accountancy / legal / other professional fees": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_43,
+      allowable: false,
+      notes: 'Accountancy, legal and other professional fees',
+      visible: true,
+    },
+    "Disallowable asset Depreciation": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_44,
+      allowable: false,
+      notes: 'Depreciation and loss or profit on sale of assets',
+      visible: true,
+    },
+    "Disallowable other business expenses": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_45,
+      allowable: false,
+      notes: 'Other business expenses',
+      visible: true,
+    },
+    "Disallowable total expenses": {
+      type: TransactionType.EXPENSE,
+      sa103fBox: Sa103fBox.BOX_46,
+      allowable: false,
+      notes: 'Total number of expenses',
+      visible: false,
+    },
+  };
 
   // Get all tax years
   const taxYears = await prisma.taxYear.findMany();
@@ -141,9 +246,9 @@ export async function seedTaxCategoryMappings(prisma: PrismaClient) {
 
   // Create mappings for each tax year
   for (const taxYear of taxYears) {
-    for (const mapping of mappings) {
+    for (const [name, mapping] of Object.entries(mappings)) {
       const category = categories.find(
-        c => c.name === mapping.name && c.type === mapping.type
+        c => c.name === name && c.type === mapping.type,
       );
 
       if (category) {

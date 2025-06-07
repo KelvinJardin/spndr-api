@@ -165,6 +165,7 @@ model TaxCategoryMapping {
 	sa103fBox  Sa103fBox
 	allowable  Boolean   @default(true)
 	notes      String?
+	visible    Boolean   @default(true)
 
 	category TransactionCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 	taxYear  TaxYear             @relation(fields: [taxYearId], references: [id], onDelete: Cascade)
