@@ -1620,10 +1620,6 @@
           "updatedAt"
         ]
       },
-      "i": {
-        "type": "object",
-        "properties": {}
-      },
       "CreateTransactionDto": {
         "type": "object",
         "properties": {
@@ -1635,13 +1631,9 @@
             ]
           },
           "amount": {
+            "type": "number",
             "example": "199.99",
-            "description": "Transaction amount",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/i"
-              }
-            ]
+            "description": "Transaction amount"
           },
           "date": {
             "type": "string",
@@ -1691,13 +1683,9 @@
             ]
           },
           "amount": {
+            "type": "number",
             "example": "199.99",
-            "description": "Transaction amount",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/i"
-              }
-            ]
+            "description": "Transaction amount"
           },
           "date": {
             "type": "string",
@@ -1769,6 +1757,10 @@
           "createdAt",
           "updatedAt"
         ]
+      },
+      "i": {
+        "type": "object",
+        "properties": {}
       },
       "CategoryStatsDto": {
         "type": "object",
