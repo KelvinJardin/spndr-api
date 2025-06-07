@@ -1,14 +1,33 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Query,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TransactionCategoriesService } from './transaction-categories.service';
-import { CreateCategoryDto, UpdateCategoryDto, CategoryDto, CategoryMappingDto, CreateCategoryMappingDto, UpdateCategoryMappingDto } from './dto';
+import {
+  CategoryDto,
+  CategoryMappingDto,
+  CreateCategoryDto,
+  CreateCategoryMappingDto,
+  UpdateCategoryDto,
+  UpdateCategoryMappingDto,
+} from './dto';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
-import { TransactionCategoryResponse, TransactionCategoryMappingResponse } from './types';
+import { TransactionCategoryMappingResponse, TransactionCategoryResponse } from './types';
 
 @ApiTags('Transaction Categories')
 @Controller('transaction-categories')
 export class TransactionCategoriesController {
-  constructor(private readonly service: TransactionCategoriesService) {}
+  constructor(private readonly service: TransactionCategoriesService) {
+  }
 
   @Get()
   @ApiOperation({ summary: 'Get all transaction categories' })

@@ -76,7 +76,7 @@ describe('HobbiesController', () => {
         {
           limit: 10,
           offset: 0,
-        }
+        },
       );
       expect(result).toEqual([mockHobby]);
       expect(service.findAll).toHaveBeenCalledWith(mockHobby.userId);

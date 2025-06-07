@@ -55,7 +55,7 @@ export class TaxYearsController {
     if (isNaN(parsedYear)) {
       throw new NotFoundException('Invalid year format. Please provide a valid year (e.g., 2024)');
     }
-    
+
     const taxYear = await this.taxYearsService.findByYear(parsedYear);
     if (!taxYear) {
       throw new NotFoundException(`Tax year ${parsedYear} not found`);

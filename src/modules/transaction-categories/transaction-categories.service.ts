@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationQueryDto } from '../dto';
-import { CreateCategoryDto, UpdateCategoryDto, CreateCategoryMappingDto, UpdateCategoryMappingDto } from './dto';
+import { CreateCategoryDto, CreateCategoryMappingDto, UpdateCategoryDto, UpdateCategoryMappingDto } from './dto';
 
 @Injectable()
 export class TransactionCategoriesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {
+  }
 
   async findAll(query: PaginationQueryDto) {
     const { limit, offset } = query;

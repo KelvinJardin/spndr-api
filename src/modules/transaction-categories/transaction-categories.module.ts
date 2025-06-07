@@ -7,4 +7,5 @@ import { TransactionCategoriesService } from './transaction-categories.service';
   providers: [TransactionCategoriesService],
   exports: [TransactionCategoriesService],
 })
-export class TransactionCategoriesModule {}
+export class TransactionCategoriesModule {
+}

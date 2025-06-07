@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationQueryDto } from '../dto';
-import { TaxYearResponse, TaxYearStatsResponse } from "./types";
+import { TaxYearResponse, TaxYearStatsResponse } from './types';
 import { TransactionType } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
 
@@ -35,8 +35,8 @@ export class TaxYearsService {
     return this.prisma.taxYear.findFirst({
       where: {
         startYear: {
-          equals: year
-        }
+          equals: year,
+        },
       },
     });
   }
@@ -77,8 +77,8 @@ export class TaxYearsService {
             id: true,
             name: true,
             type: true,
-          }
-        }
+          },
+        },
       },
     });
 

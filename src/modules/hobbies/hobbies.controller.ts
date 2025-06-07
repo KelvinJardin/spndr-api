@@ -1,8 +1,19 @@
-import { Controller, Get, Post, Patch, Delete, NotFoundException, Param, Query, Body, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Query,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { HobbiesService } from './hobbies.service';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
-import { HobbyDto, HobbyStatsDto, CreateHobbyDto, UpdateHobbyDto } from './dto';
+import { CreateHobbyDto, HobbyDto, HobbyStatsDto, UpdateHobbyDto } from './dto';
 import { HobbyResponse, HobbyStatsResponse } from './types';
 
 @ApiTags('Hobbies')

@@ -5,7 +5,8 @@ import { ImportType } from '../dto';
 
 @Injectable()
 export class ParserFactory {
-  constructor(private readonly intuitParser: IntuitParserService) {}
+  constructor(private readonly intuitParser: IntuitParserService) {
+  }
 
   getParser(type: ImportType): TransactionParser {
     switch (type) {
