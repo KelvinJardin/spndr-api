@@ -15,6 +15,7 @@ import { HobbiesService } from './hobbies.service';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
 import { CreateHobbyDto, HobbyDto, HobbyStatsDto, UpdateHobbyDto } from './dto';
 import { HobbyResponse, HobbyStatsResponse } from './types';
+import { ValidationErrorDto } from '../../dto';
 
 @ApiTags('Hobbies')
 @Controller('users/:userId/hobbies')
@@ -76,6 +77,7 @@ export class HobbiesController {
   @Post()
   @ApiOperation({ summary: 'Create a new hobby' })
   @ApiResponse({ status: 201, type: HobbyDto })
+  @ApiResponse({ status: 400, type: ValidationErrorDto })
   async create(
     @Param('userId') userId: string,
     @Body() createDto: CreateHobbyDto,

@@ -22,6 +22,7 @@ import {
 } from './dto';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
 import { TransactionCategoryMappingResponse, TransactionCategoryResponse } from './types';
+import { ValidationErrorDto } from '../../dto';
 
 @ApiTags('Transaction Categories')
 @Controller('transaction-categories')
@@ -50,6 +51,7 @@ export class TransactionCategoriesController {
   @Post()
   @ApiOperation({ summary: 'Create transaction category' })
   @ApiResponse({ status: 201, type: CategoryDto })
+  @ApiResponse({ status: 400, type: ValidationErrorDto })
   async create(@Body() createDto: CreateCategoryDto): Promise<TransactionCategoryResponse> {
     return this.service.create(createDto);
   }

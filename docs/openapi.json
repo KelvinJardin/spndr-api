@@ -251,6 +251,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorDto"
+                }
+              }
+            }
           }
         },
         "summary": "Create a new hobby",
@@ -909,6 +919,16 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorDto"
+                }
+              }
+            }
           }
         },
         "summary": "Create transaction category",
@@ -1482,6 +1502,33 @@
           "name"
         ]
       },
+      "ValidationErrorDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "example": [
+              "Field must be a number"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "error": {
+            "type": "string",
+            "example": "Bad Request"
+          },
+          "statusCode": {
+            "type": "number",
+            "example": 400
+          }
+        },
+        "required": [
+          "message",
+          "error",
+          "statusCode"
+        ]
+      },
       "UpdateHobbyDto": {
         "type": "object",
         "properties": {
@@ -1631,33 +1678,6 @@
           "description",
           "hobbyId",
           "categoryId"
-        ]
-      },
-      "ValidationErrorDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "example": [
-              "Field must be a number"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "error": {
-            "type": "string",
-            "example": "Bad Request"
-          },
-          "statusCode": {
-            "type": "number",
-            "example": 400
-          }
-        },
-        "required": [
-          "message",
-          "error",
-          "statusCode"
         ]
       },
       "UpdateTransactionDto": {
