@@ -11,4 +11,6 @@ export type UserResponse = Omit<
 	| 'scope'
 	| 'id_token'
 	| 'session_state'
+	| 'provider'
+	| 'providerAccountId'
 >;

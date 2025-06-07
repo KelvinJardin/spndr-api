@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service'; 
+import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationQueryDto } from '../dto';
 import { ImportTransactionDto, ImportType } from './dto';
 import { ParsedTransaction } from './parsers/parser.interface';
@@ -12,7 +12,8 @@ export class TransactionsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly parserFactory: ParserFactory,
-  ) {}
+  ) {
+  }
 
   async findAll(
     userId: string,
@@ -77,15 +78,15 @@ export class TransactionsService {
 
     try {
       const parsed = parser.parse(data);
-      
+
       for (const [index, transaction] of parsed.entries()) {
         try {
           const { date } = transaction;
 
           const taxYear = taxYears.find(
-            (ty) => (date >= ty.startDate && date <= ty.endDate)
+            (ty) => (date >= ty.startDate && date <= ty.endDate),
           );
-          
+
           if (!taxYear) {
             throw new Error(`No tax year found for date ${new Date(date).toISOString()}`);
           }
@@ -103,18 +104,16 @@ export class TransactionsService {
             categoryId: category.id,
             taxYearId: taxYear.id,
           });
-        } catch (error) {
-          const row = index + 1;
-          result.errors.push({
-            row,
-            error: error.message
-          });
+        } catch ({ message: error }) {
+          const row = (index + 1);
+
+          result.errors.push({ row, error });
         }
       }
     } catch (error) {
       return {
         imported: 0,
-        errors: [`Failed to parse transactions: ${error.message}`],
+        error: `Failed to parse transactions: ${error.message}`,
       };
     }
 
@@ -136,7 +135,7 @@ export class TransactionsService {
     } catch (error) {
       return {
         imported: 0,
-        errors: [`Failed to import transactions: ${error.message}`],
+        error: `Failed to import transactions: ${error.message}`,
       };
     }
 
@@ -149,9 +148,9 @@ export class TransactionsService {
         'Other business expenses': 'Other business expenses',
         'Cost of goods for resale': 'Cost of goods for resale',
         'Car, van and travel expenses': 'Car / Van / Travel expenses',
-        'Professional fees': 'Accountancy / Legal / Other professional fees', 
+        'Professional fees': 'Accountancy / Legal / Other professional fees',
         'Phone, fax, stationery and other office costs': 'Office supplies',
-        'Repairs and maintenance': 'Property / Equipment Repairs', 
+        'Repairs and maintenance': 'Property / Equipment Repairs',
         'Business income': 'Sales',
         'Sales': 'Sales',
         'Bank charges': 'Financial charges',

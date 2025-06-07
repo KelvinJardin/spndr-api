@@ -3,6 +3,7 @@ import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/s
 import { TransactionsService } from './transactions.service';
 import { ImportTransactionDto, ImportTransactionResponseDto, TransactionDto } from './dto';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
+import { TransactionResponse } from './types';
 
 @ApiTags('Transactions')
 @Controller('users/:userId/transactions')

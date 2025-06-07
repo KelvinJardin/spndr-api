@@ -1298,11 +1298,6 @@
             "description": "Number of transactions successfully imported",
             "example": 10
           },
-          "skipped": {
-            "type": "number",
-            "description": "Number of transactions skipped due to errors",
-            "example": 2
-          },
           "errors": {
             "type": "array",
             "items": {
@@ -1320,12 +1315,15 @@
                 "error"
               ]
             }
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message if any",
+            "example": "Failed to import transactions"
           }
         },
         "required": [
-          "imported",
-          "skipped",
-          "errors"
+          "imported"
         ]
       },
       "TransactionDto": {

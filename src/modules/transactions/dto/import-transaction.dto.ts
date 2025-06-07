@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEnum, IsObject, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsObject, IsOptional, IsString } from 'class-validator';
 
 export enum ImportType {
   INTUIT = 'Intuit',
@@ -47,14 +47,16 @@ export class ImportTransactionResponseDto {
   imported: number;
 
   @ApiProperty({
-    description: 'Number of transactions skipped due to errors',
-    example: 2,
-  })
-  skipped: number;
-
-  @ApiProperty({
     description: 'Array of error messages for skipped transactions',
     example: ['Invalid date format on row 3', 'Missing amount on row 5'],
   })
-  errors: { row: number, error: string }[];
+  @IsOptional()
+  errors?: { row: number, error: string }[];
+
+  @ApiProperty({
+    description: 'Error message if any',
+    example: 'Failed to import transactions',
+  })
+  @IsOptional()
+  error?: string;
 }

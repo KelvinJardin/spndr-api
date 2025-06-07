@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { version } from '../package.json';
-import { HealthResponse } from './types/healthResponse.type';
+import { type HealthResponse } from './types';
 
 @Injectable()
 export class AppService {

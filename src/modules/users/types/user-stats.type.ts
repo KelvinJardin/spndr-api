@@ -22,12 +22,12 @@ export type UserStatsResponse = {
 		monthlyNet: Decimal;
 	};
 	peaks?: {
-		highestIncome: {
+		highestIncome?: {
 			amount: Decimal;
 			date: Date;
 			description: string;
 		};
-		highestExpense: {
+		highestExpense?: {
 			amount: Decimal;
 			date: Date;
 			description: string;
