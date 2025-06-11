@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationQueryDto } from '../dto';
 import { CreateTransactionDto, ImportTransactionDto, ImportType, UpdateTransactionDto } from './dto';
+import { FilterOptionDto, TransactionFilterOptionsDto } from './dto';
 import { ParsedTransaction } from './parsers/parser.interface';
-import { Prisma } from '@prisma/client';
+import { Prisma, TransactionType } from '@prisma/client';
 import { ParserFactory } from './parsers/parser.factory';
 import { TransactionResponse } from './types';
 
@@ -126,6 +127,82 @@ export class TransactionsService {
       }
       throw error;
     }
+  }
+
+  async getFilterOptions(userId: string): Promise<TransactionFilterOptionsDto> {
+    // Get user's hobbies for hobby filter
+    const hobbies = await this.prisma.hobby.findMany({
+      where: { userId },
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: { name: 'asc' },
+    });
+
+    // Get user's categories for category filter
+    const categories = await this.prisma.transactionCategory.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: { name: 'asc' },
+    });
+
+    // Get date range from user's transactions
+    const dateRange = await this.prisma.transaction.aggregate({
+      where: { userId },
+      _min: { date: true },
+      _max: { date: true },
+    });
+
+    // Get amount range from user's transactions
+    const amountRange = await this.prisma.transaction.aggregate({
+      where: { userId },
+      _min: { amount: true },
+      _max: { amount: true },
+    });
+
+    const filters: FilterOptionDto[] = [
+      {
+        type: 'type',
+        label: 'Transaction Type',
+        inputType: 'select',
+        options: Object.values(TransactionType),
+      },
+      {
+        type: 'hobbyId',
+        label: 'Hobby',
+        inputType: 'select',
+        options: hobbies.map(hobby => `${hobby.id}:${hobby.name}`),
+      },
+      {
+        type: 'categoryId',
+        label: 'Category',
+        inputType: 'select',
+        options: categories.map(category => `${category.id}:${category.name}`),
+      },
+      {
+        type: 'date',
+        label: 'Date Range',
+        inputType: 'date-range',
+        range: dateRange._min.date && dateRange._max.date ? {
+          from: dateRange._min.date.toISOString().split('T')[0],
+          to: dateRange._max.date.toISOString().split('T')[0],
+        } : undefined,
+      },
+      {
+        type: 'amount',
+        label: 'Amount Range',
+        inputType: 'number-range',
+        range: amountRange._min.amount && amountRange._max.amount ? {
+          from: amountRange._min.amount.toString(),
+          to: amountRange._max.amount.toString(),
+        } : undefined,
+      },
+    ];
+
+    return { filters };
   }
 
   async importCsv(userId: string, importDto: ImportTransactionDto) {

@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TransactionsService } from './transactions.service';
-import { CreateTransactionDto, TransactionDto, UpdateTransactionDto } from './dto';
+import { CreateTransactionDto, TransactionDto, UpdateTransactionDto, TransactionFilterOptionsDto } from './dto';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
 import { TransactionResponse } from './types';
 import { ValidationErrorDto } from '../../dto';
@@ -45,6 +45,15 @@ export class TransactionsController {
       throw new NotFoundException(`Transaction with ID ${id} not found`);
     }
     return transaction;
+  }
+
+  @Get('filter-options')
+  @ApiOperation({ summary: 'Get available filter options for transactions' })
+  @ApiResponse({ status: 200, type: TransactionFilterOptionsDto })
+  async getFilterOptions(
+    @Param('userId') userId: string,
+  ): Promise<TransactionFilterOptionsDto> {
+    return this.transactionsService.getFilterOptions(userId);
   }
 
   @Post()
