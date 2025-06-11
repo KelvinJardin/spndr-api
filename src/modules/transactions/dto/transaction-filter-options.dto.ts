@@ -8,6 +8,13 @@ export class FilterRangeDto {
   to: string;
 }
 
+class OptionsDto {
+  @ApiProperty({ example: 'Income', description: 'Option label' })
+  name: string;
+  @ApiProperty({ example: 'INCOME', description: 'Option value' })
+  value: string;
+}
+
 export class FilterOptionDto {
   @ApiProperty({ 
     example: 'type', 
@@ -44,12 +51,12 @@ export class FilterOptionDto {
   inputType: string;
 
   @ApiProperty({ 
-    example: ['INCOME', 'EXPENSE'], 
+    example: {name: 'Income', value: 'INCOME'},
     description: 'Available options for select type filters',
     required: false,
-    type: [String]
+    type: [OptionsDto]
   })
-  options?: string[];
+  options?: OptionsDto[];
 }
 
 export class TransactionFilterOptionsDto {

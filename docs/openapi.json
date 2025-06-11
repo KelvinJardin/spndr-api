@@ -1738,6 +1738,25 @@
           "to"
         ]
       },
+      "OptionsDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Income",
+            "description": "Option label"
+          },
+          "value": {
+            "type": "string",
+            "example": "INCOME",
+            "description": "Option value"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ]
+      },
       "FilterOptionDto": {
         "type": "object",
         "properties": {
@@ -1783,14 +1802,14 @@
             ]
           },
           "options": {
-            "example": [
-              "INCOME",
-              "EXPENSE"
-            ],
+            "example": {
+              "name": "Income",
+              "value": "INCOME"
+            },
             "description": "Available options for select type filters",
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/OptionsDto"
             }
           }
         },

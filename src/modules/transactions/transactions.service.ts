@@ -169,56 +169,45 @@ export class TransactionsService {
       orderBy: { name: 'asc' },
     });
 
-    // Get date range from user's transactions
-    const dateRange = await this.prisma.transaction.aggregate({
-      where: { userId },
-      _min: { date: true },
-      _max: { date: true },
-    });
-
-    // Get amount range from user's transactions
-    const amountRange = await this.prisma.transaction.aggregate({
-      where: { userId },
-      _min: { amount: true },
-      _max: { amount: true },
-    });
-
     const filters: FilterOptionDto[] = [
       {
         type: 'type',
         label: 'Transaction Type',
         inputType: 'select',
-        options: Object.values(TransactionType),
+        options: Object.entries(TransactionType)
+          .map(([key, value]) => ({
+              name: key,
+              value: value,
+            }
+          )),
       },
       {
         type: 'hobbyId',
         label: 'Hobby',
         inputType: 'select',
-        options: hobbies.map(hobby => `${hobby.id}:${hobby.name}`),
+        options: hobbies.map(hobby => ({
+          name: hobby.name,
+          value: hobby.id,
+        })),
       },
       {
         type: 'categoryId',
         label: 'Category',
         inputType: 'select',
-        options: categories.map(category => `${category.id}:${category.name}`),
+        options: categories.map(category => ({
+          name: category.name,
+          value: category.id,
+        })),
       },
       {
         type: 'date',
         label: 'Date Range',
         inputType: 'date-range',
-        range: dateRange._min.date && dateRange._max.date ? {
-          from: dateRange._min.date.toISOString().split('T')[0],
-          to: dateRange._max.date.toISOString().split('T')[0],
-        } : undefined,
       },
       {
         type: 'amount',
         label: 'Amount Range',
         inputType: 'number-range',
-        range: amountRange._min.amount && amountRange._max.amount ? {
-          from: amountRange._min.amount.toString(),
-          to: amountRange._max.amount.toString(),
-        } : undefined,
       },
     ];
 
