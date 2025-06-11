@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationQueryDto } from '../dto';
 import { CreateTransactionDto, ImportTransactionDto, ImportType, UpdateTransactionDto } from './dto';
-import { FilterOptionDto, TransactionFilterOptionsDto } from './dto';
+import { FilterOptionDto, TransactionFilterOptionsDto, TransactionFiltersDto } from './dto';
 import { ParsedTransaction } from './parsers/parser.interface';
 import { Prisma, TransactionType } from '@prisma/client';
 import { ParserFactory } from './parsers/parser.factory';
@@ -19,13 +19,33 @@ export class TransactionsService {
   async findAll(
     userId: string,
     query: PaginationQueryDto,
-    hobbyId?: string,
+    filters?: TransactionFiltersDto,
   ) {
     const { limit, offset } = query;
 
-    const where = {
+    const where: Prisma.TransactionWhereInput = {
       userId,
-      ...(hobbyId ? { hobbyId } : {}),
+      ...(filters?.type && { type: filters.type }),
+      ...(filters?.hobbyId && { hobbyId: filters.hobbyId }),
+      ...(filters?.categoryId && { categoryId: filters.categoryId }),
+      ...(filters?.search && {
+        description: {
+          contains: filters.search,
+          mode: 'insensitive',
+        },
+      }),
+      ...(filters?.dateFrom || filters?.dateTo) && {
+        date: {
+          ...(filters?.dateFrom && { gte: new Date(filters.dateFrom) }),
+          ...(filters?.dateTo && { lte: new Date(filters.dateTo) }),
+        },
+      },
+      ...(filters?.amountFrom || filters?.amountTo) && {
+        amount: {
+          ...(filters?.amountFrom && { gte: filters.amountFrom }),
+          ...(filters?.amountTo && { lte: filters.amountTo }),
+        },
+      },
     };
 
     const [total, transactions] = await Promise.all([

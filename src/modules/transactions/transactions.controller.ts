@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { TransactionsService } from './transactions.service';
-import { CreateTransactionDto, TransactionDto, UpdateTransactionDto, TransactionFilterOptionsDto } from './dto';
+import { CreateTransactionDto, TransactionDto, UpdateTransactionDto, TransactionFilterOptionsDto, TransactionFiltersDto } from './dto';
 import { PaginatedResponseDto, PaginationQueryDto } from '../dto';
 import { TransactionResponse } from './types';
 import { ValidationErrorDto } from '../../dto';
@@ -26,13 +26,20 @@ export class TransactionsController {
   @Get()
   @ApiOperation({ summary: 'Get all transactions for a user' })
   @ApiResponse({ status: 200, type: PaginatedResponseDto<TransactionDto> })
+  @ApiQuery({ name: 'type', required: false, enum: ['INCOME', 'EXPENSE'] })
   @ApiQuery({ name: 'hobbyId', required: false })
+  @ApiQuery({ name: 'categoryId', required: false })
+  @ApiQuery({ name: 'dateFrom', required: false, description: 'Date from (YYYY-MM-DD)' })
+  @ApiQuery({ name: 'dateTo', required: false, description: 'Date to (YYYY-MM-DD)' })
+  @ApiQuery({ name: 'amountFrom', required: false, type: Number })
+  @ApiQuery({ name: 'amountTo', required: false, type: Number })
+  @ApiQuery({ name: 'search', required: false, description: 'Search in description' })
   async findAll(
     @Param('userId') userId: string,
     @Query(new ValidationPipe({ transform: true })) query: PaginationQueryDto,
-    @Query('hobbyId') hobbyId?: string,
+    @Query(new ValidationPipe({ transform: true })) filters: TransactionFiltersDto,
   ): Promise<PaginatedResponseDto<TransactionResponse>> {
-    return this.transactionsService.findAll(userId, query, hobbyId);
+    return this.transactionsService.findAll(userId, query, filters);
   }
 
   @Get(':id')
@@ -47,7 +54,7 @@ export class TransactionsController {
     return transaction;
   }
 
-  @Get('filter-options')
+  @Get('/filter-options')
   @ApiOperation({ summary: 'Get available filter options for transactions' })
   @ApiResponse({ status: 200, type: TransactionFilterOptionsDto })
   async getFilterOptions(
