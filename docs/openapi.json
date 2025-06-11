@@ -505,9 +505,77 @@
             }
           },
           {
+            "name": "type",
+            "required": false,
+            "in": "query",
+            "description": "Filter by transaction type",
+            "schema": {
+              "enum": [
+                "INCOME",
+                "EXPENSE"
+              ],
+              "type": "string"
+            }
+          },
+          {
             "name": "hobbyId",
             "required": false,
             "in": "query",
+            "description": "Filter by hobby ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "description": "Filter by category ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dateFrom",
+            "required": false,
+            "in": "query",
+            "description": "Date from (YYYY-MM-DD)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dateTo",
+            "required": false,
+            "in": "query",
+            "description": "Date to (YYYY-MM-DD)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "amountFrom",
+            "required": false,
+            "in": "query",
+            "description": "Filter by minimum amount",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "amountTo",
+            "required": false,
+            "in": "query",
+            "description": "Filter by maximum amount",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search in description",
             "schema": {
               "type": "string"
             }
@@ -1232,7 +1300,7 @@
   },
   "info": {
     "title": "spndr-api",
-    "description": "",
+    "description": "API for Spndr, a platform for managing and tracking financial flows of multiple income streams.",
     "version": "0.0.1",
     "contact": {}
   },

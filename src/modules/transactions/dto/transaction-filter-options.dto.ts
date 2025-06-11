@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TransactionType } from '@prisma/client';
 
 export class FilterRangeDto {
   @ApiProperty({ example: '2024-01-01', description: 'Start value for range filter' })
