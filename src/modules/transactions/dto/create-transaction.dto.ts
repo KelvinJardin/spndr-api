@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDateString, IsEnum, IsNotEmpty, IsDecimal, IsOptional, IsString } from "class-validator";
 import { TransactionType } from '@prisma/client';
-import { Transform, Type } from "class-transformer";
-import { Decimal } from '@prisma/client/runtime/library';
 
 export class CreateTransactionDto {
   @ApiProperty({ enum: TransactionType })
@@ -10,8 +8,7 @@ export class CreateTransactionDto {
   type: TransactionType;
 
   @ApiProperty({ example: '199.99', description: 'Transaction amount' })
-  @IsDecimal({force_decimal: true, decimal_digits: "2"})
-  @Transform(({ value }) => new Decimal(value))
+  @IsDecimal()
   amount: number;
 
   @ApiProperty({ example: '2024-01-01T00:00:00.000Z' })
