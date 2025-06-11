@@ -708,6 +708,37 @@
         ]
       }
     },
+    "/users/{userId}/transactions/filter-options": {
+      "get": {
+        "operationId": "TransactionsController_getFilterOptions",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionFilterOptionsDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get available filter options for transactions",
+        "tags": [
+          "Transactions"
+        ]
+      }
+    },
     "/tax-years": {
       "get": {
         "operationId": "TaxYearsController_findAll",
@@ -1618,6 +1649,102 @@
           "taxYearId",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "FilterRangeDto": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "example": "2024-01-01",
+            "description": "Start value for range filter"
+          },
+          "to": {
+            "type": "string",
+            "example": "2024-12-31",
+            "description": "End value for range filter"
+          }
+        },
+        "required": [
+          "from",
+          "to"
+        ]
+      },
+      "FilterOptionDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "type",
+            "description": "The filter field name",
+            "enum": [
+              "type",
+              "hobbyId",
+              "categoryId",
+              "date",
+              "amount"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "example": "INCOME",
+            "description": "Single value for the filter (for enum/select type filters)"
+          },
+          "range": {
+            "description": "Range values for date/amount filters",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FilterRangeDto"
+              }
+            ]
+          },
+          "label": {
+            "type": "string",
+            "example": "Transaction Type",
+            "description": "Human-readable label for the filter"
+          },
+          "inputType": {
+            "type": "string",
+            "example": "select",
+            "description": "UI component type hint",
+            "enum": [
+              "select",
+              "date-range",
+              "number-range",
+              "text"
+            ]
+          },
+          "options": {
+            "example": [
+              "INCOME",
+              "EXPENSE"
+            ],
+            "description": "Available options for select type filters",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "type",
+          "label",
+          "inputType"
+        ]
+      },
+      "TransactionFilterOptionsDto": {
+        "type": "object",
+        "properties": {
+          "filters": {
+            "description": "Array of available filter options for transactions",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilterOptionDto"
+            }
+          }
+        },
+        "required": [
+          "filters"
         ]
       },
       "CreateTransactionDto": {
